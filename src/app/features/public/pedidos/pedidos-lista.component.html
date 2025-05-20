@@ -1,0 +1,8 @@
+<h2>Lista de Pedidos</h2>
+
+<ul>
+  <li *ngFor="let pedido of pedidos; let i = index">
+    {{ pedido.cliente }} - {{ pedido.tiras }} tiras - {{ pedido.fecha }}
+    <button (click)="eliminar(i)">Eliminar</button>
+  </li>
+</ul>

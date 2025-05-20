@@ -1,0 +1,19 @@
+<!-- src/app/features/public/home.component.html -->
+<h1>Bienvenido a la Panadería Don Luis</h1>
+
+<p>
+  Somos una panadería comprometida con la calidad, el sabor y el buen servicio.
+</p>
+
+<h2>¿Eres cliente frecuente?</h2>
+<p>
+  Haz tu <strong> pedido anticipado </strong> y recibe bolillo fresco sin contratiempos.
+</p>
+
+<button routerLink="/pedidos">Hacer pedido</button>
+
+
+<button (click)="loginComo('admin')">Login como Admin</button>
+<button (click)="loginComo('cliente')">Login como Cliente</button>
+<button (click)="loginComo('repartidor')">Login como Repartidor</button>
+<button (click)="logout()">Cerrar Sesión</button>

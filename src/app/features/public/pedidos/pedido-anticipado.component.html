@@ -1,0 +1,36 @@
+<h1>Pedido Anticipado</h1>
+
+<form [formGroup]="pedidoForm" (ngSubmit)="enviarPedido()">
+  <label>
+    Cliente:
+    <input formControlName="cliente" type="text" />
+  </label>
+  <div *ngIf="pedidoForm.controls['cliente'].invalid && pedidoForm.controls['cliente'].touched">
+    El nombre del cliente es obligatorio.
+  </div>
+
+  <label>
+    Tiras:
+    <input formControlName="tiras" type="number" min="1" />
+  </label>
+  <div *ngIf="pedidoForm.controls['tiras'].invalid && pedidoForm.controls['tiras'].touched">
+    Debe ser al menos 1 tira.
+  </div>
+
+  <label>
+    Fecha del pedido:
+    <input formControlName="fecha" type="date" />
+  </label>
+  <div *ngIf="pedidoForm.controls['fecha'].invalid && pedidoForm.controls['fecha'].touched">
+    La fecha es obligatoria.
+  </div>
+
+  <label>
+    Notas:
+    <textarea formControlName="notas"></textarea>
+  </label>
+
+  <button type="submit" [disabled]="pedidoForm.invalid">Enviar Pedido</button>
+</form>
+
+<button routerLink="/lista-pedidos">Ver lista de pedidos</button>

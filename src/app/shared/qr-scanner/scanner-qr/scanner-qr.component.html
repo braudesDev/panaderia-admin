@@ -1,0 +1,11 @@
+<h2>Escanear QR de la tienda</h2>
+
+<zxing-scanner
+  [formats]="formatsEnabled"
+  [device]="selectedDevice"
+  [tryHarder]="true"
+  (camerasFound)="onCamerasFound($event)"
+  (scanSuccess)="onCodeResult($event)"
+></zxing-scanner>
+
+<p *ngIf="qrContent"><strong>Resultado:</strong> {{ qrContent }}</p>
