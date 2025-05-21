@@ -1,0 +1,91 @@
+/* Contenedor del mat-card */
+.registro-card {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #fafafa, #f5f5f5);
+  margin-top: 8rem;
+}
+
+/* Título con icono */
+.titulo-card {
+  font-size: 24px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #3f51b5;
+  margin-bottom: 2rem;
+
+}
+
+.icono-titulo {
+  color: #723fb5;
+}
+
+/* Fila de formularios */
+.form-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+/* Campos de texto de ancho completo */
+mat-form-field {
+  flex: 1;
+  min-width: 240px;
+}
+
+/* Campo de notas de ancho total */
+.full-width {
+  width: 100%;
+  margin-top: 12px;
+}
+
+/* Texto del sufijo */
+.suffix-text {
+  font-size: 14px;
+  color: #3e55a3;
+  padding-right: 6px;
+}
+
+/* Sección de acciones */
+.acciones-formulario {
+  margin-top: 24px;
+  text-align: right;
+}
+
+/* Botón de guardar */
+.boton-guardar {
+  background-color: #3f51b5;
+  color: white;
+  font-weight: 500;
+  padding: 10px 24px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.boton-guardar:hover {
+  background-color: #303f9f;
+}
+
+/* Ajuste interno para inputs y textarea */
+input[matInput], textarea[matInput] {
+  padding: 12px 14px !important;
+  box-sizing: border-box;
+}
+
+/* Evita que el contenido se solape con los bordes */
+mat-form-field {
+  --mat-form-field-padding-start: 14px;
+  --mat-form-field-padding-end: 14px;
+}
+
+/* Mejora el alineado visual del sufijo (íconos, texto) */
+.mat-form-field-suffix {
+  margin-right: 6px;
+}
+

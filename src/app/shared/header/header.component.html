@@ -41,12 +41,27 @@
       </a>
     </li>
 
+    <li *ngIf="estaLogueado && rolUsuario === 'admin'">
+      <a routerLink="/registro-cliente" (click)="onNavClick()">
+        <mat-icon fontIcon="qr_code"></mat-icon> Registro Cliente
+      </a>
+    </li>
+
+    <li *ngIf="estaLogueado && rolUsuario === 'repartidor'">
+      <a routerLink="/repartidor/registrar-pedido" (click)="onNavClick()">
+        <mat-icon fontIcon="add_shopping_cart"></mat-icon> Registrar Pedido
+      </a>
+    </li>
+
+
     <!-- Cerrar sesión visible solo si está logueado -->
     <li *ngIf="estaLogueado">
       <a (click)="logout(); onNavClick()">
         <mat-icon fontIcon="logout"></mat-icon> Cerrar sesión
       </a>
     </li>
+
+
 
   </ul>
 </nav>

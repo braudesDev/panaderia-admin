@@ -4,11 +4,11 @@ import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { BarcodeFormat } from '@zxing/library'
 
 @Component({
-  selector: 'app-scanner-qr',
-  standalone: true,
-  imports: [CommonModule, ZXingScannerModule],
-  templateUrl: './scanner-qr.component.html',
-  styleUrls: ['./scanner-qr.component.css']
+    selector: 'app-scanner-qr',
+    standalone: true,
+    imports: [CommonModule, ZXingScannerModule],
+    templateUrl: './scanner-qr.component.html',
+    styleUrls: ['./scanner-qr.component.css']
 })
 export class ScannerQrComponent {
 
@@ -20,10 +20,23 @@ export class ScannerQrComponent {
   qrContent: string | null = null;
   availableDevices: MediaDeviceInfo[] = [];
 
-  onCamerasFound(devices: MediaDeviceInfo[]): void {
-    this.availableDevices = devices;
-    this.selectedDevice = devices[0]; // Usa la primera cámara disponible
+  scannerEnabled = false;
+
+onCamerasFound(devices: MediaDeviceInfo[]): void {
+  console.log('Cámaras encontradas:', devices);
+  this.availableDevices = devices;
+  if (!this.selectedDevice && devices.length > 0) {
+    this.selectedDevice = devices[0];
   }
+}
+
+
+onDeviceSelect(event: Event) {
+  const selectElement = event.target as HTMLSelectElement;
+  const selectedIndex = selectElement.selectedIndex;
+  this.selectedDevice = this.availableDevices[selectedIndex];
+}
+
 
   // Este método debe llamarse cuando se detecte un código QR real
   onCodeResult(result: string): void {

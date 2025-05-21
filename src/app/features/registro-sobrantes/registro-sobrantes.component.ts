@@ -3,11 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-registro-sobrantes',
-  standalone: true,
-  imports: [FormsModule, CommonModule],
-  templateUrl: './registro-sobrantes.component.html',
-  styleUrls: ['./registro-sobrantes.component.css']
+    selector: 'app-registro-sobrantes',
+    standalone: true,
+    imports: [FormsModule, CommonModule],
+    templateUrl: './registro-sobrantes.component.html',
+    styleUrls: ['./registro-sobrantes.component.css']
 })
 export class RegistroSobrantesComponent implements OnInit {
   clienteId: string = '';

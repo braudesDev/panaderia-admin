@@ -7,8 +7,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ScannerQrComponent } from '../../shared/qr-scanner/scanner-qr/scanner-qr.component';
+import { RutaService } from '../../core/services/ruta.service';
 
-interface RegistroDeRuta {
+export interface RegistroDeRuta {
   clienteId: string;
   fecha: string;
   entregaInicial: number;
@@ -19,23 +20,26 @@ interface RegistroDeRuta {
 }
 
 @Component({
-  standalone: true,
-  selector: 'app-ruta-del-dia',
-  templateUrl: './ruta-del-dia.component.html',
-  styleUrls: ['./ruta-del-dia.component.css'],
-  imports: [
-    CommonModule,
-    MatCardModule,
-    MatIconModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    ScannerQrComponent,
-    MatSnackBarModule // ✔ Módulo necesario (NO el servicio)
-  ],
+    selector: 'app-ruta-del-dia',
+    standalone: true,
+    templateUrl: './ruta-del-dia.component.html',
+    styleUrls: ['./ruta-del-dia.component.css'],
+    imports: [
+        CommonModule,
+        MatCardModule,
+        MatIconModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ScannerQrComponent,
+        MatSnackBarModule // ✔ Módulo necesario (NO el servicio)
+    ]
 })
 export class RutaDelDiaComponent {
-  constructor(private snackBar: MatSnackBar) {} // ✔ Servicio inyectado
+  constructor(
+    private snackBar: MatSnackBar,
+    private rutaService: RutaService
+  ) {} // ✔ Servicio inyectado
 
   precioPorTira = 10;
 
@@ -78,12 +82,20 @@ export class RutaDelDiaComponent {
   clienteActual: RegistroDeRuta | null = null;
 
   // Métodos corregidos
-  registrarEntregas() {
-    console.log('Entregas registradas:', this.registrosRuta);
-    this.snackBar.open('¡Entregas guardadas correctamente!', 'Cerrar', {
-      duration: 3000,
-    });
+async registrarEntregas() {
+  try {
+    for (const registro of this.registrosRuta) {
+      this.actualizarCobroTotal(registro);
+      await this.rutaService.guardarRegistro(registro);
+    }
+
+    this.snackBar.open('✅ Entregas guardadas en Firestore', 'Cerrar', { duration: 3000 });
+  } catch (error) {
+    this.snackBar.open('❌ Error al guardar entregas', 'Cerrar', { duration: 3000 });
+    console.error('Error al guardar en Firestore:', error);
   }
+}
+
 
   calcularTirasVendidas(registro: RegistroDeRuta): number {
     return registro.entregaInicial + registro.entregaExtra - registro.tirasSobrantes;

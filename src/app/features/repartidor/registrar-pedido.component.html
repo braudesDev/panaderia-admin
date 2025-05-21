@@ -1,0 +1,53 @@
+<mat-card class="registro-card">
+  <mat-card-header>
+    <mat-card-title class="titulo-card">
+      <mat-icon class="icono-titulo">assignment</mat-icon>
+      Nuevo Pedido
+    </mat-card-title>
+  </mat-card-header>
+
+
+  <mat-card-content>
+    <form (ngSubmit)="guardar()" class="formulario-pedido">
+      <div class="form-row">
+        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-label>Cliente</mat-label>
+          <input matInput [(ngModel)]="nuevoPedido.cliente" name="cliente" required>
+          <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-label>Cantidad</mat-label>
+          <input matInput type="number" [(ngModel)]="nuevoPedido.tiras" name="tiras" min="1" required>
+          <span matSuffix class="suffix-text">tiras</span>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-label>Fecha</mat-label>
+          <input matInput type="date" [(ngModel)]="nuevoPedido.fecha" name="fecha" required>
+          <mat-icon matSuffix>calendar_today</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-label>Hora</mat-label>
+          <input matInput type="time" [(ngModel)]="nuevoPedido.hora" name="hora" required>
+          <mat-icon matSuffix>schedule</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" floatLabel="always" class="full-width">
+        <mat-label>Notas</mat-label>
+        <textarea matInput [(ngModel)]="nuevoPedido.notas" name="notas" rows="2"></textarea>
+        <mat-icon matSuffix>notes</mat-icon>
+      </mat-form-field>
+
+      <div class="acciones-formulario">
+        <button mat-raised-button color="primary" type="submit" class="boton-guardar">
+          <mat-icon>save</mat-icon> Guardar Pedido
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

@@ -5,15 +5,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../core/auth/auth.service';  // Ajusta la ruta según tu proyecto
 
 @Component({
-  selector: 'app-header',
-  standalone: true,
-  imports: [
-    RouterModule,
-    CommonModule,
-    MatIconModule
-  ],
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+    selector: 'app-header',
+    standalone: true,
+    imports: [
+        RouterModule,
+        CommonModule,
+        MatIconModule
+    ],
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
 

@@ -1,6 +1,16 @@
 <h2>Escanear QR de la tienda</h2>
 
+<button (click)="scannerEnabled = true">Activar cámara</button>
+<button *ngIf="scannerEnabled" (click)="scannerEnabled = false">Desactivar cámara</button>
+
+<select *ngIf="scannerEnabled && availableDevices.length > 0" #selectDevice (change)="onDeviceSelect($event)">
+  <option *ngFor="let device of availableDevices; let i = index" [value]="i">
+    {{ device.label || 'Cámara ' + (i + 1) }}
+  </option>
+</select>
+
 <zxing-scanner
+  *ngIf="scannerEnabled"
   [formats]="formatsEnabled"
   [device]="selectedDevice"
   [tryHarder]="true"

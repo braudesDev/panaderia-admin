@@ -1,8 +1,61 @@
-<h2>Lista de Pedidos</h2>
+<div class="pedidos-container">
+  <!-- Encabezado con efecto neón -->
+  <div class="header-section">
+    <h2 class="titulo-lista">
+      <mat-icon class="icono-titulo">list_alt</mat-icon>
+      Historial de Pedidos
+    </h2>
+    <div class="filtros">
+      <mat-form-field appearance="outline" floatLabel="always">
+        <mat-label>Filtrar</mat-label>
+        <input matInput placeholder="Por cliente..." [(ngModel)]="filtro">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+  </div>
 
-<ul>
-  <li *ngFor="let pedido of pedidos; let i = index">
-    {{ pedido.cliente }} - {{ pedido.tiras }} tiras - {{ pedido.fecha }}
-    <button (click)="eliminar(i)">Eliminar</button>
-  </li>
-</ul>
+  <!-- Lista de pedidos con tarjetas interactivas -->
+  <div class="grid-pedidos">
+    <mat-card *ngFor="let pedido of pedidosConDetalles | clienteFiltro: filtro"
+              class="pedido-card"
+              [class.admin]="rolUsuario === 'admin'"
+              (click)="toggleDetalles(pedido)">
+      <div class="card-header">
+        <div class="cliente-info">
+          <mat-icon class="avatar-icon">person</mat-icon>
+          <h3>{{ pedido.cliente }}</h3>
+        </div>
+        <span class="fecha">{{ pedido.fecha | date:'mediumDate' }}</span>
+        <span class="badge-tiras">{{ pedido.tiras }} tiras</span>
+      </div>
+
+      <!-- Detalles expandibles -->
+      <div class="detalles" [class.expanded]="pedido.mostrarDetalles">
+        <div class="detalle-item">
+          <mat-icon>event</mat-icon>
+          <span>{{ pedido.fecha | date:'fullDate' }}</span>
+        </div>
+
+        <div class="detalle-item" *ngIf="pedido.hora">
+          <mat-icon>schedule</mat-icon>
+          <span>{{ pedido.hora }}</span>
+        </div>
+
+        <div class="detalle-item notas" *ngIf="pedido.notas">
+          <mat-icon>notes</mat-icon>
+          <p>{{ pedido.notas }}</p>
+        </div>
+
+        <!-- Acciones admin -->
+        <div class="acciones" *ngIf="rolUsuario === 'admin'">
+          <button mat-icon-button color="warn" (click)="eliminar(pedido.id!); $event.stopPropagation()">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button mat-icon-button color="primary" (click)="editar(pedido); $event.stopPropagation()">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>

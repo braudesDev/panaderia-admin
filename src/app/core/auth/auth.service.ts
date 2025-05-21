@@ -34,8 +34,8 @@ export class AuthService {
     return !!localStorage.getItem('rol');
   }
 
-getRol(): 'admin' | 'cliente' | 'repartidor' | null {
-  return localStorage.getItem('rol') as 'admin' | 'cliente' | 'repartidor' | null;
-}
+  getRol(): 'admin' | 'cliente' | 'repartidor' | null {
+    return localStorage.getItem('rol') as 'admin' | 'cliente' | 'repartidor' | null;
+  }
 
 }

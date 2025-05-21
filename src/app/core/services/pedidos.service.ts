@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
+import { Firestore, collectionData, collection, addDoc, deleteDoc, doc } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+
 
 export interface Pedido {
+  id?: string;
   cliente: string;
   tiras: number;
   fecha: string;
+  hora?: string;
   notas?: string;
 }
 
@@ -11,24 +16,21 @@ export interface Pedido {
   providedIn: 'root',
 })
 export class PedidoService {
-  private storageKey = 'pedidos';
+  constructor(private firestore: Firestore) {}
 
-  obtenerPedidos(): Pedido[] {
-    const pedidosJSON = localStorage.getItem(this.storageKey);
-    return pedidosJSON ? JSON.parse(pedidosJSON) : [];
+  guardarPedido(pedido: Pedido): Promise<any> {
+    const pedidosRef = collection(this.firestore, 'pedidos');
+    return addDoc(pedidosRef, pedido);
   }
 
-  guardarPedido(pedido: Pedido): void {
-    const pedidos = this.obtenerPedidos();
-    pedidos.push(pedido);
-    localStorage.setItem(this.storageKey, JSON.stringify(pedidos));
+  obtenerPedidos(): Observable<Pedido[]> {
+    const pedidosRef = collection(this.firestore, 'pedidos');
+    return collectionData(pedidosRef, { idField: 'id' }) as Observable<Pedido[]>;
   }
 
-  eliminarPedido(index: number): void {
-    const pedidos = this.obtenerPedidos();
-    pedidos.splice(index, 1);
-    localStorage.setItem(this.storageKey, JSON.stringify(pedidos));
-  }
 
-  // Puedes agregar métodos para editar o actualizar pedidos aquí si quieres
+  eliminarPedido(id: string): Promise<void> {
+    const pedidoDocRef = doc(this.firestore, `pedidos/${id}`);
+    return deleteDoc(pedidoDocRef);
+  }
 }

@@ -6,10 +6,10 @@ import { RouterModule } from '@angular/router';
 
 
 @Component({
-  selector: 'app-pedido-anticipado',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
-  templateUrl: './pedido-anticipado.component.html',
+    selector: 'app-pedido-anticipado',
+    standalone: true,
+    imports: [CommonModule, ReactiveFormsModule, RouterModule],
+    templateUrl: './pedido-anticipado.component.html'
 })
 export class PedidoAnticipadoComponent {
   pedidoForm: FormGroup;

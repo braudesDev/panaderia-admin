@@ -1,19 +1,34 @@
-<!-- src/app/features/public/home.component.html -->
-<h1>Bienvenido a la Panadería Don Luis</h1>
+<mat-card class="home-card">
+  <mat-card-header>
+    <mat-card-title>Bienvenido a la Panadería Don Luis 🥐</mat-card-title>
+    <mat-card-subtitle>Calidad, sabor y buen servicio directo a tu mesa.</mat-card-subtitle>
+  </mat-card-header>
 
-<p>
-  Somos una panadería comprometida con la calidad, el sabor y el buen servicio.
-</p>
+  <mat-card-content>
+    <h2 class="mat-subheading-2">¿Eres cliente frecuente?</h2>
+    <p>
+      Haz tu <strong>pedido anticipado</strong> y recibe bolillo fresco sin contratiempos.
+    </p>
 
-<h2>¿Eres cliente frecuente?</h2>
-<p>
-  Haz tu <strong> pedido anticipado </strong> y recibe bolillo fresco sin contratiempos.
-</p>
+    <div class="action-buttons">
+      <button mat-raised-button color="primary" routerLink="/pedidos">
+        📦 Hacer pedido
+      </button>
+    </div>
 
-<button routerLink="/pedidos">Hacer pedido</button>
-
-
-<button (click)="loginComo('admin')">Login como Admin</button>
-<button (click)="loginComo('cliente')">Login como Cliente</button>
-<button (click)="loginComo('repartidor')">Login como Repartidor</button>
-<button (click)="logout()">Cerrar Sesión</button>
+    <div class="auth-buttons">
+      <button mat-stroked-button color="accent" (click)="loginComo('admin')">
+        👩‍💼 Admin
+      </button>
+      <button mat-stroked-button color="accent" (click)="loginComo('cliente')">
+        🧑‍🍞 Cliente
+      </button>
+      <button mat-stroked-button color="accent" (click)="loginComo('repartidor')">
+        🛵 Repartidor
+      </button>
+      <button mat-flat-button color="warn" (click)="logout()">
+        ❌ Cerrar sesión
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>

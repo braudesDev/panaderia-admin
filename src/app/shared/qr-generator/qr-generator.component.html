@@ -1,0 +1,13 @@
+    <div style="text-align:center; margin-top: 20px;">
+      <h2>Generar código QR</h2>
+      <input [(ngModel)]="qrData" placeholder="Escribe el texto o ID del cliente" />
+      <div *ngIf="qrData" style="margin-top: 20px;">
+        <qrcode [qrdata]="qrData" [width]="200" [errorCorrectionLevel]="'M'"></qrcode>
+      </div>
+    </div>
+
+    <form (ngSubmit)="registrarCliente()">
+      <input type="text" [(ngModel)]="cliente.nombre" name="nombre" required>
+      <input type="text" [(ngModel)]="cliente.telefono" name="telefono">
+      <button type="submit">Registrar</button>
+    </form>
