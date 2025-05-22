@@ -9,6 +9,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { ClienteFiltroPipe } from '../../../shared/pipes/cliente-filtro.pipe';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -25,6 +26,8 @@ import { ClienteFiltroPipe } from '../../../shared/pipes/cliente-filtro.pipe';
   templateUrl: './pedidos-lista.component.html',
   styleUrls: ['./pedidos-lista.component.css']
 })
+
+
 export class PedidosListaComponent implements OnInit, OnDestroy {
 editar(_t22: Pedido) {
 throw new Error('Method not implemented.');
@@ -36,7 +39,8 @@ throw new Error('Method not implemented.');
 
   constructor(
     private pedidoService: PedidoService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -50,11 +54,47 @@ throw new Error('Method not implemented.');
     });
   }
 
+
+editarPedido(pedido: Pedido) {
+  console.log('Editando pedido:', pedido);
+  this.pedidoService.establecerPedidoParaEditar(pedido);
+  this.router.navigate(['/repartidor/registrar-pedido']);
+}
+
+
   eliminar(id: string): void {
     if (this.rolUsuario === 'admin') {
-      this.pedidoService.eliminarPedido(id);
+      const confirmar =  confirm( 'Estas seguro que quieres eliminar este pedido?');
+      if (confirmar) {
+        this.pedidoService.eliminarPedido(id);
+        alert('Pedido eliminado correctamente.')
+      }
     }
   }
+
+
+async actualizarPedido(id: string) {
+  const pedido = this.pedidos.find(p => p.id === id);
+  if (!pedido) {
+    alert('No se encontró el pedido.');
+    return;
+  }
+
+  try {
+    await this.pedidoService.actualizarPedido(id, {
+      cliente: pedido.cliente,
+      tiras: pedido.tiras,
+      fecha: pedido.fecha,
+      hora: pedido.hora,
+      notas: pedido.notas
+    });
+    alert('Pedido actualizado correctamente.');
+  } catch (error) {
+    console.error('Error al actualizar el pedido:', error);
+    alert('Hubo un error al actualizar el pedido.');
+  }
+}
+
 
   toggleDetalles(pedido: Pedido & { mostrarDetalles?: boolean }): void {
     pedido.mostrarDetalles = !pedido.mostrarDetalles;

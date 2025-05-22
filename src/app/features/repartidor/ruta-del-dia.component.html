@@ -1,35 +1,37 @@
 <h1>Ruta del Día – Primera Vuelta</h1>
 
-<!-- Componente para simular el escaneo -->
 <app-scanner-qr (qrEscaneado)="procesarQr($event)"></app-scanner-qr>
 
-<!-- Lista de tiendas: muestra solo la activa, o todas con la activa destacada -->
-<div *ngFor="let tienda of tiendas; let i = index" class="card">
-  <mat-card [class.activo]="registrosRuta[i].clienteId === clienteActual?.clienteId">
+<!-- Versión combinada optimizada -->
+<div *ngFor="let tienda of tiendas; trackBy: trackByClienteId" class="card">
+  <!-- Busca el registro por clienteId en lugar de usar el índice -->
+  <mat-card [class.activo]="getRegistro(tienda.clienteId)?.clienteId === clienteActual?.clienteId">
     <mat-card-header>
       <mat-card-title>{{ tienda.tienda }}</mat-card-title>
       <mat-card-subtitle>{{ tienda.direccion }} - {{ tienda.hora }}</mat-card-subtitle>
     </mat-card-header>
 
-    <mat-card-content *ngIf="registrosRuta[i].clienteId === clienteActual?.clienteId">
-      <ng-container *ngIf="registrosRuta[i] as registro">
+    <!-- Muestra contenido solo si es el cliente actual -->
+    <mat-card-content *ngIf="getRegistro(tienda.clienteId)?.clienteId === clienteActual?.clienteId">
+      <ng-container *ngIf="getRegistro(tienda.clienteId) as registro">
 
+        <!-- Tus formularios originales (seguros con getRegistro) -->
         <mat-form-field appearance="outline">
           <mat-label>Entrega Inicial</mat-label>
           <input matInput type="number" [(ngModel)]="registro.entregaInicial" min="0"
-                 (ngModelChange)="actualizarCobroTotal(registro)" />
+                (ngModelChange)="actualizarCobroTotal(registro)" />
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Entrega Extra</mat-label>
           <input matInput type="number" [(ngModel)]="registro.entregaExtra" min="0"
-                 (ngModelChange)="actualizarCobroTotal(registro)" />
+                (ngModelChange)="actualizarCobroTotal(registro)" />
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Tiras Sobrantes</mat-label>
           <input matInput type="number" [(ngModel)]="registro.tirasSobrantes" min="0"
-                 (ngModelChange)="actualizarCobroTotal(registro)" />
+                (ngModelChange)="actualizarCobroTotal(registro)" />
         </mat-form-field>
 
         <p><strong>Tiras Vendidas:</strong> {{ registro.tirasVendidas }}</p>
@@ -40,4 +42,8 @@
   </mat-card>
 </div>
 
-<button mat-raised-button color="primary" (click)="registrarEntregas()">Guardar entregas</button>
+<!-- Botón con spinner de carga -->
+<button mat-raised-button color="primary" (click)="registrarEntregas()" [disabled]="isLoading">
+  <span *ngIf="!isLoading">Guardar entregas</span>
+  <mat-spinner *ngIf="isLoading" diameter="20" strokeWidth="3"></mat-spinner>
+</button>

@@ -32,6 +32,8 @@ export class RegistrarPedidoComponent {
 
   constructor(private pedidoService: PedidoService) {
     this.nuevoPedido = this.crearPedidoVacio();
+    const pedidoEditando = this.pedidoService.obtenerPedidoParaEditar();
+    this.nuevoPedido = pedidoEditando ? { ...pedidoEditando } : this.crearPedidoVacio();
   }
 
 private crearPedidoVacio(): Pedido {
@@ -46,22 +48,31 @@ private crearPedidoVacio(): Pedido {
 };
 }
 
+async guardar() {
+  if (!this.nuevoPedido.cliente.trim() || this.nuevoPedido.tiras <= 0) {
+    alert('Por favor completa los campos obligatorios correctamente.');
+    return;
+  }
 
-  async guardar() {
-    if (!this.nuevoPedido.cliente.trim() || this.nuevoPedido.tiras <= 0) {
-      alert('Por favor completa los campos obligatorios correctamente.');
-      return;
-    }
-
-    try {
+  try {
+    if (this.nuevoPedido.id) {
+      // Si tiene ID → es actualización
+      await this.pedidoService.actualizarPedido(this.nuevoPedido.id, this.nuevoPedido);
+      alert('Pedido actualizado correctamente.');
+    } else {
+      // Si no tiene ID → es nuevo
       await this.pedidoService.guardarPedido(this.nuevoPedido);
       alert('Pedido guardado correctamente.');
-      this.nuevoPedido = this.crearPedidoVacio();
-    } catch (error) {
-      console.error('Error al guardar el pedido:', error);
-      alert('Hubo un error al guardar el pedido.');
     }
+
+    this.pedidoService.limpiarPedidoEditando(); // Limpiamos el buffer
+    this.nuevoPedido = this.crearPedidoVacio();
+  } catch (error) {
+    console.error('Error al guardar el pedido:', error);
+    alert('Hubo un error al guardar o actualizar el pedido.');
   }
+}
+
 
   cancelar() {
     this.nuevoPedido = this.crearPedidoVacio();

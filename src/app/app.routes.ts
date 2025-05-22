@@ -6,9 +6,18 @@ import { RegistroSobrantesComponent } from './features/registro-sobrantes/regist
 import { RutaDelDiaComponent } from './features/repartidor/ruta-del-dia.component';
 import { RegistroClienteComponent } from './features/public/registro-cliente/registro-cliente.component';
 import { RegistrarPedidoComponent } from './features/repartidor/registrar-pedido.component';
+import { LoginComponent } from './core/auth/login/login.component';
+import { DashboardComponent } from './features/admin/dashboard.component';
 
 export const routes = [
-  { path: '', component: HomeComponent },
+  { path: '',
+    component: HomeComponent,
+
+  },
+  {
+    path: 'auth/login',
+    component: LoginComponent,
+  },
   {
     path: 'pedidos',
     component: PedidoAnticipadoComponent,
@@ -43,7 +52,13 @@ export const routes = [
     path: 'repartidor/registrar-pedido',
     component: RegistrarPedidoComponent,
     canActivate:[authGuard],
-    data: { roles: ['repartidor'] }
+    data: { roles: ['admin', 'repartidor'] }
+  },
+  {
+    path: 'admin/dashboard',
+    component: DashboardComponent,
+    canActivate: [authGuard],
+    data: { roles: ['admin']}
   }
 
 

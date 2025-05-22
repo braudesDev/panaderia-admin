@@ -6,7 +6,13 @@
     <input type="text" [(ngModel)]="cliente.nombre" name="nombre" required>
 
     <label>Teléfono:</label>
-    <input type="text" [(ngModel)]="cliente.telefono" name="telefono">
+    <input type="number" [(ngModel)]="cliente.telefono" name="telefono">
+
+    <label>Direccion:</label>
+    <input type="text" [(ngModel)]="cliente.direccion" name="nombre">
+
+    <label>Id:</label>
+    <input type="number" [(ngModel)]="cliente.id" name="id">
 
     <button type="submit">Registrar</button>
   </form>

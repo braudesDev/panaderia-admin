@@ -10,17 +10,24 @@
       </a>
     </li>
 
+    <li *ngIf="estaLogueado && (rolUsuario === 'admin' || rolUsuario === 'repartidor')">
+      <a routerLink="/lista-pedidos" (click)="onNavClick()">
+        <mat-icon fontIcon="list"></mat-icon> Lista de Pedidos
+      </a>
+    </li>
+
     <li *ngIf="estaLogueado && (rolUsuario === 'cliente' || rolUsuario === 'admin')">
       <a routerLink="/pedidos" (click)="onNavClick()">
         <mat-icon fontIcon="add"></mat-icon> Nuevo Pedido
       </a>
     </li>
 
-    <li *ngIf="estaLogueado && (rolUsuario === 'admin' || rolUsuario === 'repartidor')">
-      <a routerLink="/lista-pedidos" (click)="onNavClick()">
-        <mat-icon fontIcon="list"></mat-icon> Lista de Pedidos
+    <li>
+      <a *ngIf="estaLogueado && rolUsuario === 'repartidor'" routerLink="/repartidor/ruta-del-dia" (click)="onNavClick()">
+        <mat-icon fontIcon="route"></mat-icon> Ruta del Día
       </a>
     </li>
+
 
     <li *ngIf="estaLogueado && rolUsuario === 'repartidor'">
       <a routerLink="/repartidor/registro-sobrantes" (click)="onNavClick()">
@@ -35,21 +42,22 @@
       </a>
     </li>
 
-    <li>
-      <a *ngIf="estaLogueado && rolUsuario === 'repartidor'" routerLink="/repartidor/ruta-del-dia" (click)="onNavClick()">
-        <mat-icon fontIcon="route"></mat-icon> Ruta del Día
-      </a>
-    </li>
 
     <li *ngIf="estaLogueado && rolUsuario === 'admin'">
       <a routerLink="/registro-cliente" (click)="onNavClick()">
-        <mat-icon fontIcon="qr_code"></mat-icon> Registro Cliente
+        <mat-icon fontIcon="qr_code"></mat-icon> Registrar Cliente
       </a>
     </li>
 
     <li *ngIf="estaLogueado && rolUsuario === 'repartidor'">
       <a routerLink="/repartidor/registrar-pedido" (click)="onNavClick()">
         <mat-icon fontIcon="add_shopping_cart"></mat-icon> Registrar Pedido
+      </a>
+    </li>
+
+    <li *ngIf="estaLogueado && rolUsuario === 'admin'">
+      <a routerLink="/admin/dashboard/" (click)="onNavClick()">
+        <mat-icon fontIcon="receipt_long"></mat-icon> Control
       </a>
     </li>
 
@@ -60,8 +68,6 @@
         <mat-icon fontIcon="logout"></mat-icon> Cerrar sesión
       </a>
     </li>
-
-
 
   </ul>
 </nav>

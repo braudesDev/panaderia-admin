@@ -81,7 +81,16 @@ mat-card-content {
   line-height: 1.6;
 }
 
+/* En tu archivo de estilos */
+.success-snackbar {
+  background: #43a047 !important;
+  color: white !important;
+}
 
+.error-snackbar {
+  background: #d32f2f !important;
+  color: white !important;
+}
 
 
 mat-card-content p {

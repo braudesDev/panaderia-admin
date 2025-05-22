@@ -1,0 +1,18 @@
+<div class="dashboard">
+  <h2>📋 Dashboard de Rutas</h2>
+
+  <div *ngFor="let registro of registros" class="registro">
+    <h3>{{ registro.clienteNombre }}</h3>
+    <p><strong>Dirección:</strong> {{ registro.clienteDireccion }}</p>
+    <p><strong>Fecha:</strong> {{ registro.fecha }}</p>
+    <p><strong>Entregas:</strong> {{ registro.entregaInicial }} + {{ registro.entregaExtra }}</p>
+    <p><strong>Sobrantes:</strong> {{ registro.tirasSobrantes }}</p>
+    <p><strong>Vendidas:</strong> {{ registro.tirasVendidas }}</p>
+    <p><strong>Total:</strong> ${{ registro.cobroTotal }}</p>
+    <hr />
+  </div>
+
+  <div *ngIf="registros.length === 0">
+    <p>Sin registros por ahora 🕐</p>
+  </div>
+</div>

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collectionData, collection, addDoc, deleteDoc, doc } from '@angular/fire/firestore';
+import { Firestore, collectionData, addDoc, deleteDoc, doc, updateDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { collection } from 'firebase/firestore';
+
 
 
 export interface Pedido {
@@ -33,5 +35,28 @@ export class PedidoService {
   eliminarPedido(id: string): Promise<void> {
     const pedidoDocRef = doc(this.firestore, `pedidos/${id}`);
     return deleteDoc(pedidoDocRef);
+  }
+
+
+
+  private pedidoEditando: Pedido | null = null;
+
+  establecerPedidoParaEditar(pedido: Pedido) {
+    this.pedidoEditando = pedido;
+  }
+
+  obtenerPedidoParaEditar(): Pedido | null {
+    return this.pedidoEditando;
+  }
+
+  limpiarPedidoEditando() {
+    this.pedidoEditando = null;
+  }
+
+
+
+  actualizarPedido(id: string, datosActualizados: Partial<Pedido>): Promise<void> {
+    const pedidoDocRef = doc(this.firestore, `pedidos/${id}`);
+    return updateDoc(pedidoDocRef, datosActualizados);
   }
 }
