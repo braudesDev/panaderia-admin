@@ -10,6 +10,7 @@ export interface Pedido {
   fecha: string;
   hora?: string;
   notas?: string;
+  mostrarDetalles?: boolean;
 }
 
 @Injectable({
