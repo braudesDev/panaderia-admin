@@ -63,16 +63,15 @@ export class RutaDelDiaComponent implements OnInit {
   try {
     const clientes = await firstValueFrom(this.clienteService.obtenerClientes());
 
-    // Sincroniza tiendas y registrosRuta
     this.tiendas = clientes.map(cliente => ({
-      clienteId: cliente.id,
+      clienteId: cliente.id!, // Usamos ! porque sabemos que collectionData lo añade
       tienda: cliente.nombre,
       direccion: cliente.direccion,
       hora: '08:00 AM'
     }));
 
     this.registrosRuta = clientes.map(cliente => ({
-      clienteId: cliente.id,
+      clienteId: cliente.id!,
       clienteNombre: cliente.nombre,
       clienteDireccion: cliente.direccion,
       fecha: new Date().toISOString().split('T')[0],
@@ -83,9 +82,8 @@ export class RutaDelDiaComponent implements OnInit {
       cobroTotal: 0
     }));
 
-    await this.cargarRegistros();
   } catch (error) {
-    this.manejarError(error, 'Error al cargar datos iniciales');
+    this.manejarError(error, 'Error al cargar clientes');
   } finally {
     this.isLoading = false;
   }
@@ -179,10 +177,19 @@ trackByClienteId(index: number, tienda: any): string {
     registro.cobroTotal = registro.tirasVendidas * this.precioPorTira;
   }
 
-  procesarQr(clienteId: string) {
+    async procesarQr(clienteId: string) {
+    console.log('🔍 Cliente ID recibido desde el QR:', clienteId);
     this.clienteActual = this.registrosRuta.find(r => r.clienteId === clienteId) || null;
+
     if (!this.clienteActual) {
-      this.snackBar.open('⚠️ Cliente no encontrado', 'Cerrar', { duration: 3000 });
+      await this.cargarDatosIniciales();
+      this.clienteActual = this.registrosRuta.find(r => r.clienteId === clienteId) || null;
+
+      if (!this.clienteActual) {
+        console.warn('⚠️ Cliente no encontrado incluso después de recargar:', clienteId);
+        this.snackBar.open('⚠️ Cliente no encontrado', 'Cerrar', { duration: 3000 });
+      }
     }
   }
+
 }

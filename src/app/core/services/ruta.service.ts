@@ -16,6 +16,9 @@ export class RutaService {
     this.coleccionRuta = collection(this.firestore, 'rutas'); // Nombre de la colección en Firestore
   }
 
+  obtenerRegistros(): Observable<RegistroDeRuta[]> {
+  return collectionData(this.coleccionRuta, { idField: 'id' }) as Observable<RegistroDeRuta[]>;
+  }
 
   async guardarRegistro(registro: RegistroDeRuta): Promise<void> {
     try {
@@ -28,7 +31,4 @@ export class RutaService {
   }
 
 
-  obtenerRegistros(): Observable<RegistroDeRuta[]> {
-  return collectionData(this.coleccionRuta, { idField: 'id' }) as Observable<RegistroDeRuta[]>;
-  }
 }

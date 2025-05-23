@@ -31,7 +31,7 @@ export class RegistroClienteComponent {
     ...this.cliente,
   };
 
-  this.clienteService.agregarCliente(clienteAGuardar)
+  this.clienteService.guardarCliente(clienteAGuardar)
     .then(() => {
       this.qrGenerado = true;
       console.log('Cliente guardado');
