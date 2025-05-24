@@ -11,7 +11,7 @@ import { RutaService } from '../../core/services/ruta.service';
 import { ClienteService } from '../../core/services/cliente.service';
 import { firstValueFrom } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
+import { ClienteContextService } from '../../core/services/cliente-context.service';
 export interface RegistroDeRuta {
   clienteId: string;
   clienteNombre: string;
@@ -51,7 +51,8 @@ export class RutaDelDiaComponent implements OnInit {
   constructor(
     private rutaService: RutaService,
     private clienteService: ClienteService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private clienteContext: ClienteContextService
   ) {}
 
   ngOnInit() {
@@ -177,7 +178,7 @@ trackByClienteId(index: number, tienda: any): string {
     registro.cobroTotal = registro.tirasVendidas * this.precioPorTira;
   }
 
-    async procesarQr(clienteId: string) {
+  async procesarQr(clienteId: string) {
     console.log('🔍 Cliente ID recibido desde el QR:', clienteId);
     this.clienteActual = this.registrosRuta.find(r => r.clienteId === clienteId) || null;
 
@@ -188,8 +189,14 @@ trackByClienteId(index: number, tienda: any): string {
       if (!this.clienteActual) {
         console.warn('⚠️ Cliente no encontrado incluso después de recargar:', clienteId);
         this.snackBar.open('⚠️ Cliente no encontrado', 'Cerrar', { duration: 3000 });
+        return;
       }
     }
-  }
 
+    const cliente = await this.clienteService.obtenerClientePorId(clienteId);
+    if (cliente) {
+      this.clienteContext.establecerCliente(cliente);
+      console.log('✅ Cliente establecido en el contexto:', cliente);
+    }
+  }
 }

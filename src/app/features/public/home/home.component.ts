@@ -16,7 +16,20 @@ export class HomeComponent {
   constructor(private AuthService: AuthService) {}
 
   loginComo(rol: 'admin' | 'cliente' | 'repartidor') {
-    this.AuthService.login(rol);
+    let usuarioSimulado: any = null;
+
+    if (rol === 'cliente') {
+      usuarioSimulado = {
+        id: 'cli-001',
+        nombre: 'Repartidor de ejemplo'
+      };
+    } else if (rol === 'admin') {
+      usuarioSimulado = {
+        id: 'adm-001',
+        nombre: 'Administrador de ejemplo'
+      };
+    }
+    this.AuthService.login(rol, usuarioSimulado);
     window.location.reload();
   }
 

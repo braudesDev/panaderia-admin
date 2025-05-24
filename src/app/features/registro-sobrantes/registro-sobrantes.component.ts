@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
+import { ClienteContextService } from '../../core/services/cliente-context.service';
+import { Cliente } from '../../core/services/cliente.service';
+import { Router } from '@angular/router';
 @Component({
     selector: 'app-registro-sobrantes',
     standalone: true,
@@ -26,10 +28,20 @@ export class RegistroSobrantesComponent implements OnInit {
     sincronizado?: boolean; // opcional para marcar si ya se subió
   }[] = [];
 
+  constructor(
+    private clienteContext: ClienteContextService,
+    private router: Router
+  ) {}
+
   ngOnInit() {
     const data = localStorage.getItem('historialSobrantes');
     if (data) {
       this.historial = JSON.parse(data);
+    }
+
+    const clienteActual = this.clienteContext.obtenerClienteActual();
+    if (clienteActual) {
+      this.clienteId = clienteActual.id ?? '';
     }
   }
 
@@ -91,4 +103,9 @@ export class RegistroSobrantesComponent implements OnInit {
         console.error(err);
       });
   }
+
+  verHistorial() {
+    this.router.navigate(['/historial-sobrantes'])
+  }
+
 }

@@ -17,16 +17,18 @@ export class AuthService {
     }
   }
 
-  login(rol: 'admin' | 'cliente' | 'repartidor') {
+  login(rol: 'admin' | 'cliente' | 'repartidor', usuario: any) {
     this.autenticado = true;
     this.rol = rol;
     localStorage.setItem('rol', rol);
+    localStorage.setItem('usuario', JSON.stringify(usuario));
   }
 
   logout() {
     this.autenticado = false;
     this.rol = null;
     localStorage.removeItem('rol');
+    localStorage.removeItem('usuario');
     this.router.navigate(['/']);
   }
 
@@ -36,6 +38,11 @@ export class AuthService {
 
   getRol(): 'admin' | 'cliente' | 'repartidor' | null {
     return localStorage.getItem('rol') as 'admin' | 'cliente' | 'repartidor' | null;
+  }
+
+  getUsuario(): any {
+    const data = localStorage.getItem('usuario');
+    return data ? JSON.parse(data) : null;
   }
 
 }

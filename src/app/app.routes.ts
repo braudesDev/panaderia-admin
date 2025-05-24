@@ -8,6 +8,7 @@ import { RegistroClienteComponent } from './features/public/registro-cliente/reg
 import { RegistrarPedidoComponent } from './features/repartidor/registrar-pedido.component';
 import { LoginComponent } from './core/auth/login/login.component';
 import { DashboardComponent } from './features/admin/dashboard.component';
+import { HistorialSobrantesComponent } from './features/historial-sobrantes/historial-sobrantes.component';
 
 export const routes = [
   { path: '',
@@ -37,6 +38,12 @@ export const routes = [
     data: { roles: ['repartidor'] }
   },
   {
+    path: 'historial-sobrantes',
+    component: HistorialSobrantesComponent,
+    canActivate: [authGuard],
+    data: { roles: ['admin', 'repartidor', 'cliente']}
+  },
+  {
     path: 'repartidor/ruta-del-dia',
     component: RutaDelDiaComponent,
     canActivate: [authGuard],
@@ -60,7 +67,4 @@ export const routes = [
     canActivate: [authGuard],
     data: { roles: ['admin']}
   }
-
-
-
 ];
