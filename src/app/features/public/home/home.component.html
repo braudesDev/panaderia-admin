@@ -16,19 +16,15 @@
       </button>
     </div>
 
-    <div class="auth-buttons">
-      <button mat-stroked-button color="accent" (click)="loginComo('admin')">
-        👩‍💼 Admin
+    <ng-container *ngIf="!autenticado">
+      <button mat-raised-button color="primary" (click)="iniciarSesionConGoogle()">
+        🔐 Iniciar sesión con Google
       </button>
-      <button mat-stroked-button color="accent" (click)="loginComo('cliente')">
-        🧑‍🍞 Cliente
-      </button>
-      <button mat-stroked-button color="accent" (click)="loginComo('repartidor')">
-        🛵 Repartidor
-      </button>
-      <button mat-flat-button color="warn" (click)="logout()">
-        ❌ Cerrar sesión
-      </button>
-    </div>
+    </ng-container>
+
+    <ng-container *ngIf="autenticado">
+      <p>Hola {{ usuario?.displayName || usuario?.email }}</p>
+      <button mat-raised-button color="warn" (click)="logout()">Cerrar sesión</button>
+    </ng-container>
   </mat-card-content>
 </mat-card>

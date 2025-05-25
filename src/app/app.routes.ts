@@ -7,8 +7,10 @@ import { RutaDelDiaComponent } from './features/repartidor/ruta-del-dia.componen
 import { RegistroClienteComponent } from './features/public/registro-cliente/registro-cliente.component';
 import { RegistrarPedidoComponent } from './features/repartidor/registrar-pedido.component';
 import { LoginComponent } from './core/auth/login/login.component';
-import { DashboardComponent } from './features/admin/dashboard.component';
+import { DashboardComponent } from './features/admin/dashboard.component'
 import { HistorialSobrantesComponent } from './features/historial-sobrantes/historial-sobrantes.component';
+import { RegistroUsuarioComponent } from './features/admin/registro-usuario.component';
+import { GestionUsuariosComponent } from './features/admin/gestion-usuarios.component';
 
 export const routes = [
   { path: '',
@@ -66,5 +68,18 @@ export const routes = [
     component: DashboardComponent,
     canActivate: [authGuard],
     data: { roles: ['admin']}
+  },
+  {
+    path: 'gestion-usuario',
+    component: GestionUsuariosComponent,
+    canActivate: [authGuard],
+    data: { roles: ['admin']}
+  },
+  {
+    path: 'registro-usuario',
+    component: RegistroUsuarioComponent,
+    canActivate: [authGuard],
+    data: {roles: ['admin'] }
   }
+
 ];

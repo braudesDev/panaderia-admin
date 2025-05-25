@@ -61,6 +61,19 @@
       </a>
     </li>
 
+    <!-- <li *ngIf="estaLogueado && rolUsuario === 'admin'">
+      <a routerLink="/registro-usuario" (click)="onNavClick()">
+        <mat-icon fontIcon="person_add"></mat-icon> Registrar Usuario
+      </a>
+    </li> -->
+
+    <li *ngIf="estaLogueado && rolUsuario === 'admin'">
+      <a routerLink="/gestion-usuario" (click)="onNavClick()">
+        <mat-icon fontIcon="manage_accounts"></mat-icon> Gestión de Usuarios
+      </a>
+    </li>
+
+
 
     <!-- Cerrar sesión visible solo si está logueado -->
     <li *ngIf="estaLogueado">

@@ -3,6 +3,18 @@ import { Component, OnInit } from '@angular/core';
 import { ClienteContextService } from '../../core/services/cliente-context.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
+import { User } from '@angular/fire/auth'; // Importar el tipo User
+
+interface RegistroSobrante {
+  clienteId: string;
+  entregadas: number;
+  sobrantes: number;
+  porcentaje: number;
+  alerta: boolean;
+  fecha: string;
+  sincronizado?: boolean;
+  repartidorId?: string; // Nuevo campo para filtrar por repartidor
+}
 
 @Component({
   selector: 'app-historial-sobrantes',
@@ -12,15 +24,7 @@ import { AuthService } from '../../core/auth/auth.service';
   styleUrls: ['./historial-sobrantes.component.css']
 })
 export class HistorialSobrantesComponent implements OnInit {
-  historial: {
-    clienteId: string;
-    entregadas: number;
-    sobrantes: number;
-    porcentaje: number;
-    alerta: boolean;
-    fecha: string;
-    sincronizado?: boolean;
-  }[] = [];
+  historial: RegistroSobrante[] = [];
 
   constructor(
     private router: Router,
@@ -29,30 +33,37 @@ export class HistorialSobrantesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const data = localStorage.getItem('/historialSobrantes');
+    this.cargarHistorial();
+  }
+
+  private cargarHistorial(): void {
+    const data = localStorage.getItem('historialSobrantes');
     const rolUsuario = this.authService.getRol();
     const usuario = this.authService.getUsuario();
 
-    if (data) {
-       const historialCompleto = JSON.parse(data);
+    if (!data) return;
 
-       if (rolUsuario == 'admin') {
+    try {
+      const historialCompleto: RegistroSobrante[] = JSON.parse(data);
+
+      if (rolUsuario === 'admin') {
         this.historial = historialCompleto;
-       } else if (rolUsuario === 'repartidor') {
-        // Aqui podemos decidir si filtrar por tiendas asignadas o mostrar todo
+      } else if (rolUsuario === 'repartidor' && usuario) {
+        // Filtrar por repartidor (usando uid en lugar de id)
         this.historial = historialCompleto.filter(
-          (registro: any) => registro.clienteId === usuario.id
+          registro => registro.repartidorId === usuario.uid
         );
       }
+    } catch (error) {
+      console.error('Error al parsear historial:', error);
     }
   }
 
-  regresar() {
-  const rolUsuario = this.authService.getRol();
-  if (rolUsuario === 'repartidor') {
-    this.router.navigate(['repartidor/registro-sobrantes']);
-  } else {
-    this.router.navigate(['/']); // o alguna otra ruta según el rol
+  regresar(): void {
+    const rolUsuario = this.authService.getRol();
+    const ruta = rolUsuario === 'repartidor'
+      ? '/repartidor/registro-sobrantes'
+      : '/';
+    this.router.navigate([ruta]);
   }
-}
 }

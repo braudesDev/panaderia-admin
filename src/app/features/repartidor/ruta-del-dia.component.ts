@@ -17,10 +17,10 @@ export interface RegistroDeRuta {
   clienteNombre: string;
   clienteDireccion: string;
   fecha: string;
-  entregaInicial: number;
-  entregaExtra: number;
+  entregaInicial: number | null;
+  entregasExtras: (number | null) [];
   tirasVendidas: number;
-  tirasSobrantes: number;
+  tirasSobrantes: number | null;
   cobroTotal: number;
 }
 
@@ -77,7 +77,7 @@ export class RutaDelDiaComponent implements OnInit {
       clienteDireccion: cliente.direccion,
       fecha: new Date().toISOString().split('T')[0],
       entregaInicial: 0,
-      entregaExtra: 0,
+      entregasExtras: [],
       tirasVendidas: 0,
       tirasSobrantes: 0,
       cobroTotal: 0
@@ -105,7 +105,7 @@ export class RutaDelDiaComponent implements OnInit {
         clienteNombre: clientesMap.get(registro.clienteId)?.nombre || 'Desconocido',
         clienteDireccion: clientesMap.get(registro.clienteId)?.direccion || 'Sin dirección',
         entregaInicial: registro.entregaInicial || 0,
-        entregaExtra: registro.entregaExtra || 0,
+        entregaExtra: registro.entregasExtras || 0,
         tirasSobrantes: registro.tirasSobrantes || 0
       })).sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime());
 
@@ -116,34 +116,63 @@ export class RutaDelDiaComponent implements OnInit {
     }
   }
 
+
+
   async registrarEntregas() {
-    this.isLoading = true;
-    try {
-      const clientes = await firstValueFrom(this.clienteService.obtenerClientes());
+  this.isLoading = true;
+  try {
+    const clientes = await firstValueFrom(this.clienteService.obtenerClientes());
 
-      await Promise.all(this.registrosRuta.map(async registro => {
-        this.actualizarCobroTotal(registro);
+    // 🔍 Filtrar registros con datos reales
+    const registrosValidos = this.registrosRuta.filter(r => this.registroTieneDatos(r));
 
-        const cliente = clientes.find(c => c.id === registro.clienteId);
-        if (!cliente) return;
-
-        await this.rutaService.guardarRegistro({
-          ...registro,
-          clienteNombre: cliente.nombre,
-          clienteDireccion: cliente.direccion
-        });
-      }));
-
-      this.snackBar.open('✅ Entregas guardadas correctamente', 'Cerrar', {
-        duration: 3000,
-        panelClass: ['success-snackbar']
-      });
-    } catch (error) {
-      this.manejarError(error, 'Error al guardar entregas');
-    } finally {
-      this.isLoading = false;
+    if (registrosValidos.length === 0) {
+      this.snackBar.open('⚠️ No hay entregas para guardar', 'Cerrar', { duration: 3000 });
+      return;
     }
+
+    await Promise.all(registrosValidos.map(async registro => {
+      this.actualizarCobroTotal(registro);
+
+      const cliente = clientes.find(c => c.id === registro.clienteId);
+      if (!cliente) return;
+
+      await this.rutaService.guardarRegistro({
+        ...registro,
+        clienteNombre: cliente.nombre,
+        clienteDireccion: cliente.direccion
+      });
+    }));
+
+    this.snackBar.open('✅ Entregas guardadas correctamente', 'Cerrar', {
+      duration: 3000,
+      panelClass: ['success-snackbar']
+    });
+  } catch (error) {
+    this.manejarError(error, 'Error al guardar entregas');
+  } finally {
+    this.isLoading = false;
   }
+}
+
+
+
+    // Agrega este método en tu componente
+  private registroTieneDatos(registro: RegistroDeRuta): boolean {
+    const sumaExtras = (registro.entregasExtras ?? []).reduce<number>((sum, val) => sum + (val ?? 0), 0);
+    return (
+      (registro.entregaInicial ?? 0) > 0 ||
+      sumaExtras > 0 ||
+      (registro.tirasSobrantes ?? 0) > 0
+    );
+  }
+
+
+  trackByIndex(index: number, item: any): number {
+    return index;
+  }
+
+
 
   private manejarError(error: any, mensajePersonalizado?: string): void {
     const mensaje = mensajePersonalizado || error.message || 'Ocurrió un error';
@@ -155,14 +184,22 @@ export class RutaDelDiaComponent implements OnInit {
     });
   }
 
-  calcularTirasVendidas(registro: RegistroDeRuta): number {
-    return registro.entregaInicial + registro.entregaExtra - registro.tirasSobrantes;
+    agregarEntregasExtras(registro: RegistroDeRuta) {
+    registro.entregasExtras.push(null);
   }
 
+    calcularTirasVendidas(registro: RegistroDeRuta): number {
+    const sumaExtras = (registro.entregasExtras ?? []).reduce<number>((sum, val) => sum + (val ?? 0), 0);
+    return (registro.entregaInicial ?? 0) + sumaExtras - (registro.tirasSobrantes ?? 0);
+  }
+
+
+
   // Método para encontrar registro por clienteId
-getRegistro(clienteId: string): RegistroDeRuta | undefined {
-  return this.registrosRuta.find(r => r.clienteId === clienteId);
-}
+  getRegistro(clienteId: string): RegistroDeRuta | undefined {
+    return this.registrosRuta.find(r => r.clienteId === clienteId);
+  }
+
 
 // TrackBy para optimizar rendimiento
 trackByClienteId(index: number, tienda: any): string {
@@ -170,13 +207,14 @@ trackByClienteId(index: number, tienda: any): string {
 }
 
   actualizarCobroTotal(registro: RegistroDeRuta) {
-    registro.entregaInicial = Math.max(0, registro.entregaInicial || 0);
-    registro.entregaExtra = Math.max(0, registro.entregaExtra || 0);
-    registro.tirasSobrantes = Math.max(0, registro.tirasSobrantes || 0);
+  registro.entregaInicial = Math.max(0, registro.entregaInicial ?? 0);
+  registro.entregasExtras = registro.entregasExtras?.map(e => Math.max(0, e ?? 0)) ?? [];
+  registro.tirasSobrantes = Math.max(0, registro.tirasSobrantes ?? 0);
 
-    registro.tirasVendidas = this.calcularTirasVendidas(registro);
-    registro.cobroTotal = registro.tirasVendidas * this.precioPorTira;
-  }
+  registro.tirasVendidas = this.calcularTirasVendidas(registro);
+  registro.cobroTotal = registro.tirasVendidas * this.precioPorTira;
+}
+
 
   async procesarQr(clienteId: string) {
     console.log('🔍 Cliente ID recibido desde el QR:', clienteId);

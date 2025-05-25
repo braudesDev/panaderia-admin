@@ -6,34 +6,29 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-    selector: 'app-home',
-    standalone: true,
-    imports: [CommonModule, RouterModule, MatButtonModule, MatCardModule],
-    templateUrl: './home.component.html',
-    styleUrls: ['./home.component.css']
+  selector: 'app-home',
+  standalone: true,
+  imports: [CommonModule, RouterModule, MatButtonModule, MatCardModule],
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-  constructor(private AuthService: AuthService) {}
+  constructor(private authService: AuthService) {}
 
-  loginComo(rol: 'admin' | 'cliente' | 'repartidor') {
-    let usuarioSimulado: any = null;
-
-    if (rol === 'cliente') {
-      usuarioSimulado = {
-        id: 'cli-001',
-        nombre: 'Repartidor de ejemplo'
-      };
-    } else if (rol === 'admin') {
-      usuarioSimulado = {
-        id: 'adm-001',
-        nombre: 'Administrador de ejemplo'
-      };
-    }
-    this.AuthService.login(rol, usuarioSimulado);
-    window.location.reload();
+  iniciarSesionConGoogle() {
+    this.authService.loginConGoogle();
   }
 
   logout() {
-    this.AuthService.logout();
+    this.authService.logout();
   }
+
+  get autenticado(): boolean {
+  return this.authService.estaAutenticado();
+  }
+
+  get usuario() {
+    return this.authService.getUsuario();
+  }
+
 }
