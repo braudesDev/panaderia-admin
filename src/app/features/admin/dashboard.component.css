@@ -1,13 +1,205 @@
-.dashboard {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 1rem;
-  margin-top: 4rem;
+/* ESTADOS: ALERTA Y NORMAL */
+.alerta {
+  background-color: #ffe0e0;
+  color: #e74c3c;
+  font-weight: 700;
 }
 
-.registro {
-  background-color: #f7f7f7;
+.normal {
+  background-color: #e8f5e9;
+  color: #27ae60;
+  font-weight: 700;
+}
+
+/* CONTENEDOR PRINCIPAL DEL DASHBOARD */
+.dashboard-container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 1.5rem 2rem;
+  background: #f9fafb;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.dashboard-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  letter-spacing: 1px;
+}
+
+.dashboard-container > div:nth-child(3) {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.8rem;
+}
+
+.dashboard-container label {
+  font-weight: 600;
+  color: #555;
+}
+
+.dashboard-container input[type="date"] {
+  padding: 0.35rem 0.6rem;
+  border: 1.8px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: border-color 0.25s ease;
+}
+
+.dashboard-container input[type="date"]:focus {
+  border-color: #2980b9;
+  outline: none;
+}
+
+.dashboard-container button {
+  background-color: #2980b9;
+  border: none;
+  color: white;
+  font-weight: 600;
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dashboard-container button:hover {
+  background-color: #1f6391;
+}
+
+/* RESUMEN */
+.resumen {
+  display: flex;
+  justify-content: space-around;
+  background: #fff;
+  padding: 1rem 1.5rem;
+  border-left: 6px solid #42a5f5;
   border-radius: 8px;
-  padding: 1rem;
+  margin-bottom: 1.8rem;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.05);
+}
+
+.resumen p {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.resumen p strong {
+  color: #34495e;
+}
+
+/* SELECTOR DE VISTA */
+.selector-vista {
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.selector-vista select {
+  padding: 0.3rem 0.5rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1.5px solid #ccc;
+  transition: border-color 0.25s ease;
+}
+
+.selector-vista select:focus {
+  border-color: #2980b9;
+  outline: none;
+}
+
+/* TÍTULOS */
+h3 {
+  margin-top: 2rem;
   margin-bottom: 1rem;
+  font-weight: 700;
+  color: #2c3e50;
+  border-bottom: 2px solid #2980b9;
+  padding-bottom: 0.3rem;
+}
+
+/* GRÁFICAS */
+.graficas {
+  max-width: 900px;
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.graficas h3 {
+  color: #34495e;
+  margin-bottom: 1rem;
+}
+
+canvas {
+  max-width: 100%;
+  margin: 0 auto 2rem;
+  display: block;
+}
+
+.grafica-barra {
+  height: 400px !important;
+  max-width: 100%;
+}
+
+.grafica-pastel {
+  height: 400px !important;
+  max-width: 100%;
+}
+
+/* TABLA DE DATOS */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgb(0 0 0 / 0.1);
+  margin-bottom: 2rem;
+}
+
+thead tr {
+  background-color: #2980b9;
+  color: #fff;
+  font-weight: 700;
+  text-align: left;
+}
+
+thead th,
+tbody td {
+  padding: 0.85rem 1.2rem;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.95rem;
+}
+
+tbody tr:hover {
+  background-color: #f1f7fc;
+  cursor: default;
+}
+
+/* RESPONSIVE */
+@media (max-width: 720px) {
+  .resumen {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .dashboard-container > div:nth-child(3) {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  table,
+  thead tr,
+  tbody tr,
+  thead th,
+  tbody td {
+    font-size: 0.9rem;
+  }
 }
