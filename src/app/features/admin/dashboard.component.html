@@ -46,31 +46,40 @@
     </tbody>
   </table>
 
-  <h3>Últimos registros individuales</h3>
-  <table>
-    <thead>
-      <tr>
-        <th>Cliente</th>
-        <th>Entregadas</th>
-        <th>Sobrantes</th>
-        <th>%</th>
-        <th>Fecha</th>
-        <th>Alerta</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let s of sobrantes">
-        <td>{{ obtenerNombreCliente(s.clienteId) }}</td>
-        <td>{{ s.entregadas }}</td>
-        <td>{{ s.sobrantes }}</td>
-        <td>{{ calcularPorcentaje(s.sobrantes, s.entregadas) }}%</td>
-        <td>{{ s.fecha }}</td>
-        <td [ngClass]="{'alerta': s.alerta, 'normal': !s.alerta}">
-          {{ s.alerta ? '⚠️' : '✅' }}
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <h3>
+    Detalle de registros por
+    {{ vistaSeleccionada === 'dia' ? 'día' : vistaSeleccionada }}
+  </h3>
+  <div *ngFor="let grupo of registrosPorPeriodo">
+    <button class="colapsar-btn" (click)="toggleColapsado(grupo.periodo)">
+      {{ grupo.periodo }}
+      <mat-icon>{{ colapsados[grupo.periodo] ? 'expand_less' : 'expand_more' }}</mat-icon>
+    </button>
+    <table *ngIf="colapsados[grupo.periodo]">
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Entregadas</th>
+          <th>Sobrantes</th>
+          <th>%</th>
+          <th>Fecha</th>
+          <th>Alerta</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of grupo.registros">
+          <td>{{ obtenerNombreCliente(s.clienteId) }}</td>
+          <td>{{ s.entregadas }}</td>
+          <td>{{ s.sobrantes }}</td>
+          <td>{{ calcularPorcentaje(s.sobrantes, s.entregadas) }}%</td>
+          <td>{{ s.fecha }}</td>
+          <td [ngClass]="{'alerta': s.alerta, 'normal': !s.alerta}">
+            {{ s.alerta ? '⚠️' : '✅' }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
   <div class="graficas">
     <h3>Entregadas vs Sobrantes por día</h3>

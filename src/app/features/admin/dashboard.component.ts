@@ -10,11 +10,13 @@ import { NgChartsModule } from 'ng2-charts';
 import { ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { Subscription, interval } from 'rxjs';
+import { MatIconModule } from '@angular/material/icon';
+import { getISOWeek, getYear } from 'date-fns';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, NgChartsModule],
+  imports: [CommonModule, FormsModule, NgChartsModule, MatIconModule],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
@@ -46,8 +48,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   barChartData: ChartData<'bar'> = {
     labels: [],
     datasets: [
-      { label: 'Entregadas', data: [], backgroundColor: '#2980b9' },
-      { label: 'Sobrantes', data: [], backgroundColor: '#e74c3c' }
+      { label: 'Entregadas', data: [], backgroundColor: '#0CF2C4' },
+      { label: 'Sobrantes', data: [], backgroundColor: '#F54301' }
     ]
   };
 
@@ -62,7 +64,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     datasets: [
       {
         data: [0, 0],
-        backgroundColor: ['#e74c3c', '#27ae60']
+        backgroundColor: ['#F40033', '#0CF231']
       }
     ]
   };
@@ -150,6 +152,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     const clientesEnAlerta = this.sobrantes.filter(s => s.alerta).length;
     const clientesNormales = totalClientes - clientesEnAlerta;
     this.pieChartData.datasets[0].data = [clientesEnAlerta, clientesNormales];
+    this.pieChartData = { ...this.pieChartData };
 
     // Forzar actualización de las gráficas
     setTimeout(() => {
@@ -300,6 +303,54 @@ private obtenerAnioISO(fecha: Date): number {
       case 'anio': return this.resumenPorAnio;
       default: return this.resumenPorDia;
     }
+  }
+
+  // Agrupa los registros individuales por periodo (fecha, semana, mes, etc.)
+  get registrosPorPeriodo() {
+  const grupos: { periodo: string, registros: any[] }[] = [];
+  const agrupados: Record<string, any[]> = {};
+
+  if (this.vistaSeleccionada === 'semana') {
+    for (const reg of this.sobrantes) {
+      const fecha = new Date(reg.fecha);
+      const semana = this.obtenerSemanaISO(fecha);
+      const anio = this.obtenerAnioISO(fecha);
+      const key = `Semana ${String(semana).padStart(2, '0')} - ${anio}`;
+      agrupados[key] = agrupados[key] || [];
+      agrupados[key].push(reg);
+    }
+  } else if (this.vistaSeleccionada === 'mes') {
+    for (const reg of this.sobrantes) {
+      const fecha = new Date(reg.fecha);
+      const nombreMes = fecha.toLocaleString('es-MX', { month: 'long' });
+      const key = `${this.capitalizar(nombreMes)} ${fecha.getFullYear()}`;
+      agrupados[key] = agrupados[key] || [];
+      agrupados[key].push(reg);
+    }
+  } else if (this.vistaSeleccionada === 'anio') {
+    for (const reg of this.sobrantes) {
+      const fecha = new Date(reg.fecha);
+      const key = `${fecha.getFullYear()}`;
+      agrupados[key] = agrupados[key] || [];
+      agrupados[key].push(reg);
+    }
+  } else { // 'dia' o cualquier otro caso
+    for (const reg of this.sobrantes) {
+      agrupados[reg.fecha] = agrupados[reg.fecha] || [];
+      agrupados[reg.fecha].push(reg);
+    }
+  }
+
+  for (const periodo of Object.keys(agrupados).sort().reverse()) {
+    grupos.push({ periodo, registros: agrupados[periodo] });
+  }
+  return grupos;
+}
+
+  // Control de colapsado
+  colapsados: Record<string, boolean> = {};
+  toggleColapsado(periodo: string) {
+    this.colapsados[periodo] = !this.colapsados[periodo];
   }
 
   private capitalizar(texto: string): string {

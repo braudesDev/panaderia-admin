@@ -305,6 +305,7 @@ export class RutaDelDiaComponent implements OnInit {
     console.log('🔍 Cliente ID recibido desde el QR:', clienteId);
     this.clienteActual = this.registrosRuta.find(r => r.clienteId === clienteId) || null;
 
+    // Solo recarga si no existe el cliente en los registros actuales
     if (!this.clienteActual) {
       await this.cargarDatosIniciales();
       this.clienteActual = this.registrosRuta.find(r => r.clienteId === clienteId) || null;
@@ -316,17 +317,35 @@ export class RutaDelDiaComponent implements OnInit {
       }
     }
 
-    const cliente = await this.clienteService.obtenerClientePorId(clienteId);
-    if (cliente) {
-      this.clienteContext.establecerCliente(cliente);
-      console.log('✅ Cliente establecido en el contexto:', cliente);
+    try {
+      const cliente = await this.clienteService.obtenerClientePorId(clienteId);
+      if (cliente) {
+        this.clienteContext.establecerCliente(cliente);
+        console.log('✅ Cliente establecido en el contexto:', cliente);
+
+        // Guardado automático solo si hubo cambios
+        this.guardarEnLocalStorage();
+        this.snackBar.open('💾 Datos guardados automáticamente', 'Cerrar', { duration: 2000 });
+      } else {
+        this.snackBar.open('⚠️ No se encontró información del cliente', 'Cerrar', { duration: 3000 });
+      }
+    } catch (error) {
+      console.error('Error al obtener cliente:', error);
+      this.snackBar.open('❌ Error al obtener datos del cliente', 'Cerrar', { duration: 3000 });
     }
   }
 
   private guardarEnLocalStorage(): void {
     const clave = this.obtenerClaveDelAlmacenamiento();
-    localStorage.setItem(clave, JSON.stringify(this.registrosRuta));
+    const datos = JSON.stringify(this.registrosRuta);
+
+    try {
+      localStorage.setItem(clave, datos);
+      // Solo si realmente usas sessionStorage en otro lado:
+      // sessionStorage.setItem(clave, datos);
+    } catch (error) {
+      console.error('Error al guardar en localStorage:', error);
+      this.snackBar.open('❌ No se pudo guardar localmente', 'Cerrar', { duration: 3000 });
+    }
   }
-
-
 }
