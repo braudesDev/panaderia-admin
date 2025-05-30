@@ -22,7 +22,7 @@
                   type="number"
                   [(ngModel)]="registro.entregaInicial"
                   min="0"
-                (ngModelChange)="actualizarCobroTotal(registro)"
+                (change)="actualizarCobroTotal(registro)"
                 [value]="registro.entregaInicial ?? 0"/>
         </mat-form-field>
 
@@ -71,4 +71,21 @@
   <span *ngIf="!isLoading">Guardar entregas</span>
   <mat-spinner *ngIf="isLoading" diameter="20" strokeWidth="3"></mat-spinner>
 </button>
+
+<!-- Indicador de guardado automático -->
+<div *ngIf="autoSaved" class="autosave-indicator">
+  <mat-icon color="primary">cloud_done</mat-icon> Guardado local
+</div>
+
+<table>
+  <tr *ngFor="let tienda of tiendas; trackBy: trackByClienteId">
+    <td>
+      {{ tienda.tienda }}
+      <mat-icon *ngIf="getRegistro(tienda.clienteId)?.sincronizado" color="primary" title="Sincronizado">cloud_done</mat-icon>
+      <mat-icon *ngIf="!getRegistro(tienda.clienteId)?.sincronizado" color="warn" title="Pendiente">cloud_upload</mat-icon>
+    </td>
+    <!-- ...resto de columnas... -->
+
+  </tr>
+</table>
 

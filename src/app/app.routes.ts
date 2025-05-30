@@ -10,6 +10,7 @@ import { LoginComponent } from './core/auth/login/login.component';
 import { DashboardComponent } from './features/admin/dashboard.component'
 import { RegistroUsuarioComponent } from './features/admin/registro-usuario.component';
 import { GestionUsuariosComponent } from './features/admin/gestion-usuarios.component';
+import { QrGeneradosComponent } from './features/public/qr-generados/qr-generados.component'
 
 export const routes: Routes = [
   { path: '',
@@ -71,6 +72,12 @@ export const routes: Routes = [
     component: RegistroUsuarioComponent,
     canActivate: [authGuard],
     data: {roles: ['admin'] }
+  },
+  {
+  path: 'qr-generados',
+  component: QrGeneradosComponent,
+  canActivate: [authGuard],
+  data: { roles: ['admin'] }
   },
     // 🛑 Ruta comodín para manejar 404s o rutas inexistentes
   {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { QRCodeComponent } from 'angularx-qrcode';
 import { FormsModule } from '@angular/forms';
@@ -7,27 +7,27 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-qr-generator',
   imports: [CommonModule, QRCodeComponent, FormsModule],
   templateUrl: './qr-generator.component.html',
-  styleUrl: './qr-generator.component.css'
+  styleUrls: ['./qr-generator.component.css']
 })
 export class QrGeneratorComponent implements OnInit {
+  @Input() qrData = '';
 
-    qrData = '';
-
-    ngOnInit(): void {
+  ngOnInit(): void {
+    // Si no recibe qrData, genera uno aleatorio
+    if (!this.qrData) {
       this.qrData = crypto.randomUUID();
     }
+  }
 
-cliente = {
-  nombre: '',
-  telefono: '',
-  id: ''
-};
-
-registrarCliente() {
-  this.cliente.id = crypto.randomUUID();
-  console.log('Cliente registrado con ID:', this.cliente);
-  this.qrData = this.cliente.id;
+  descargarQr() {
+    const qrCanvas = document.querySelector('qrcode canvas') as HTMLCanvasElement;
+    if (qrCanvas) {
+      const url = qrCanvas.toDataURL('image/png');
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `qr-code-${this.qrData || 'nuevo'}.png`;
+      a.click();
+    }
+  }
 }
 
-
-}

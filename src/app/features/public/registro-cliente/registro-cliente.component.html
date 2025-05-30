@@ -1,24 +1,30 @@
 <div class="form-container">
   <h2>Registro de Cliente</h2>
 
-  <form (ngSubmit)="registrarCliente()" *ngIf="!qrGenerado">
+  <form #formCliente="ngForm" (ngSubmit)="registrarCliente()" *ngIf="!qrGenerado">
     <label>Nombre:</label>
-    <input type="text" [(ngModel)]="cliente.nombre" name="nombre" required>
+    <input type="text" [(ngModel)]="cliente.nombre" name="nombre" required />
 
     <label>Teléfono:</label>
-    <input type="number" [(ngModel)]="cliente.telefono" name="telefono">
+    <input type="number" [(ngModel)]="cliente.telefono" name="telefono" required min="1" />
 
     <label>Direccion:</label>
-    <input type="text" [(ngModel)]="cliente.direccion" name="direccion">
+    <input type="text" [(ngModel)]="cliente.direccion" name="direccion" required />
 
-    <button type="submit">Registrar</button>
+    <button type="submit" [disabled]="formCliente.invalid">Registrar</button>
+
+    <button
+      type="button"
+      class="btn-secundario"
+      (click)="irAQrsGenerados()"
+      style="margin-left: 0; margin-top: 1rem; width: 100%;">
+      Ver QRs generados
+    </button>
   </form>
 
   <div *ngIf="qrGenerado" class="qr-container">
-    <h3>QR generado para {{ cliente.nombre }}</h3>
-    <p>ID: {{ cliente.id }}</p>
-    <qrcode [qrdata]="cliente.id" [width]="200"></qrcode>
-
-    <button (click)="limpiarFormulario()">Registrar otro</button>
+    <p>¡Se generó el QR!</p>
+    <app-qr-generator [qrData]="cliente.id || ''"></app-qr-generator>
   </div>
 </div>
+

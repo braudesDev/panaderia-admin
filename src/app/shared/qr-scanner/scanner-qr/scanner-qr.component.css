@@ -1,47 +1,132 @@
+/* TITULO */
 h2 {
+  color: #2563eb;
+  font-weight: 700;
   text-align: center;
-  color: #3f51b5;
+  margin-bottom: 1.2rem;
+  letter-spacing: 1px;
+}
+
+/* BOTONES */
+button {
+  background: linear-gradient(90deg, #2563eb 60%, #42a5f5 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6em 1.5em;
+  margin: 0.5em 0.5em 1em 0;
   font-weight: 600;
-  margin: 2rem 0 1rem;
-  font-size: 26px;
-  position: relative;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px #e3f0ff;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
 }
 
-h2::after {
-  content: '';
-  display: block;
-  width: 80px;
-  height: 4px;
-  background: #ff4081;
-  margin: 8px auto 0;
-  border-radius: 2px;
+button:hover {
+  background: linear-gradient(90deg, #1d4ed8 60%, #2563eb 100%);
+  box-shadow: 0 4px 16px #b3c6ff;
 }
 
-/* Estilo para el zxing-scanner (el contenedor) */
+/* SELECT DE CÁMARA */
+select {
+  padding: 0.4em 1em;
+  border-radius: 6px;
+  border: 2px solid #b3c6ff;
+  background: #f4f8ff;
+  color: #2563eb;
+  font-weight: 600;
+  margin-bottom: 1em;
+  margin-left: 0.5em;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+select:focus {
+  border-color: #2563eb;
+  outline: none;
+}
+
+/* SCANNER */
 zxing-scanner {
   display: block;
-  margin: 0 auto 2rem;
-  max-width: 400px;
-  border-radius: 12px;
+  margin: 0 auto 1.5em auto;
+  max-width: 260px;      /* antes 340px */
+  min-height: 160px;     /* antes 260px */
+  border-radius: 14px;
+  box-shadow: 0 4px 18px #b3c6ff;
+  background: #e3f0ff;
+  border: 3px solid #2563eb;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(63, 81, 181, 0.2);
+  transition: max-width 0.2s, min-height 0.2s;
 }
 
-/* Si quieres que el video que genera el escáner tenga bordes redondeados */
-zxing-scanner video {
-  border-radius: 12px;
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* Resultado del código QR */
+/* RESULTADO */
 p {
   text-align: center;
-  font-size: 16px;
-  color: #333;
-  font-weight: 500;
+  color: #2563eb;
+  font-size: 1.08rem;
+  font-weight: 600;
+  margin-top: 1.2em;
+  background: #f4f8ff;
+  border-radius: 8px;
+  padding: 0.7em 1em;
+  box-shadow: 0 2px 8px #e3f0ff;
+  display: inline-block;
 }
-p strong {
-  color: #3f51b5;
+
+strong {
+  color: #1d4ed8;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  zxing-scanner {
+    max-width: 98vw;
+    min-height: 180px;
+  }
+  h2 {
+    font-size: 1.1rem;
+  }
+  button, select {
+    font-size: 0.95rem;
+    padding: 0.5em 1em;
+  }
+  p {
+    font-size: 0.98rem;
+    padding: 0.5em 0.7em;
+  }
+}
+
+@media (max-width: 480px) {
+  h2 {
+    font-size: 1rem;
+    margin-bottom: 0.7rem;
+  }
+
+  button, select {
+    font-size: 0.9rem;
+    padding: 0.4em 0.7em;
+    margin: 0.3em 0.2em 0.7em 0;
+    border-radius: 6px;
+  }
+
+  select {
+    min-width: 120px;
+  }
+
+  zxing-scanner {
+    max-width: 99vw;
+    min-width: 0;
+    min-height: 120px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px #b3c6ff;
+    border-width: 2px;
+  }
+
+  p {
+    font-size: 0.92rem;
+    padding: 0.4em 0.5em;
+    margin-top: 0.7em;
+    border-radius: 6px;
+  }
 }

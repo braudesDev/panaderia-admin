@@ -28,6 +28,7 @@ export interface RegistroDeRuta {
   cobroTotal: number;
   repartidorId?: string; // Propiedad opcional
   porcentajeSobrantes?: number; // También faltaba esta
+  sincronizado?: boolean; // Agregado para evitar el error
 }
 
 @Component({
@@ -56,6 +57,7 @@ export class RutaDelDiaComponent implements OnInit {
   registrosRuta: RegistroDeRuta[] = [];
   clienteActual: RegistroDeRuta | null = null;
   isLoading = false;
+  autoSaved = false;
 
   constructor(
     private rutaService: RutaService,
@@ -70,14 +72,17 @@ export class RutaDelDiaComponent implements OnInit {
     const datosGuardados = localStorage.getItem(clave);
 
     if (datosGuardados) {
-      this.registrosRuta = JSON.parse(datosGuardados);
-        this.tiendas = this.registrosRuta.map(registro => ({
-          clienteId: registro.clienteId,
-          tienda: registro.clienteNombre,
-          direccion: registro.clienteDireccion,
-          hora: '08:00 AM' // Puedes ajustar si guardas otra hora
-        }));
-    }else {
+      this.registrosRuta = JSON.parse(datosGuardados).map((registro: any) => ({
+        ...registro,
+        sincronizado: registro.sincronizado === true // Asegura que exista la propiedad
+      }));
+      this.tiendas = this.registrosRuta.map(registro => ({
+        clienteId: registro.clienteId,
+        tienda: registro.clienteNombre,
+        direccion: registro.clienteDireccion,
+        hora: '08:00 AM'
+      }));
+    } else {
       this.cargarDatosIniciales();
     }
   }
@@ -211,11 +216,16 @@ export class RutaDelDiaComponent implements OnInit {
 
       await this.sobrantesService.guardarRegistro(sobrante);
 
+      // Al subir exitosamente:
+      registro.sincronizado = true;
+
       guardados++;
     }
 
     if (guardados > 0) {
-      localStorage.removeItem(this.obtenerClaveDelAlmacenamiento());
+      // Mantén solo los registros sincronizados en localStorage
+      this.registrosRuta = this.registrosRuta.filter(r => !this.registroTieneDatos(r) || r.sincronizado);
+      localStorage.setItem(this.obtenerClaveDelAlmacenamiento(), JSON.stringify(this.registrosRuta));
       this.entregasGuardadas = true;
       this.snackBar.open(`✅ ${guardados} entregas guardadas correctamente`, 'Cerrar', {
         duration: 3000,
@@ -325,7 +335,6 @@ export class RutaDelDiaComponent implements OnInit {
 
         // Guardado automático solo si hubo cambios
         this.guardarEnLocalStorage();
-        this.snackBar.open('💾 Datos guardados automáticamente', 'Cerrar', { duration: 2000 });
       } else {
         this.snackBar.open('⚠️ No se encontró información del cliente', 'Cerrar', { duration: 3000 });
       }
@@ -341,8 +350,8 @@ export class RutaDelDiaComponent implements OnInit {
 
     try {
       localStorage.setItem(clave, datos);
-      // Solo si realmente usas sessionStorage en otro lado:
-      // sessionStorage.setItem(clave, datos);
+      this.autoSaved = true;
+      setTimeout(() => this.autoSaved = false, 1200); // Oculta el icono después de 1.2s
     } catch (error) {
       console.error('Error al guardar en localStorage:', error);
       this.snackBar.open('❌ No se pudo guardar localmente', 'Cerrar', { duration: 3000 });

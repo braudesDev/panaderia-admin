@@ -1,0 +1,16 @@
+<div class="qr-lista-grid">
+  <div style="text-align:right;">
+    <button type="button" class="btn-regresar" (click)="irARegistro()">
+      ← Regresar al registro
+    </button>
+  </div>
+
+  <h3 style="margin-top: 1rem;">Consultar QRs generados</h3>
+
+  <div class="qr-grid">
+    <div *ngFor="let cliente of clientes" class="qr-card">
+      <p><strong>{{ cliente.nombre }}</strong></p>
+      <app-qr-generator [qrData]="cliente.id || ''"></app-qr-generator>
+    </div>
+  </div>
+</div>

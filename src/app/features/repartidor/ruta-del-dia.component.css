@@ -1,14 +1,13 @@
-/* Estilo general del título */
+/* TITULO */
 h1 {
   text-align: center;
-  color: #3f51b5; /* Color primario de Angular Material */
-  font-weight: 500;
-  margin: 20px 0;
-  font-size: 24px;
+  color: #2563eb;
+  font-weight: 700;
+  margin: 32px 0 16px 0;
+  font-size: 2rem;
+  letter-spacing: 1px;
   position: relative;
-  display: inline-block;
   width: 100%;
-  margin-top: 5rem;
 }
 
 h1::after {
@@ -16,82 +15,143 @@ h1::after {
   display: block;
   width: 60px;
   height: 3px;
-  background: #ff4081; /* Color de acento */
+  background: #42a5f5;
   margin: 8px auto 0;
+  border-radius: 2px;
 }
 
-/* Contenedor de tarjetas */
+/* CONTENEDOR DE TARJETAS */
 .card {
-  margin: 16px auto;
+  margin: 18px auto;
   max-width: 800px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s, box-shadow 0.3s;
   cursor: pointer;
 }
 
 .card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 16px 32px rgba(63, 81, 181, 0.2);
+  box-shadow: 0 16px 32px rgba(37, 99, 235, 0.13);
 }
 
-/* Estilo de las tarjetas (mat-card) */
+/* TARJETAS (mat-card) */
 mat-card {
-  background-color: #ffffff; /* Fondo blanco limpio */
-  border-radius: 12px;
+  background: linear-gradient(120deg, #f4f8ff 80%, #e3f0ff 100%);
+  border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08); /* Sombra sutil */
-  border-left: 6px solid #3f51b5; /* Borde lateral azul */
-  transition: box-shadow 0.3s ease;
+  box-shadow: 0 8px 16px rgba(37, 99, 235, 0.08);
+  border-left: 6px solid #2563eb;
+  transition: box-shadow 0.3s;
 }
 
 mat-card:hover {
-  box-shadow: 0 20px 40px rgba(63, 81, 181, 0.3);
+  box-shadow: 0 20px 40px rgba(37, 99, 235, 0.18);
 }
 
 mat-card-header {
-  background: #d2dafa; /* Fondo muy claro azul */
+  background: #e3f0ff;
   padding: 16px 24px;
-  border-bottom: 1px solid #ff4081;
+  border-bottom: 1px solid #42a5f5;
 }
 
 mat-card-title {
   font-weight: 700;
-  color: #3f51b5;
-  font-size: 20px;
+  color: #2563eb;
+  font-size: 1.25rem;
   letter-spacing: 0.03em;
 }
 
 mat-card-subtitle {
-  color: #7a7a7a;
+  color: #5c6bc0;
   font-size: 14px;
   margin-top: 4px;
 }
 
 mat-label {
-  color: #ff4081;
+  color: #2563eb;
+  font-weight: 600;
 }
 
-/* Contenido de la tarjeta */
+/* CONTENIDO DE LA TARJETA */
 mat-card-content {
   padding: 24px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 20px;
-  color: #ff4081;
+  color: #2563eb;
   font-size: 15px;
   line-height: 1.6;
 }
 
-/* En tu archivo de estilos */
-.success-snackbar {
-  background: #43a047 !important;
-  color: white !important;
+mat-card-content p {
+  margin: 0;
 }
 
-.error-snackbar {
-  background: #d32f2f !important;
-  color: white !important;
+mat-card-content p strong {
+  color: #2563eb;
 }
 
+/* CAMPOS DE FORMULARIO */
+mat-form-field {
+  width: 100%;
+}
+
+mat-form-field .mat-input-element {
+  font-weight: 500;
+  color: #2563eb;
+}
+
+/* BOTÓN DE GUARDAR */
+button[mat-raised-button] {
+  display: block;
+  margin: 30px auto;
+  padding: 12px 36px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 50px;
+  background: linear-gradient(90deg, #2563eb 60%, #42a5f5 100%);
+  color: white;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.18);
+  transition: all 0.3s;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+}
+
+button[mat-raised-button]:hover {
+  background: linear-gradient(90deg, #1d4ed8 60%, #2563eb 100%);
+  box-shadow: 0 10px 24px #b3c6ff;
+  transform: translateY(-3px);
+}
+
+button[mat-raised-button]:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 10px rgba(37, 99, 235, 0.13);
+}
+
+/* INDICADOR DE AUTOGUARDADO */
+.autosave-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  color: #2563eb;
+  background: #e3f0ff;
+  border-radius: 8px;
+  padding: 0.2em 0.8em;
+  font-weight: 600;
+  font-size: 0.98em;
+  margin-bottom: 0.5em;
+  box-shadow: 0 2px 8px #e3f0ff;
+  animation: fadeInOut 1.2s;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ENTREGA EXTRA */
 .entrega-extra {
   display: block;
   margin-bottom: 8px;
@@ -102,88 +162,67 @@ mat-card-content {
   align-items: center;
   gap: 10px;
   margin-top: 12px;
-  color: #3f51b5;
+  color: #2563eb;
   font-weight: 500;
   font-size: 14px;
 }
 
 .add-extra-button {
-  background-color: #ff4081 !important;
+  background: linear-gradient(135deg, #42a5f5 60%, #2563eb 100%) !important;
   color: white !important;
-  box-shadow: 0 4px 10px rgba(255, 64, 129, 0.3);
-  transition: all 0.3s ease;
-  border-radius: 50%; /* 🔵 Hace el botón redondo */
-  width: 40px;         /* 🔧 Ajusta según el tamaño deseado */
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.18);
+  transition: all 0.3s;
+  border-radius: 50%;
+  width: 40px;
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0;          /* Elimina padding interno innecesario */
-  font-size: 20px;     /* Opcional: icono o texto centrado más grande */
+  padding: 0;
+  font-size: 20px;
 }
 
-
 .add-extra-button:hover {
-  background-color: #f50057 !important;
+  background: linear-gradient(135deg, #2563eb 60%, #42a5f5 100%) !important;
   transform: scale(1.1);
 }
 
 .add-extra-button:active {
   transform: scale(1);
-  box-shadow: 0 2px 6px rgba(255, 64, 129, 0.3);
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.18);
 }
 
-
-
-
-mat-card-content p {
-  margin: 0;
+/* SNACKBAR */
+.success-snackbar {
+  background: #2563eb !important;
+  color: white !important;
 }
 
-mat-card-content p strong {
-  color: #3f51b5;
+.error-snackbar {
+  background: #e74c3c !important;
+  color: white !important;
 }
 
-/* Campos de formulario */
-mat-form-field {
-  width: 100%;
-}
+.mat-icon[color="primary"] { color: #2563eb !important; }
+.mat-icon[color="warn"] { color: #e74c3c !important; }
 
-mat-form-field .mat-input-element {
-  font-weight: 500;
-}
-
-/* Botón de guardar */
-button[mat-raised-button] {
-  display: block;
-  margin: 30px auto;
-  padding: 12px 36px;
-  font-size: 16px;
-  font-weight: 600;
-  border-radius: 50px; /* Efecto "pill" */
-  background-color: #3f51b5;
-  color: white;
-  box-shadow: 0 6px 10px rgba(63, 81, 181, 0.3);
-  transition: all 0.3s ease;
-  border: none;
-  cursor: pointer;
-}
-
-button[mat-raised-button]:hover {
-  background-color: #303f9f;
-  transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(63, 81, 181, 0.4);
-}
-
-button[mat-raised-button]:active {
-  transform: translateY(0);
-  box-shadow: 0 6px 10px rgba(63, 81, 181, 0.3);
-}
-
-/* Responsive para móviles */
+/* RESPONSIVE PARA MÓVILES */
 @media (max-width: 600px) {
   mat-card-content {
     grid-template-columns: 1fr;
     padding: 16px;
+  }
+  h1 {
+    font-size: 1.3rem;
+    margin-top: 2.5rem;
+  }
+  button[mat-raised-button] {
+    padding: 10px 18px;
+    font-size: 15px;
+  }
+  .add-extra-button {
+    width: 34px;
+    height: 34px;
+    font-size: 17px;
   }
 }

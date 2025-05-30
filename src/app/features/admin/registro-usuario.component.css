@@ -1,0 +1,92 @@
+/* CONTENEDOR PRINCIPAL */
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 70vh;
+  background: linear-gradient(120deg, #f4f8ff 80%, #e3f0ff 100%);
+  padding: 2.5rem 1rem;
+}
+
+/* FORMULARIO */
+form {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(44, 62, 80, 0.10);
+  padding: 2.5rem 2rem 2rem 2rem;
+  max-width: 370px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+}
+
+h2 {
+  text-align: center;
+  color: #2563eb;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  letter-spacing: 1px;
+  font-size: 1.5rem;
+}
+
+label {
+  color: #2563eb;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  display: block;
+  letter-spacing: 0.5px;
+}
+
+input, select {
+  width: 100%;
+  padding: 0.6em 1em;
+  border: 2px solid #b3c6ff;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  background: #f4f8ff;
+  color: #2563eb;
+  font-weight: 500;
+  transition: border-color 0.25s;
+  margin-bottom: 0.2rem;
+}
+
+input:focus, select:focus {
+  border-color: #2563eb;
+  outline: none;
+}
+
+button {
+  background: linear-gradient(90deg, #2563eb 60%, #42a5f5 100%);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 0.8em 2.2em;
+  font-size: 1.1rem;
+  font-weight: 700;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.18);
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+  margin-top: 0.7rem;
+  letter-spacing: 0.5px;
+}
+
+button:hover {
+  background: linear-gradient(90deg, #1d4ed8 60%, #2563eb 100%);
+  box-shadow: 0 10px 24px #b3c6ff;
+  transform: translateY(-2px) scale(1.03);
+}
+
+@media (max-width: 480px) {
+  form {
+    padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+    max-width: 98vw;
+  }
+  h2 {
+    font-size: 1.1rem;
+  }
+  button {
+    font-size: 1rem;
+    padding: 0.7em 1.2em;
+  }
+}
