@@ -66,7 +66,7 @@
 .qr-lista-grid h3 {
   text-align: center;
   color: #3730a3;
-  font-size: 2rem;
+  font-size: 4rem;
   font-weight: 800;
   margin-bottom: 2.5rem;
   letter-spacing: 1.5px;
@@ -90,7 +90,7 @@
   background: rgba(255,255,255,0.75);
   border-radius: 18px;
   box-shadow: 0 6px 24px rgba(49,130,206,0.13), 0 1.5px 6px rgba(49,130,206,0.08);
-  padding: 2rem 1rem 2.5rem 1rem;
+  padding: 2rem 1.2rem 2.5rem 1.2rem;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -99,6 +99,7 @@
   overflow: hidden;
   transition: transform 0.18s, box-shadow 0.18s;
   animation: fadeInUp 0.7s cubic-bezier(.23,1.02,.32,1) both;
+  min-width: 220px;
 }
 
 .qr-card:hover {
@@ -111,9 +112,38 @@
   font-weight: 700;
   color: #3730a3;
   margin-bottom: 1.2rem;
-  font-size: 1.2rem;
+  font-size: 2rem;
   letter-spacing: 0.5px;
   text-shadow: 0 1px 4px #fff7;
+}
+
+.qr-card .error {
+  min-height: 1.2em;
+  display: block;
+}
+
+/* Botón eliminar */
+.btn-eliminar {
+  background: linear-gradient(90deg, #f87171 60%, #fbbf24 100%);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 1.2rem;
+  padding: 0.6rem 1.4rem;
+  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(251,113,133,0.13);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-eliminar:hover {
+  background: linear-gradient(90deg, #fbbf24 60%, #f87171 100%);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 18px rgba(251,113,133,0.18);
 }
 
 /* Animación de entrada */
@@ -143,10 +173,26 @@
 }
 
 @media (max-width: 480px) {
+  .qr-card {
+    min-width: 0 !important;
+    width: 100%;
+    box-sizing: border-box;
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
+  }
   .qr-lista-grid {
-    padding: 0.7rem 0.1rem 1rem 0.1rem;
-    border-radius: 12px;
-    min-height: unset;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0 !important;
+    box-sizing: border-box;
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
+  }
+  .qr-grid {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
   }
 
   .btn-regresar {
@@ -158,23 +204,15 @@
   }
 
   .qr-lista-grid h3 {
-    font-size: 1.1rem;
+    font-size: 2.6rem;
     margin-bottom: 1.2rem;
   }
 
-  .qr-grid {
-    grid-template-columns: 1fr;
-    gap: 0.8rem;
-    margin-bottom: 1rem;
-  }
-
-  .qr-card {
-    padding: 0.8rem 0.2rem 1.1rem 0.2rem;
-    border-radius: 10px;
-  }
-
   .qr-card p {
-    font-size: 1rem;
+    font-size: 2rem;
     margin-bottom: 0.7rem;
   }
+
+
+
 }

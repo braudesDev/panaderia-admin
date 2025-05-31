@@ -1,26 +1,32 @@
+<h2 class="titulo-usuarios">Usuarios registrados</h2>
 
-<h2>Usuarios registrados</h2>
-
-<table>
-  <tr>
-    <th>UID</th>
-    <th>Correo</th>
-    <th>Rol</th>
-    <th>Acciones</th>
-  </tr>
-  <tr *ngFor="let user of usuarios">
-    <td>{{ user.id }}</td>
-    <td>{{ user.correo }}</td>
-    <td>
-      <select [(ngModel)]="user.rol">
-        <option value="cliente">Cliente</option>
-        <option value="repartidor">Repartidor</option>
-        <option value="admin">Admin</option>
-      </select>
-    </td>
-    <td>
-      <button (click)="confirmarCambiarRol(user.id, user.rol)">Guardar</button>
-      <button (click)="confirmarEliminarUsuario(user.id)">Eliminar</button>
-    </td>
-  </tr>
-</table>
+<div class="tabla-responsive">
+  <table class="tabla-usuarios">
+    <thead>
+      <tr>
+        <th>UID</th>
+        <th>Correo</th>
+        <th>Rol</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of usuarios">
+        <td data-label="UID">{{ user.id }}</td>
+        <td data-label="Correo">{{ user.correo }}</td>
+        <td data-label="Rol">
+          <select [(ngModel)]="user.rol">
+            <option value="cliente">Cliente</option>
+            <option value="repartidor">Repartidor</option>
+            <option value="admin">Admin</option>
+          </select>
+        </td>
+        <td data-label="Acciones">
+          <button class="btn-azul" (click)="confirmarCambiarRol(user.id, user.rol)">Guardar</button>
+          <button class="btn-rojo" (click)="confirmarEliminarUsuario(user.id)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<app-toast></app-toast>

@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { PedidoAnticipadoComponent } from './features/public/pedidos/pedido-anticipado.component';
 import { HomeComponent } from './features/public/home/home.component';
 import { PedidosListaComponent } from './features/public/pedidos/pedidos-lista.component';
 import { authGuard } from './core/auth/auth.guard';
@@ -24,12 +23,6 @@ export const routes: Routes = [
     path: 'login',
     redirectTo: 'auth/login',
     pathMatch: 'full'
-  },
-  {
-    path: 'pedidos',
-    component: PedidoAnticipadoComponent,
-    canActivate: [authGuard],
-    data: { roles: ['cliente', 'admin'] }
   },
   {
     path: 'lista-pedidos',
@@ -68,7 +61,7 @@ export const routes: Routes = [
     data: { roles: ['admin']}
   },
   {
-    path: 'registro-usuario',
+    path: 'registro-usuarios',
     component: RegistroUsuarioComponent,
     canActivate: [authGuard],
     data: {roles: ['admin'] }

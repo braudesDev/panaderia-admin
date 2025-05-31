@@ -2,6 +2,7 @@
 .registro-card {
   max-width: 700px;
   margin: 40px auto;
+  margin-top: 8rem;
   padding: 24px;
   border-radius: 16px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
@@ -87,5 +88,84 @@ mat-form-field {
 /* Mejora el alineado visual del sufijo (íconos, texto) */
 .mat-form-field-suffix {
   margin-right: 6px;
+}
+
+.badge-admin {
+  color: #fff;
+  background: #6366f1;
+  display: inline-block;
+  padding: 0.2em 0.8em;
+  border-radius: 12px;
+  margin-bottom: 1.2em;
+  font-size: 0.95em;
+}
+.badge-repartidor {
+  color: #fff;
+  background: #10b981;
+  display: inline-block;
+  padding: 0.2em 0.8em;
+  border-radius: 12px;
+  margin-bottom: 0.5em;
+  font-size: 0.95em;
+}
+
+/* Estilos específicos para el modo admin */
+.admin-card {
+  border: 2px solid #f1b363;
+}
+
+/* Estilos específicos para el modo repartidor */
+.repartidor-card {
+  border: 2px solid #1097b9;
+}
+
+@media (max-width: 480px) {
+  .registro-card {
+    max-width: 98vw;
+    margin: 16px 1vw;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 5rem;
+  }
+
+  .titulo-card {
+    font-size: 18px;
+    gap: 6px;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  mat-form-field {
+    min-width: 100px;
+    width: 100%;
+  }
+
+  .full-width {
+    margin-top: 8px;
+  }
+
+  .acciones-formulario {
+    margin-top: 16px;
+    text-align: center;
+  }
+
+  .boton-guardar {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 1rem;
+  }
+
+  .badge-admin,
+  .badge-repartidor {
+    font-size: 0.9em;
+    padding: 0.15em 0.7em;
+    margin-bottom: 0.9em;
+  }
 }
 

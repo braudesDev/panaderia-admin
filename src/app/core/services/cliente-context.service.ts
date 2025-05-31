@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Cliente } from './cliente.service';
 import { User } from '@angular/fire/auth'; // Importa el tipo User de Firebase
+import { Firestore } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'

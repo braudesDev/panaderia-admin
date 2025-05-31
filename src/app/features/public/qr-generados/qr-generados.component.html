@@ -1,7 +1,7 @@
 <div class="qr-lista-grid">
   <div style="text-align:right;">
     <button type="button" class="btn-regresar" (click)="irARegistro()">
-      ← Regresar al registro
+      ← Volver al registro
     </button>
   </div>
 
@@ -9,8 +9,14 @@
 
   <div class="qr-grid">
     <div *ngFor="let cliente of clientes" class="qr-card">
-      <p><strong>{{ cliente.nombre }}</strong></p>
+      <p class="nombre-cliente"><strong>{{ cliente.nombre | capitalize }}</strong></p>
       <app-qr-generator [qrData]="cliente.id || ''"></app-qr-generator>
+      <button
+        type="button"
+        class="btn-eliminar"
+        (click)="eliminarQr(cliente.id!)">
+        🗑️ Eliminar
+      </button>
     </div>
   </div>
 </div>

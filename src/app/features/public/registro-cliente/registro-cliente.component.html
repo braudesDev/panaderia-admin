@@ -1,18 +1,60 @@
+<!--Contenedor del formulario-->
 <div class="form-container">
-  <h2>Registro de Cliente</h2>
 
-  <form #formCliente="ngForm" (ngSubmit)="registrarCliente()" *ngIf="!qrGenerado">
+  <!--Titulo del Formulario-->
+  <h2>Registro Qr de Cliente</h2>
+
+  <form #formCliente="ngForm" (ngSubmit)="registrarCliente(); enviado = true" *ngIf="!qrGenerado">
+
+    <!--Etiqueta de Nombre-->
     <label>Nombre:</label>
-    <input type="text" [(ngModel)]="cliente.nombre" name="nombre" required />
+    <input
+      type="text"
+      [(ngModel)]="cliente.nombre"
+      name="nombre"
+      required
+      #nombre="ngModel"
+      [class.input-obligatorio]="(nombre.invalid && (nombre.touched || enviado))"
+    />
+    <!--Muestra el error de campo en el formulario-->
+    <div class="error">
+      <span *ngIf="nombre.invalid && (nombre.touched || enviado)">El nombre es obligatorio.</span>
+    </div>
 
+      <!--Etiqueta de Telefono-->
     <label>Teléfono:</label>
-    <input type="number" [(ngModel)]="cliente.telefono" name="telefono" required min="1" />
+    <input
+      type="number"
+      [(ngModel)]="cliente.telefono"
+      name="telefono"
+      required min="1"
+      #telefono="ngModel"
+      [class.input-obligatorio]="(telefono.invalid && (telefono.touched || enviado))"
+    />
+    <!--Muestra el error de campo en el formulario-->
+    <div class="error">
+      <span *ngIf="telefono.invalid && (telefono.touched || enviado)">El teléfono es obligatorio y debe ser mayor a 0.</span>
+    </div>
 
+    <!--Etiqueta de Direccion-->
     <label>Direccion:</label>
-    <input type="text" [(ngModel)]="cliente.direccion" name="direccion" required />
+    <input
+      type="text"
+      [(ngModel)]="cliente.direccion"
+      name="direccion"
+      required
+      #direccion="ngModel"
+      [class.input-obligatorio]="(direccion.invalid && (direccion.touched || enviado))"
+    />
+    <!--Muestra el error de campo en el formulario-->
+    <div class="error">
+      <span *ngIf="direccion.invalid && (direccion.touched || enviado)">La dirección es obligatoria.</span>
+    </div>
 
+    <!--Boton de Registro-->
     <button type="submit" [disabled]="formCliente.invalid">Registrar</button>
 
+    <!--Boton de ver QRs Generados-->
     <button
       type="button"
       class="btn-secundario"
@@ -22,9 +64,15 @@
     </button>
   </form>
 
+  <!--Se muestra el Qr que recien se genero-->
   <div *ngIf="qrGenerado" class="qr-container">
-    <p>¡Se generó el QR!</p>
+    <p>¡Se generó el QR para <strong>{{ cliente.nombre }}</strong> </p>
     <app-qr-generator [qrData]="cliente.id || ''"></app-qr-generator>
+
+    <!--Boton para volver al registro (Volver hacia atras)-->
+    <button type="button" class="btn-secundario" (click)="limpiarFormulario()" style="margin-top: 1rem;"> ">
+      Volver al registro
+    </button>
   </div>
 </div>
 

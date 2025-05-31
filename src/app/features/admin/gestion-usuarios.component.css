@@ -1,60 +1,151 @@
-table {
+.titulo-usuarios {
+  text-align: center;
+  color: #3730a3;
+  font-size: 2.5rem;
+  margin-top: 7rem;
+  letter-spacing: 1px;
+}
+
+.tabla-responsive {
+  overflow-x: auto;
+  padding: 1rem;
+}
+
+.tabla-usuarios {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
-  background-color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  box-shadow: 0 6px 24px rgba(49,130,206,0.10), 0 1.5px 6px rgba(49,130,206,0.06);
+  background: #fff;
+  border-radius: 18px;
   overflow: hidden;
 }
 
-th, td {
-  padding: 12px 16px;
+.tabla-usuarios th,
+.tabla-usuarios td {
+  padding: 0.75rem;
   text-align: left;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e7ff;
 }
 
-th {
-  background-color: #f5f5f5;
+.tabla-usuarios th {
+  background: linear-gradient(90deg, #6366f1 60%, #60a5fa 100%);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.05rem;
+  border-bottom: 2px solid #e0e7ff;
+}
+
+.tabla-usuarios tr:nth-child(even) td {
+  background: #f3f4f6;
+}
+
+.tabla-usuarios tr:nth-child(odd) td {
+  background: #f3f4f6;
+}
+
+/* Moderno para el select de rol */
+.tabla-usuarios select {
+  padding: 0.4rem 2.2rem 0.4rem 0.8rem;
+  border-radius: 16px;
+  border: 1.5px solid #6366f1;
+  background: linear-gradient(90deg, #f8fafc 80%, #e0e7ff 100%);
+  font-size: 1rem;
+  color: #3730a3;
   font-weight: 600;
-  color: #333;
-}
-
-tr:hover {
-  background-color: #f9f9f9;
-}
-
-h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: #444;
-}
-
-select {
-  padding: 6px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-}
-
-button {
-  margin-right: 8px;
-  padding: 6px 12px;
-  border: none;
-  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(99,102,241,0.07);
+  transition: border 0.2s, box-shadow 0.2s;
+  appearance: none;
+  -webkit-appearance: none;
   cursor: pointer;
+  outline: none;
+  position: relative;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 1.2em;
+}
+
+.tabla-usuarios select:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 2px #6366f133;
+}
+
+.tabla-usuarios select option {
+  color: #3730a3;
   font-weight: 500;
 }
 
-button:first-child {
-  background-color: #1976d2;
-  color: white;
+.btn-azul,
+.btn-rojo {
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-right: 0.3rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(99,102,241,0.10);
+  transition: background 0.2s, transform 0.1s;
 }
 
-button:last-child {
-  background-color: #e53935;
-  color: white;
+.btn-azul {
+  background: linear-gradient(90deg, #60a5fa 60%, #6366f1 100%);
 }
 
-button:hover {
-  opacity: 0.9;
+.btn-azul:hover {
+  background: linear-gradient(90deg, #6366f1 60%, #60a5fa 100%);
+  transform: translateY(-2px) scale(1.04);
+}
+
+.btn-rojo {
+  background: linear-gradient(90deg, #ff1616 70%, #fbbf24 100%);
+}
+
+.btn-rojo:hover {
+  background: linear-gradient(90deg, #fbbf24 2%, #ff1b1b 100%);
+  transform: translateY(-2px) scale(1.04);
+}
+
+/* ✅ Responsive para móviles */
+@media (max-width: 480px) {
+
+  .titulo-usuarios {
+    font-size: 2.2rem;
+    margin-top: 5rem;
+  }
+
+  .tabla-usuarios thead {
+    display: none;
+  }
+
+  .tabla-usuarios tr {
+    display: block;
+    margin-bottom: 1rem;
+    background-color: #f3f4f6;
+    border-radius: 10px;
+    box-shadow: 1px 1px 5px rgba(99,102,241,0.10);
+    padding: 1rem;
+  }
+
+  .tabla-usuarios td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border: none;
+    font-size: 1rem;
+    color: #3730a3;
+    background: none;
+  }
+
+  .tabla-usuarios td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    color: #6366f1;
+  }
 }

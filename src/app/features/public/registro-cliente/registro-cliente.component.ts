@@ -31,6 +31,7 @@ export class RegistroClienteComponent implements OnInit {
   qrId = '';
   clientes: Cliente[] = [];
   mostrarQrs = false;
+  enviado = false;
 
   registrarCliente() {
     this.cliente.id = crypto.randomUUID();
@@ -54,6 +55,7 @@ export class RegistroClienteComponent implements OnInit {
       direccion: ''
     };
     this.qrGenerado = false;
+    this.enviado = false;
   }
 
   cargarClientes() {

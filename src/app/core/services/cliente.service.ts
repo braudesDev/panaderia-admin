@@ -7,7 +7,7 @@ import {
   doc,
   getDoc,
   setDoc,
-  DocumentData,
+  deleteDoc,
   CollectionReference
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
@@ -25,6 +25,11 @@ export class ClienteService {
 
     constructor(private firestore: Firestore) {
     this.clientesRef = collection(this.firestore, 'clientes') as CollectionReference<Cliente>;
+  }
+
+  eliminarCliente(id: string): Promise<void> {
+    const docRef = doc(this.firestore, `clientes/${id}`);
+    return deleteDoc(docRef);
   }
 
   // Versión más limpia para obtener clientes
@@ -61,4 +66,6 @@ export class ClienteService {
       { id: docSnap.id, ...docSnap.data() } as Cliente :
       undefined;
   }
+
+
 }
