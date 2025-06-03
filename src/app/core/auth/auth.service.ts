@@ -48,10 +48,12 @@ export class AuthService {
         // Crear el documento para el usuario nuevo sin rol asignado
         await setDoc(docRef, {
           correo: usuario.email,
-          rol: null
+          rol: 'cliente'
         });
-        alert('Tu cuenta fue creada, pero aún no tienes un rol asignado. Contacta al administrador.');
-        await this.logout();
+        // Ya no es necesario el alert ni el logout aquí
+        this.rol = 'cliente'; // Asignar rol por defecto
+        this.persistirEstado(usuario, this.rol);
+        this.redirigirPorRol();
         return;
       }
 
@@ -59,14 +61,15 @@ export class AuthService {
       this.rol = data.rol;
 
       if (!this.rol) {
-        alert('Tu cuenta aún no tiene rol asignado. Contacta al administrador.');
-        await this.logout();
+      // Asignar cliente si rol es null o indefinido para evitar bloquear acceso
+        this.rol = 'cliente';
+        this.persistirEstado(usuario, this.rol);
+        this.redirigirPorRol();
         return;
       }
 
       // Guardar info en localStorage
       this.persistirEstado(usuario, this.rol);
-
       // Redirigir según rol
       this.redirigirPorRol();
 

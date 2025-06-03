@@ -14,48 +14,107 @@
     </div>
   </div>
 
-  <!-- Lista de pedidos con tarjetas interactivas -->
-  <div class="grid-pedidos">
-    <mat-card *ngFor="let pedido of pedidosConDetalles | clienteFiltro: filtro"
-              class="pedido-card"
-              [class.admin]="rolUsuario === 'admin'"
-              (click)="toggleDetalles(pedido)">
-      <div class="card-header">
-        <div class="cliente-info">
-          <mat-icon class="avatar-icon">person</mat-icon>
-          <h3>{{ pedido.cliente }}</h3>
-        </div>
-        <span class="fecha">{{ pedido.fecha | date:'mediumDate' }}</span>
-        <span class="badge-tiras">{{ pedido.tiras }} tiras</span>
+  <mat-tab-group>
+    <mat-tab label="Pedidos de hoy">
+      <div class="grid-pedidos">
+        <mat-card *ngFor="let pedido of pedidosDeHoy | clienteFiltro: filtro"
+                  class="pedido-card"
+                  [class.admin]="rolUsuario === 'admin'"
+                  (click)="toggleDetalles(pedido)">
+          <div class="card-header">
+            <div class="cliente-info">
+              <mat-icon class="avatar-icon">person</mat-icon>
+              <h3>{{ pedido.cliente }}</h3>
+            </div>
+            <span class="fecha">{{ pedido.fecha | date:'mediumDate' }}</span>
+            <span class="badge-tiras">{{ pedido.tiras }} tiras</span>
+          </div>
+
+          <!-- Detalles expandibles -->
+          <div class="detalles" [class.expanded]="pedido.mostrarDetalles">
+            <div class="detalle-item">
+              <mat-icon>event</mat-icon>
+              <span>{{ pedido.fecha | date:'fullDate' }}</span>
+            </div>
+
+            <div class="detalle-item" *ngIf="pedido.hora">
+              <mat-icon>schedule</mat-icon>
+              <span>{{ pedido.hora }}</span>
+            </div>
+
+            <div class="detalle-item notas" *ngIf="pedido.notas">
+              <mat-icon>notes</mat-icon>
+              <p>{{ pedido.notas }}</p>
+            </div>
+
+            <!-- Acciones admin -->
+            <div class="acciones" *ngIf="rolUsuario === 'admin'">
+              <button mat-icon-button color="warn" (click)="eliminar(pedido.id!); $event.stopPropagation()">
+                <mat-icon>delete</mat-icon>
+              </button>
+              <button mat-icon-button color="primary" (click)="editarPedido(pedido)">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+          </div>
+        </mat-card>
       </div>
+    </mat-tab>
+    <mat-tab label="Historial">
+      <div class="grid-pedidos">
+        <mat-card *ngFor="let pedido of pedidosHistoricosPaginados | clienteFiltro: filtro"
+                  class="pedido-card"
+                  [class.admin]="rolUsuario === 'admin'"
+                  (click)="toggleDetalles(pedido)">
+          <div class="card-header">
+            <div class="cliente-info">
+              <mat-icon class="avatar-icon">person</mat-icon>
+              <h3>{{ pedido.cliente }}</h3>
+            </div>
+            <span class="fecha">{{ pedido.fecha | date:'mediumDate' }}</span>
+            <span class="badge-tiras">{{ pedido.tiras }} tiras</span>
+          </div>
 
-      <!-- Detalles expandibles -->
-      <div class="detalles" [class.expanded]="pedido.mostrarDetalles">
-        <div class="detalle-item">
-          <mat-icon>event</mat-icon>
-          <span>{{ pedido.fecha | date:'fullDate' }}</span>
-        </div>
+          <!-- Detalles expandibles -->
+          <div class="detalles" [class.expanded]="pedido.mostrarDetalles">
+            <div class="detalle-item">
+              <mat-icon>event</mat-icon>
+              <span>{{ pedido.fecha | date:'fullDate' }}</span>
+            </div>
 
-        <div class="detalle-item" *ngIf="pedido.hora">
-          <mat-icon>schedule</mat-icon>
-          <span>{{ pedido.hora }}</span>
-        </div>
+            <div class="detalle-item" *ngIf="pedido.hora">
+              <mat-icon>schedule</mat-icon>
+              <span>{{ pedido.hora }}</span>
+            </div>
 
-        <div class="detalle-item notas" *ngIf="pedido.notas">
-          <mat-icon>notes</mat-icon>
-          <p>{{ pedido.notas }}</p>
-        </div>
+            <div class="detalle-item notas" *ngIf="pedido.notas">
+              <mat-icon>notes</mat-icon>
+              <p>{{ pedido.notas }}</p>
+            </div>
 
-        <!-- Acciones admin -->
-        <div class="acciones" *ngIf="rolUsuario === 'admin'">
-          <button mat-icon-button color="warn" (click)="eliminar(pedido.id!); $event.stopPropagation()">
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button mat-icon-button color="primary" (click)="editarPedido(pedido)">
-            <mat-icon>edit</mat-icon>
-          </button>
-        </div>
+            <!-- Acciones admin -->
+            <div class="acciones" *ngIf="rolUsuario === 'admin'">
+              <button mat-icon-button color="warn" (click)="eliminar(pedido.id!); $event.stopPropagation()">
+                <mat-icon>delete</mat-icon>
+              </button>
+              <button mat-icon-button color="primary" (click)="editarPedido(pedido)">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+          </div>
+        </mat-card>
       </div>
-    </mat-card>
-  </div>
+    </mat-tab>
+
+    <div class="paginacion" *ngIf="totalPaginas > 1">
+      <button mat-stroked-button color="primary" (click)="paginaActual = paginaActual - 1" [disabled]="paginaActual === 1">
+        Anterior
+      </button>
+      <span>Página {{paginaActual}} de {{totalPaginas}}</span>
+      <button mat-stroked-button color="primary" (click)="paginaActual = paginaActual + 1" [disabled]="paginaActual === totalPaginas">
+        Siguiente
+      </button>
+    </div>
+
+  </mat-tab-group>
 </div>

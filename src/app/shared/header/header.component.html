@@ -23,13 +23,6 @@
       </a>
     </li>
 
-
-    <li *ngIf="estaLogueado && rolUsuario === 'repartidor'">
-      <a routerLink="/repartidor/registro-sobrantes" (click)="onNavClick()">
-        <mat-icon fontIcon="inventory"></mat-icon> Registro Sobrantes
-      </a>
-    </li>
-
     <!-- SOLO mostrar "Login" si NO está logueado -->
     <li *ngIf="!estaLogueado">
       <a routerLink="/auth/login" (click)="onNavClick()">

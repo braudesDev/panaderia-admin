@@ -17,10 +17,10 @@
   <div class="selector-vista">
     <label for="vista">Ver resumen por:</label>
     <select id="vista" [(ngModel)]="vistaSeleccionada" (change)="onVistaChange()">
-      <option value="dia">Día</option>
+      <option value="día">Día</option>
       <option value="semana">Semana</option>
       <option value="mes">Mes</option>
-      <option value="anio">Año</option>
+      <option value="año">Año</option>
     </select>
   </div>
 
@@ -48,7 +48,7 @@
 
   <h3>
     Detalle de registros por
-    {{ vistaSeleccionada === 'dia' ? 'día' : vistaSeleccionada }}
+    {{ vistaSeleccionada === 'día' ? 'día' : vistaSeleccionada }}
   </h3>
   <div *ngFor="let grupo of registrosPorPeriodo">
     <button class="colapsar-btn" (click)="toggleColapsado(grupo.periodo)">
@@ -67,7 +67,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let s of grupo.registros">
+        <tr *ngFor="let s of getRegistrosPaginados(grupo.periodo, grupo.registros)">
           <td>{{ obtenerNombreCliente(s.clienteId) }}</td>
           <td>{{ s.entregadas }}</td>
           <td>{{ s.sobrantes }}</td>
@@ -79,6 +79,22 @@
         </tr>
       </tbody>
     </table>
+
+    <div class="paginacion" *ngIf="getTotalPaginasPeriodo(grupo.registros) > 1 && colapsados[grupo.periodo]">
+      <button mat-stroked-button color="primary"
+        (click)="cambiarPaginaPeriodo(grupo.periodo, (paginacionPorPeriodo[grupo.periodo].pagina || 1) - 1)"
+        [disabled]="(paginacionPorPeriodo[grupo.periodo].pagina || 1) === 1">
+        Anterior
+      </button>
+      <span>
+        Página {{ paginacionPorPeriodo[grupo.periodo].pagina || 1 }} de {{ getTotalPaginasPeriodo(grupo.registros) }}
+      </span>
+      <button mat-stroked-button color="primary"
+        (click)="cambiarPaginaPeriodo(grupo.periodo, (paginacionPorPeriodo[grupo.periodo].pagina || 1) + 1)"
+        [disabled]="(paginacionPorPeriodo[grupo.periodo].pagina || 1) === getTotalPaginasPeriodo(grupo.registros)">
+        Siguiente
+      </button>
+    </div>
   </div>
 </div>
   <div class="graficas">

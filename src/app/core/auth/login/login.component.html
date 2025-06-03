@@ -1,1 +1,46 @@
-<p>login works!</p>
+<div class="container">
+  <div class="card-container" [class.show-register]="mostrarRegistro">
+
+    <!-- Formulario Login -->
+    <section class="card login-card">
+      <h1>Iniciar Sesión</h1>
+      <p>Bienvenido a Panadería <span>Candy 🍞</span></p>
+      <button (click)="loginConGoogle()" class="btn-google">
+        <svg class="icon-google" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 533.5 544.3">
+          <path fill="#4285f4" d="M533.5 278.4c0-18.9-1.5-37-4.4-54.7H272v103.4h146.9c-6.3 33.7-25.1 62.3-53.9 81.4v67.5h87c50.8-46.8 80-115.7 80-197.6z"/>
+          <path fill="#34a853" d="M272 544.3c72.4 0 133.3-23.8 177.8-64.6l-87-67.5c-24.2 16.3-55 25.9-90.8 25.9-69.7 0-128.8-47.1-150.1-110.6H33.1v69.5c44.1 87.2 134.8 146.3 238.9 146.3z"/>
+          <path fill="#fbbc04" d="M121.9 322.5c-5.3-15.8-8.3-32.6-8.3-49.5s3-33.7 8.3-49.5v-69.5H33.1c-18.3 36.4-28.8 77.5-28.8 119 0 41.5 10.5 82.6 28.8 119l88.8-69.5z"/>
+          <path fill="#ea4335" d="M272 107.7c39.4 0 74.8 13.6 102.6 40.3l76.9-76.9C399.9 24 344 0 272 0 168 0 77.3 59.1 33.1 146.3l88.8 69.5c21.3-63.5 80.4-110.6 150.1-110.6z"/>
+        </svg>
+        Iniciar sesión con Google
+        <span class="arrow">→</span>
+      </button>
+
+      <p class="toggle-text">
+        ¿No tienes cuenta?
+        <a href="#" (click)="cambiarFormulario($event)">Regístrate aquí</a>
+      </p>
+    </section>
+
+    <!-- Formulario Registro -->
+    <section class="card register-card">
+      <h1>Registrarse</h1>
+      <p>Crea una cuenta en Panadería <span>Candy 🍞</span></p>
+      <form (submit)="registrarUsuario($event)">
+        <input type="text" placeholder="Nombre completo" required />
+        <input type="email" placeholder="Correo electrónico" required />
+        <input type="password" placeholder="Contraseña" required minlength="6" />
+        <button type="submit" class="btn-register">
+          Crear cuenta
+          <span class="arrow">→</span>
+        </button>
+      </form>
+
+      <p class="toggle-text">
+        ¿Ya tienes cuenta?
+        <a href="#" (click)="cambiarFormulario($event)">Inicia sesión aquí</a>
+      </p>
+    </section>
+
+  </div>
+</div>

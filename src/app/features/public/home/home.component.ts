@@ -31,4 +31,10 @@ export class HomeComponent {
     return this.authService.getUsuario();
   }
 
+  get rol(): 'admin' | 'cliente' | 'repartidor' | null {
+  // Devuelve el rol del usuario actual
+  return this.authService.getRol();
+}
+
+
 }

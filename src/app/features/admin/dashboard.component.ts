@@ -41,7 +41,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   resumenPorAnio: ResumenAgrupado[] = [];
 
   // Seleccion de vista
-  vistaSeleccionada: 'dia' | 'semana' | 'mes' | 'anio' = 'dia';
+  vistaSeleccionada: 'día' | 'semana' | 'mes' | 'año' = 'día';
   fechaSeleccionada: string = this.obtenerFechaHoy();
 
   // Configuración de gráficos
@@ -52,6 +52,9 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       { label: 'Sobrantes', data: [], backgroundColor: '#F54301' }
     ]
   };
+
+  paginacionPorPeriodo: Record<string, { pagina: number} > =  {}
+  itemsPorPaginaPeriodo = 10; // Ajustar según sea necesario
 
   barChartOptions: ChartOptions<'bar'> = {
     responsive: true,
@@ -93,7 +96,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       const hoy = this.obtenerFechaHoy();
       if (hoy !== this.fechaSeleccionada) {
         this.fechaSeleccionada = hoy;
-        this.vistaSeleccionada = 'dia';
+        this.vistaSeleccionada = 'día';
         this.cargarSobrantes();
       }
     });
@@ -122,10 +125,12 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       this.aplicarFiltroPorFecha();
       this.calcularResumen();
 
-      this.resumenPorDia = this.agruparPorPeriodo('dia');
+       this.calcularAlertas(this.sobrantesOriginal);
+
+      this.resumenPorDia = this.agruparPorPeriodo('día');
       this.resumenPorSemana = this.agruparPorPeriodo('semana');
       this.resumenPorMes = this.agruparPorPeriodo('mes');
-      this.resumenPorAnio = this.agruparPorPeriodo('anio');
+      this.resumenPorAnio = this.agruparPorPeriodo('año');
 
       this.actualizarGraficas();
     });
@@ -139,37 +144,100 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     return `${year}-${month}-${day}`;
   }
 
-  actualizarGraficas() {
+actualizarGraficas() {
   try {
-    const resumen = this.resumenActual;
+    const resumenCompleto = this.resumenActual;
+    let resumen: ResumenAgrupado[] = [];
 
-    this.barChartData.labels = resumen.map(r => r.periodo);
-    this.barChartData.datasets[0].data = resumen.map(r => r.totalEntregadas);
-    this.barChartData.datasets[1].data = resumen.map(r => r.totalSobrantes);
+    // Aplicar límite según la vista seleccionada
+    switch (this.vistaSeleccionada) {
+      case 'día':
+        resumen = resumenCompleto.slice(-7); // Últimos 7 días
+        break;
+      case 'semana':
+        resumen = resumenCompleto.slice(-4); // Últimas 4 semanas
+        break;
+      case 'mes':
+        resumen = resumenCompleto.slice(-12); // Últimos 12 meses
+        break;
+      case 'año':
+        resumen = resumenCompleto; // Mostrar todos los años disponibles
+        break;
+    }
 
-    // Actualizar gráfico de dona con datos filtrados según vista actual
+    // Actualizar gráfica de barras
+    this.barChartData = {
+      labels: resumen.map(r => r.periodo),
+      datasets: [
+        {
+          label: 'Entregadas',
+          data: resumen.map(r => r.totalEntregadas),
+          backgroundColor: '#0CF2C4'
+        },
+        {
+          label: 'Sobrantes',
+          data: resumen.map(r => r.totalSobrantes),
+          backgroundColor: '#F54301'
+        }
+      ]
+    };
+
+    // Actualizar gráfica de dona
     const totalClientes = this.sobrantes.length;
     const clientesEnAlerta = this.sobrantes.filter(s => s.alerta).length;
     const clientesNormales = totalClientes - clientesEnAlerta;
-    this.pieChartData.datasets[0].data = [clientesEnAlerta, clientesNormales];
-    this.pieChartData = { ...this.pieChartData };
 
-    // Forzar actualización de las gráficas
+    this.pieChartData = {
+      labels: ['Clientes en alerta', 'Clientes normales'],
+      datasets: [
+        {
+          data: [clientesEnAlerta, clientesNormales],
+          backgroundColor: ['#F40033', '#0CF231']
+        }
+      ]
+    };
+
+    // Forzar actualización de gráficas
     setTimeout(() => {
-      if (this.barChart?.chart) {
-        this.barChart.chart.update();
-      }
-      if (this.pieChart?.chart) {
-        this.pieChart.chart.update();
-      }
+      this.barChart?.chart?.update();
+      this.pieChart?.chart?.update();
     }, 0);
+
   } catch (error) {
     console.error('Error al actualizar gráficas:', error);
   }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   aplicarFiltroPorFecha() {
-    if (this.vistaSeleccionada === 'dia') {
+    if (this.vistaSeleccionada === 'día') {
       this.sobrantes = this.sobrantesOriginal.filter(s => s.fecha === this.fechaSeleccionada);
     } else {
       this.sobrantes = [...this.sobrantesOriginal];
@@ -186,6 +254,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   onVistaChange() {
     this.aplicarFiltroPorFecha();
     this.calcularResumen();
+    this.paginacionPorPeriodo = {}; // Reiniciar paginación al cambiar vista
     this.actualizarGraficas();
   }
 
@@ -201,6 +270,9 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     this.porcentajeSobrantes = this.totalEntregadas > 0
       ? +(this.totalSobrantes / this.totalEntregadas * 100).toFixed(1)
       : 0;
+
+    this.calcularAlertas(this.sobrantes);
+
 
     this.sobrantes.forEach(r => {
       r.porcentaje = r.entregadas > 0 ? +(r.sobrantes / r.entregadas * 100).toFixed(1) : 0;
@@ -234,7 +306,7 @@ private obtenerAnioISO(fecha: Date): number {
 
 
 
-  private agruparPorPeriodo(tipo: 'dia' | 'semana' | 'mes' | 'anio'): ResumenAgrupado[] {
+  private agruparPorPeriodo(tipo: 'día' | 'semana' | 'mes' | 'año'): ResumenAgrupado[] {
     const agrupado: { [key: string]: RegistroSobrante[] } = {};
 
     for (const reg of this.sobrantesOriginal) {
@@ -242,7 +314,7 @@ private obtenerAnioISO(fecha: Date): number {
       let clave: string;
 
   switch (tipo) {
-    case 'dia':
+    case 'día':
       clave = reg.fecha;
       break;
 
@@ -258,7 +330,7 @@ private obtenerAnioISO(fecha: Date): number {
       clave = `${this.capitalizar(nombreMes)} ${fecha.getFullYear()}`;
       break;
 
-    case 'anio':
+    case 'año':
       clave = `${fecha.getFullYear()}`;
       break;
   }
@@ -300,7 +372,7 @@ private obtenerAnioISO(fecha: Date): number {
     switch (this.vistaSeleccionada) {
       case 'semana': return this.resumenPorSemana;
       case 'mes': return this.resumenPorMes;
-      case 'anio': return this.resumenPorAnio;
+      case 'año': return this.resumenPorAnio;
       default: return this.resumenPorDia;
     }
   }
@@ -327,7 +399,7 @@ private obtenerAnioISO(fecha: Date): number {
       agrupados[key] = agrupados[key] || [];
       agrupados[key].push(reg);
     }
-  } else if (this.vistaSeleccionada === 'anio') {
+  } else if (this.vistaSeleccionada === 'año') {
     for (const reg of this.sobrantes) {
       const fecha = new Date(reg.fecha);
       const key = `${fecha.getFullYear()}`;
@@ -356,5 +428,35 @@ private obtenerAnioISO(fecha: Date): number {
   private capitalizar(texto: string): string {
   return texto.charAt(0).toUpperCase() + texto.slice(1);
 }
+
+getRegistrosPaginados(periodo: string, registros: RegistroSobrante[]): RegistroSobrante[] {
+
+  if (!this.paginacionPorPeriodo[periodo]) {
+    this.paginacionPorPeriodo[periodo] = { pagina: 1 };
+  }
+
+  const pagina = this.paginacionPorPeriodo[periodo]?.pagina || 1;
+  const inicio = (pagina - 1) * this.itemsPorPaginaPeriodo;
+  return registros.slice(inicio, inicio + this.itemsPorPaginaPeriodo);
+}
+
+getTotalPaginasPeriodo(registros: any[]): number {
+  return Math.ceil(registros.length / this.itemsPorPaginaPeriodo);
+}
+
+cambiarPaginaPeriodo(periodo: string, nuevaPagina: number) {
+  if (!this.paginacionPorPeriodo[periodo]) {
+    this.paginacionPorPeriodo[periodo] = { pagina: 1 };
+  }
+  this.paginacionPorPeriodo[periodo].pagina = nuevaPagina;
+}
+
+private calcularAlertas(registros: RegistroSobrante[], umbralAlerta = 20): void {
+  registros.forEach(r => {
+    r.porcentaje = r.entregadas > 0 ? +(r.sobrantes / r.entregadas * 100).toFixed(1) : 0;
+    r.alerta = r.porcentaje > umbralAlerta;
+  });
+}
+
 
 }
