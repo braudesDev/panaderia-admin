@@ -4,6 +4,7 @@ import { Firestore, collection, getDocs, doc, updateDoc, deleteDoc } from '@angu
 import { FormsModule } from '@angular/forms';
 import { ToastComponent } from '../../shared/toast/toast.component';
 import Swal from 'sweetalert2';
+import { MatTab } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-gestion-usuarios',
@@ -15,6 +16,16 @@ import Swal from 'sweetalert2';
 })
 export class GestionUsuariosComponent implements OnInit {
   usuarios: any[] = [];
+  usuariosInternos: any[] = [];
+  clientes: any[] = [];
+
+  paginaClientes = 1;
+  paginaInternos = 1;
+  tamanoPagina = 5;
+
+  tabActivo: 'internos' | 'clientes' = 'internos';
+
+
   @ViewChild(ToastComponent) toast!: ToastComponent;
 
 
@@ -31,7 +42,48 @@ export class GestionUsuariosComponent implements OnInit {
       id: doc.id,
       ...doc.data()
     }));
+
+    this.clientes = this.usuarios.filter(u => u.rol === 'cliente');
+    this.usuariosInternos = this.usuarios.filter(u => u.rol === 'admin' || u.rol === 'repartidor');
   }
+
+
+  // Métodos para paginación
+get clientesPaginados() {
+  const start = (this.paginaClientes - 1) * this.tamanoPagina;
+  return this.clientes.slice(start, start + this.tamanoPagina);
+}
+
+get internosPaginados() {
+  const start = (this.paginaInternos - 1) * this.tamanoPagina;
+  return this.usuariosInternos.slice(start, start + this.tamanoPagina);
+}
+
+get totalPaginasClientes() {
+  return Math.ceil(this.clientes.length / this.tamanoPagina);
+}
+
+get totalPaginasInternos() {
+  return Math.ceil(this.usuariosInternos.length / this.tamanoPagina);
+}
+
+paginaAnteriorClientes() {
+  if (this.paginaClientes > 1) this.paginaClientes--;
+}
+
+paginaSiguienteClientes() {
+  if (this.paginaClientes < this.totalPaginasClientes) this.paginaClientes++;
+}
+
+paginaAnteriorInternos() {
+  if (this.paginaInternos > 1) this.paginaInternos--;
+}
+
+paginaSiguienteInternos() {
+  if (this.paginaInternos < this.totalPaginasInternos) this.paginaInternos++;
+}
+
+
 
   async cambiarRol(uid: string, nuevoRol: 'admin' | 'cliente' | 'repartidor') {
     const userRef = doc(this.firestore, 'usuarios', uid);
@@ -80,4 +132,7 @@ export class GestionUsuariosComponent implements OnInit {
       this.toast.show('Usuario eliminado correctamente.');
     }
   }
+
+
+
 }

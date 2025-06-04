@@ -1,32 +1,77 @@
 <h2 class="titulo-usuarios">Usuarios registrados</h2>
 
-<div class="tabla-responsive">
-  <table class="tabla-usuarios">
+<div class="tabs">
+  <button (click)="tabActivo = 'internos'">Admins y Repartidores</button>
+  <button (click)="tabActivo = 'clientes'">Clientes</button>
+</div>
+
+<!-- TAB INTERNO -->
+<div *ngIf="tabActivo === 'internos'">
+  <table>
     <thead>
       <tr>
-        <th>UID</th>
         <th>Correo</th>
         <th>Rol</th>
         <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let user of usuarios">
-        <td data-label="UID">{{ user.id }}</td>
-        <td data-label="Correo">{{ user.correo }}</td>
-        <td data-label="Rol">
-          <select [(ngModel)]="user.rol">
+      <tr *ngFor="let usuario of internosPaginados">
+        <td>{{ usuario.correo || usuario.id }}</td>
+        <td>
+          <select [(ngModel)]="usuario.rol">
             <option value="cliente">Cliente</option>
             <option value="repartidor">Repartidor</option>
             <option value="admin">Admin</option>
           </select>
         </td>
-        <td data-label="Acciones">
-          <button class="btn-azul" (click)="confirmarCambiarRol(user.id, user.rol)">Guardar</button>
-          <button class="btn-rojo" (click)="confirmarEliminarUsuario(user.id)">Eliminar</button>
+        <td>
+          <button class="btn-azul" (click)="confirmarCambiarRol(usuario.id, usuario.rol)">Guardar</button>
+          <button class="btn-rojo" (click)="confirmarEliminarUsuario(usuario.id)">Eliminar</button>
         </td>
       </tr>
     </tbody>
   </table>
+    <div class="paginacion">
+      <button (click)="paginaAnteriorInternos()" [disabled]="paginaInternos === 1">Anterior</button>
+      <span>Página {{paginaInternos}} / {{totalPaginasInternos}}</span>
+      <button (click)="paginaSiguienteInternos()" [disabled]="paginaInternos === totalPaginasInternos">Siguiente</button>
+    </div>
 </div>
+
+<!-- TAB CLIENTES -->
+<div *ngIf="tabActivo === 'clientes'">
+  <table>
+    <thead>
+      <tr>
+        <th>Correo</th>
+        <th>Rol</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let usuario of clientesPaginados">
+        <td>{{ usuario.correo || usuario.id }}</td>
+        <td>
+          <select [(ngModel)]="usuario.rol">
+            <option value="cliente">Cliente</option>
+            <option value="repartidor">Repartidor</option>
+            <option value="admin">Admin</option>
+          </select>
+        </td>
+        <td>
+          <button class="btn-azul" (click)="confirmarCambiarRol(usuario.id, usuario.rol)">Guardar</button>
+          <button class="btn-rojo" (click)="confirmarEliminarUsuario(usuario.id)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="paginacion">
+    <button (click)="paginaAnteriorClientes()" [disabled]="paginaClientes === 1">Anterior</button>
+    <span>Página {{paginaClientes}} / {{totalPaginasClientes}}</span>
+    <button (click)="paginaSiguienteClientes()" [disabled]="paginaClientes === totalPaginasClientes">Siguiente</button>
+  </div>
+
+</div>
+
 <app-toast></app-toast>

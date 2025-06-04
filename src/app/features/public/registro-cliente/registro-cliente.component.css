@@ -2,6 +2,7 @@ body, html {
   height: 100%;
   margin: 0;
   padding: 0;
+  background-size: cover;
 }
 
 :host {
@@ -9,6 +10,18 @@ body, html {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+}
+
+.registro-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  min-height: 100vh;
+  background: url('https://res.cloudinary.com/drsyb53ae/image/upload/v1749022130/panaderia-admin/vyfy8xrvf5r03ngt9ez8.png') no-repeat center center fixed;
+  background-size: cover;
+  overflow: hidden;
+  z-index: -1;
 }
 
 /* Contenedor principal */
@@ -19,7 +32,7 @@ body, html {
   padding: 2.5rem 3rem;  /* Más espacio interno */
   background: #fff;
   border-radius: 18px;
-  margin-top: 1rem;
+  margin-top: 8rem;
   box-shadow: 0 6px 24px rgba(0,0,0,0.10), 0 1.5px 6px rgba(0,0,0,0.06);
 }
 
@@ -54,7 +67,9 @@ form input:focus {
   outline: none;
 }
 
-button[type="submit"], .qr-container button, .qr-lista a {
+button[type="submit"]:not(.btn-grad),
+.qr-container button,
+.qr-lista a {
   display: inline-block;
   margin-top: 1.2rem;
   padding: 0.6rem 1.4rem;
@@ -70,33 +85,55 @@ button[type="submit"], .qr-container button, .qr-lista a {
   text-decoration: none;
 }
 
+
 button[type="submit"]:hover, .qr-container button:hover, .qr-lista a:hover {
   background: linear-gradient(90deg, #2563eb 60%, #4299e1 100%);
   transform: translateY(-2px) scale(1.03);
 }
 
+
+.btn-grad {background-image: linear-gradient(to right, #F00000 0%, #DC281E  51%, #F00000  100%)}
+.btn-grad {
+  margin: 10px;
+  padding: 15px 45px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px #eee;
+  border-radius: 10px;
+  display: block;
+}
+
+.btn-grad:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+   text-decoration: none;
+}
+
 /* Botón secundario */
+
+.btn-secundario {background-image: linear-gradient(to right, #0cebeb 0%, #20e3b2  51%, #0cebeb  100%)}
 .btn-secundario {
-  background: linear-gradient(90deg, #e2e8f0 60%, #cbd5e1 100%);
-  color: #2d3748;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(49,130,206,0.06);
-  transition: background 0.2s, transform 0.1s;
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
-  padding: 0.6rem 1.4rem;
-  width: 100%;
+  margin: 10px;
+  padding: 15px 45px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px #eee;
+  border-radius: 10px;
+  display: block;
 }
 
 .btn-secundario:hover {
-  background: linear-gradient(90deg, #cbd5e1 60%, #a0aec0 100%);
-  color: #1a202c;
-  transform: translateY(-2px) scale(1.03);
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
 }
+
 
 /* QR generado */
 .qr-container {
@@ -199,6 +236,8 @@ button[type="submit"]:hover, .qr-container button:hover, .qr-lista a:hover {
   animation: shake 0.3s;
   background: #fff5f5;
 }
+
+
 
 @media (max-width: 600px) {
   .form-container, .qr-lista {

@@ -2,17 +2,23 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-login',
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, FormsModule],
     templateUrl: './login.component.html',
-    styleUrl: './login.component.css'
+    styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  nombre= '';
+  correo = '';
+  contrasena = '';
+  confirmarContrasena = '';
 
-mostrarRegistro = false;
+  mostrarContrasena = false;
+  mostrarRegistro = false;
 
 
   constructor(
@@ -25,6 +31,14 @@ mostrarRegistro = false;
       this.router.navigate(['/home']); // o directamente a su ruta por rol
     }
   }
+
+  async iniciarSesion() {
+  try {
+    await this.authService.loginConEmail(this.correo, this.contrasena);
+  } catch (error) {
+    alert('Error al iniciar sesión. Verifica tus datos.');
+  }
+}
 
   async loginConGoogle() {
   try {
@@ -41,10 +55,25 @@ mostrarRegistro = false;
     this.mostrarRegistro = !this.mostrarRegistro;
   }
 
-  registrarUsuario(event: Event) {
-    event.preventDefault();
-    // Tu lógica para registrar usuario con Firebase
-    console.log('Usuario registrado');
+registrarUsuario(event: Event) {
+  event.preventDefault();
+
+  if (this.contrasena !== this.confirmarContrasena) {
+    alert('Las contraseñas no coinciden');
+    return;
   }
+
+  this.authService.registrarConEmail(this.correo, this.contrasena, this.nombre)
+    .then(() => {
+      alert('Cuenta creada con éxito');
+      this.mostrarRegistro = false;
+    })
+    .catch(error => {
+      console.error('Error al registrar:', error);
+      alert('Error al registrar: ' + error.message);
+    });
+}
+
+
 
 }

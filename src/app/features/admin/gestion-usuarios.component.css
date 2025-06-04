@@ -6,47 +6,68 @@
   letter-spacing: 1px;
 }
 
-.tabla-responsive {
-  overflow-x: auto;
-  padding: 1rem;
+/* Tabs */
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem auto 1rem;
 }
 
-.tabla-usuarios {
+.tabs button {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  background: #e0e7ff;
+  color: #3730a3;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(99,102,241,0.15);
+}
+
+.tabs button:hover {
+  background: #c7d2fe;
+}
+
+.tabs button.active {
+  background: linear-gradient(90deg, #6366f1 60%, #60a5fa 100%);
+  color: #fff;
+}
+
+/* Tabla */
+table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 1rem;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  box-shadow: 0 6px 24px rgba(49,130,206,0.10), 0 1.5px 6px rgba(49,130,206,0.06);
+  margin: 1rem auto;
+  max-width: 1200px;
   background: #fff;
   border-radius: 18px;
+  box-shadow: 0 6px 24px rgba(49,130,206,0.10), 0 1.5px 6px rgba(49,130,206,0.06);
   overflow: hidden;
+  font-family: 'Segoe UI', Arial, sans-serif;
 }
 
-.tabla-usuarios th,
-.tabla-usuarios td {
+th, td {
   padding: 0.75rem;
   text-align: left;
   border-bottom: 1px solid #e0e7ff;
 }
 
-.tabla-usuarios th {
+th {
   background: linear-gradient(90deg, #6366f1 60%, #60a5fa 100%);
   color: #fff;
   font-weight: 700;
   font-size: 1.05rem;
-  border-bottom: 2px solid #e0e7ff;
 }
 
-.tabla-usuarios tr:nth-child(even) td {
+tr:nth-child(even) td {
   background: #f3f4f6;
 }
 
-.tabla-usuarios tr:nth-child(odd) td {
-  background: #f3f4f6;
-}
-
-/* Moderno para el select de rol */
-.tabla-usuarios select {
+/* Select */
+select {
   padding: 0.4rem 2.2rem 0.4rem 0.8rem;
   border-radius: 16px;
   border: 1.5px solid #6366f1;
@@ -57,26 +78,25 @@
   box-shadow: 0 2px 8px rgba(99,102,241,0.07);
   transition: border 0.2s, box-shadow 0.2s;
   appearance: none;
-  -webkit-appearance: none;
-  cursor: pointer;
-  outline: none;
-  position: relative;
   background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
   background-repeat: no-repeat;
   background-position: right 0.8rem center;
   background-size: 1.2em;
+  cursor: pointer;
+  outline: none;
 }
 
-.tabla-usuarios select:focus {
+select:focus {
   border-color: #60a5fa;
   box-shadow: 0 0 0 2px #6366f133;
 }
 
-.tabla-usuarios select option {
+select option {
   color: #3730a3;
   font-weight: 500;
 }
 
+/* Botones */
 .btn-azul,
 .btn-rojo {
   padding: 0.4rem 0.8rem;
@@ -111,19 +131,67 @@
   transform: translateY(-2px) scale(1.04);
 }
 
-/* ✅ Responsive para móviles */
-@media (max-width: 480px) {
+/* Navegación de páginas */
+button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
+/* Contenedor de paginación */
+.paginacion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem auto;
+  flex-wrap: wrap;
+}
+
+/* Botones de paginación */
+.paginacion button {
+  padding: 0.4rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  background: #c7d2fe;
+  color: #3730a3;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(99,102,241,0.1);
+}
+
+.paginacion button:hover:not([disabled]) {
+  background: linear-gradient(90deg, #6366f1, #60a5fa);
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.paginacion span {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+/* Botón deshabilitado */
+.paginacion button[disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+
+/* Responsive móvil */
+@media (max-width: 480px) {
   .titulo-usuarios {
     font-size: 2.2rem;
     margin-top: 5rem;
   }
 
-  .tabla-usuarios thead {
+  table thead {
     display: none;
   }
 
-  .tabla-usuarios tr {
+  table tr {
     display: block;
     margin-bottom: 1rem;
     background-color: #f3f4f6;
@@ -132,7 +200,7 @@
     padding: 1rem;
   }
 
-  .tabla-usuarios td {
+  table td {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -143,7 +211,7 @@
     background: none;
   }
 
-  .tabla-usuarios td::before {
+  table td::before {
     content: attr(data-label);
     font-weight: bold;
     color: #6366f1;

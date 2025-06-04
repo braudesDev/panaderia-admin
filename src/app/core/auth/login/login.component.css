@@ -1,35 +1,38 @@
-* {
-  box-sizing: border-box;
-}
-
-body, html {
+html, body {
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  width: 100%;
   height: 100%;
   font-family: 'Poppins', sans-serif;
-  background: url('/assets/bolillo.jpg') no-repeat center center fixed;
-  background-color: transparent !important;
-  background-size: cover;
-  display: grid;
-  place-items: center;
-  position: relative;
 }
 
+.login-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  min-height: 100vh;
+  background: url('https://res.cloudinary.com/drsyb53ae/image/upload/f_auto,q_auto/v1/panaderia-admin/isfnqloeteu48kqeplee') no-repeat center center fixed;
+  background-size: cover;
+  overflow: hidden;
+  z-index: -1;
+}
 
-body::before {
+.login-background::before {
   content: "";
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.4);
   pointer-events: none;
   z-index: 0;
 }
 
+* {
+  box-sizing: border-box;
+  max-width: 100%;
 
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
 }
 
 .container {
@@ -47,7 +50,6 @@ body::before {
   z-index: 1;
 
 }
-
 
 .card-container {
   position: relative;
@@ -82,8 +84,8 @@ body::before {
 }
 
 .login-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.76), rgba(255, 255, 255, 0.1));
-  backdrop-filter: blur(18px);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+  backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
   z-index: 2;
@@ -91,17 +93,58 @@ body::before {
 
 .register-card {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.192));
-  backdrop-filter: blur(18px);
+  backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 220, 226, 0.5);
-  box-shadow: 0 12px 40px rgba(255, 105, 180, 0.3);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
   transform: rotateY(180deg);
 }
 
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 40px; /* espacio para el ícono */
+}
+
+.toggle-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+
+
+
+
+.login-form button {
+  padding: 0.9rem 1rem;
+  background: linear-gradient(45deg, #4285f4, #35eac3);
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-position 3s ease infinite, box-shadow 0.3s ease, transform 0.2s ease;
+  margin-bottom: 1rem;
+}
+
+.login-form button:hover {
+  background: linear-gradient(45deg, #ea35d2, #4285f4);
+  transform: scale(1.07);
+}
 
 .card h1 {
   font-size: 2.6rem;
   font-weight: 700;
-  margin-bottom: 0.8rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
   text-shadow: 2px 2px 10px rgba(0,0,0,0.4);
 }
 
@@ -118,7 +161,33 @@ body::before {
 
 }
 
+.divider-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  margin: 0.8rem 0 1.2rem 0;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background-color: #ccc;
+  opacity: 0.6;
+}
+
+.divider-text {
+  font-weight: bold;
+  color: #666;
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+
 .btn-google {
+  margin-top: 0;
+  margin-bottom: 5px;
   background: linear-gradient(45deg, #4285f4, #34a853, #fbbc04, #ea4335);
   background-size: 400% 400%;
   color: white;
@@ -126,17 +195,17 @@ body::before {
   font-size: 1.1rem;
   border: none;
   border-radius: 100px;
-  padding: 14px 32px;
+  padding: 10px 32px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
 
   user-select: none;
   transition: background-position 3s ease infinite, box-shadow 0.3s ease, transform 0.2s ease;
   position: relative;
   overflow: hidden;
-  margin-bottom: 2rem;
+
 }
 
 .btn-google:hover {
@@ -204,8 +273,8 @@ input::placeholder {
 
 .toggle-text {
   font-size: 0.95rem;
-  color: #eee;
-  margin-top: 2rem;
+  color: #eeeeee;
+  margin-top: qrem;
 }
 
 .toggle-text a {
@@ -217,62 +286,79 @@ input::placeholder {
 }
 
 .toggle-text a:hover {
-  color: #8dff76;
+  color: #ff6905;
 }
 
-
 @media (max-width: 480px) {
-  body, html {
+  html, body {
     background-attachment: scroll;
+    overflow-y: auto;
   }
 
   .container {
-    max-width: 320px !important;
+    max-width: 100%;
+    width: 100%;
+    padding: 0 1rem;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    position: absolute;
-    padding: 0 1rem;
   }
 
   .card-container {
-    height: auto !important;
+    height: auto;
     min-height: 500px;
   }
 
   .card {
-    position: relative !important;
-    height: auto !important;
-    padding: 24px 20px !important;
-    border-radius: 24px !important;
+    padding: 24px 20px;
+    border-radius: 24px;
     font-size: 0.9rem;
-    margin-top: 0 !important; /* ← Solución clave */
+    margin-top: 0;
   }
 
   .card h1 {
-    font-size: 1.8rem !important;
-    margin-bottom: 1rem !important;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
   }
 
   .card p {
-    font-size: 1rem !important;
+    font-size: 1rem;
   }
 
   input {
-    font-size: 1rem !important;
-    padding: 12px !important;
+    font-size: 1rem;
+    padding: 12px;
   }
 
   .btn-google {
-    font-size: 1rem !important;
-    padding: 12px 24px !important;
+    font-size: 1rem;
+    padding: 12px 24px;
   }
 
   .switch-link {
-    font-size: 0.9rem !important;
+    font-size: 0.9rem;
   }
 
   .toggle-text {
-    font-size: 0.85rem !important;
+    font-size: 0.85rem;
+    text-align: center;
+  }
+
+  .divider-container {
+    gap: 8px;
+    margin: 0.6rem 0 1rem 0;
+  }
+
+  .divider-text {
+    font-size: 0.9rem;
+  }
+
+  .icon-google {
+    width: 22px;
+    height: 22px;
+  }
+
+  .arrow {
+    font-size: 1.4rem;
   }
 }

@@ -1,7 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Auth, GoogleAuthProvider, signOut, User, signInWithPopup } from '@angular/fire/auth';
-import { Firestore, doc, getDoc, setDoc } from '@angular/fire/firestore';
+import {
+  Auth,
+  GoogleAuthProvider,
+  signOut,
+  User,
+  signInWithPopup,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  signInWithEmailAndPassword
+} from '@angular/fire/auth';
+import {
+  Firestore,
+  doc,
+  getDoc,
+  setDoc
+} from '@angular/fire/firestore';
+import { BehaviorSubject } from 'rxjs';
+import Swal from 'sweetalert2';
+
 
 interface UsuarioData {
   correo?: string;
@@ -10,8 +27,15 @@ interface UsuarioData {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private usuarioActual: User | null = null;
-  private rol: 'admin' | 'cliente' | 'repartidor' | null = null;
+
+  private _estaLogueado$ = new BehaviorSubject<boolean>(false);
+  estaLogueado$ = this._estaLogueado$.asObservable();
+
+  private _rolUsuario$ = new BehaviorSubject<string | null>(null);
+  rolUsuario$ = this._rolUsuario$.asObservable();
+
+  private usuarioActual: { uid: string; email: string | null; displayName: string | null } | null = null;
+  private rol: UsuarioData['rol'] = null;
 
   constructor(
     private router: Router,
@@ -23,62 +47,138 @@ export class AuthService {
 
   private cargarEstadoPersistido(): void {
     const rolGuardado = localStorage.getItem('rol') as UsuarioData['rol'];
-    if (rolGuardado) {
+    const usuarioGuardado = localStorage.getItem('usuario');
+
+    if (rolGuardado && usuarioGuardado) {
       this.rol = rolGuardado;
-      const usuarioGuardado = localStorage.getItem('usuario');
-      this.usuarioActual = usuarioGuardado ? JSON.parse(usuarioGuardado) : null;
+      this.usuarioActual = JSON.parse(usuarioGuardado);
+
+    // Emitir cambios para que los subscriptores actualicen
+    this._estaLogueado$.next(true);
+    this._rolUsuario$.next(this.rol);
     }
   }
 
-  async loginConGoogle(): Promise<void> {
-    try {
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(this.auth, provider);
-      const usuario = result.user;
-      //Obtener el ID del usuario
-      // console.log('UID del usuario:', usuario.uid);
 
-      this.usuarioActual = usuario;
+registrarConEmail(correo: string, contrasena: string, nombre: string) {
+  return createUserWithEmailAndPassword(this.auth, correo, contrasena)
+    .then(async cred => {
+      if (!cred.user) throw new Error('No se pudo crear el usuario');
 
-      // Referencia al documento en Firestore
-      const docRef = doc(this.firestore, 'usuarios', usuario.uid);
-      const docSnap = await getDoc(docRef);
+      await updateProfile(cred.user, { displayName: nombre });
 
-      if (!docSnap.exists()) {
-        // Crear el documento para el usuario nuevo sin rol asignado
-        await setDoc(docRef, {
-          correo: usuario.email,
-          rol: 'cliente'
+      await setDoc(doc(this.firestore, 'usuarios', cred.user.uid), {
+        uid: cred.user.uid,
+        nombre,
+        correo: correo,
+        creadoEn: new Date()
+      });
+
+      return cred;
+    })
+    .catch(async error => {
+      if (error.code === 'auth/email-already-in-use') {
+        await Swal.fire({
+          icon: 'error',
+          title: 'Correo en uso',
+          text: 'Este correo ya está registrado. Por favor, inicia sesión o usa otro correo.',
+          confirmButtonColor: '#3085d6'
         });
-        // Ya no es necesario el alert ni el logout aquí
-        this.rol = 'cliente'; // Asignar rol por defecto
-        this.persistirEstado(usuario, this.rol);
-        this.redirigirPorRol();
-        return;
+      } else {
+        await Swal.fire({
+          icon: 'error',
+          title: 'Error al registrar',
+          text: error.message || 'Ocurrió un error inesperado',
+          confirmButtonColor: '#d33'
+        });
       }
+      throw error; // opcional si quieres manejar el error más arriba
+    });
+}
 
-      const data = docSnap.data() as UsuarioData;
-      this.rol = data.rol;
 
-      if (!this.rol) {
-      // Asignar cliente si rol es null o indefinido para evitar bloquear acceso
-        this.rol = 'cliente';
-        this.persistirEstado(usuario, this.rol);
-        this.redirigirPorRol();
-        return;
-      }
 
-      // Guardar info en localStorage
-      this.persistirEstado(usuario, this.rol);
-      // Redirigir según rol
+async loginConGoogle(): Promise<void> {
+  try {
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(this.auth, provider);
+    const usuario = result.user;
+
+    this.usuarioActual = {
+      uid: usuario.uid,
+      email: usuario.email,
+      displayName: usuario.displayName
+    };
+
+    const docRef = doc(this.firestore, 'usuarios', usuario.uid);
+    const docSnap = await getDoc(docRef);
+
+    if (!docSnap.exists()) {
+      await setDoc(docRef, {
+        correo: usuario.email,
+        rol: 'cliente'
+      });
+      this.rol = 'cliente';
+      this.persistirEstado(this.usuarioActual, this.rol);
+
+      // 👇 Agrega esto para actualizar el header sin recargar
+      this._estaLogueado$.next(true);
+      this._rolUsuario$.next(this.rol);
+
       this.redirigirPorRol();
-
-    } catch (error) {
-      console.error('Error en login con Google', error);
-      throw error; // Propaga el error para manejo en el componente
+      return;
     }
 
+    const data = docSnap.data() as UsuarioData;
+    this.rol = data.rol || 'cliente';
+    this.persistirEstado(this.usuarioActual, this.rol);
+
+    this._estaLogueado$.next(true);
+    this._rolUsuario$.next(this.rol);
+
+    this.redirigirPorRol();
+
+  } catch (error) {
+    console.error('Error en login con Google', error);
+    throw error;
   }
+}
+
+
+
+async loginConEmail(correo: string, contrasena: string): Promise<void> {
+  try {
+    const cred = await signInWithEmailAndPassword(this.auth, correo, contrasena);
+    const usuario = cred.user;
+    this.usuarioActual = usuario;
+
+    const docRef = doc(this.firestore, 'usuarios', usuario.uid);
+    const docSnap = await getDoc(docRef);
+
+    if (!docSnap.exists()) {
+      await setDoc(docRef, {
+        correo: usuario.email,
+        rol: 'cliente',
+      });
+      this.rol = 'cliente';
+    } else {
+      const data = docSnap.data() as UsuarioData;
+      this.rol = data.rol || 'cliente';
+    }
+
+    this.persistirEstado(usuario, this.rol);
+
+    this._estaLogueado$.next(true);
+    this._rolUsuario$.next(this.rol);
+
+    this.redirigirPorRol();
+  } catch (error) {
+    console.error('Error al iniciar sesión con correo', error);
+    throw error;
+  }
+}
+
+
 
   async logout(): Promise<void> {
     await signOut(this.auth);
@@ -86,6 +186,10 @@ export class AuthService {
     this.rol = null;
     this.limpiarPersistencia();
     this.router.navigate(['/login']);
+
+    this._estaLogueado$.next(false);
+    this._rolUsuario$.next(null);
+
   }
 
   estaAutenticado(): boolean {
@@ -96,11 +200,11 @@ export class AuthService {
     return this.rol;
   }
 
-  getUsuario(): User | null {
+  getUsuario(): { uid: string; email: string | null; displayName: string | null } | null {
     return this.usuarioActual;
   }
 
-  private persistirEstado(usuario: User, rol: UsuarioData['rol']): void {
+  private persistirEstado(usuario: { uid: string; email: string | null; displayName: string | null }, rol: UsuarioData['rol']): void {
     localStorage.setItem('usuario', JSON.stringify(usuario));
     localStorage.setItem('rol', rol || '');
   }
@@ -111,6 +215,7 @@ export class AuthService {
   }
 
   private redirigirPorRol(): void {
+
     if (!this.rol) {
       this.router.navigate(['/login']);
       return;
@@ -119,7 +224,8 @@ export class AuthService {
     const rutasPorRol = {
       'admin': '/admin/dashboard',
       'cliente': '/pedidos',
-      'repartidor': '/repartidor'
+      'repartidor': '/repartidor',
+      null: '/login'
     };
 
     this.router.navigate([rutasPorRol[this.rol]]);

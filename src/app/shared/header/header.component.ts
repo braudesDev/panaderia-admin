@@ -1,8 +1,9 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../core/auth/auth.service';  // Ajusta la ruta según tu proyecto
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-header',
@@ -15,7 +16,7 @@ import { AuthService } from '../../core/auth/auth.service';  // Ajusta la ruta s
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.css']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit, OnDestroy {
 
   rolUsuario: string | null = null;
   estaLogueado = false;
@@ -24,11 +25,26 @@ export class HeaderComponent {
   navHidden = false;
   isMenuOpen = false; // Controla si el menú hamburguesa está abierto
 
+  private subs: Subscription[] = [];
+
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
-    this.estaLogueado = this.authService.estaAutenticado();
-    this.rolUsuario = this.authService.getRol();
+    this.subs.push(
+      this.authService.estaLogueado$.subscribe(logueado => {
+        this.estaLogueado = logueado;
+      })
+    );
+
+    this.subs.push(
+      this.authService.rolUsuario$.subscribe(rol => {
+        this.rolUsuario = rol;
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    this.subs.forEach(sub => sub.unsubscribe());
   }
 
   @HostListener('window:scroll', [])
