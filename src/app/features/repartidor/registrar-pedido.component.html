@@ -1,14 +1,22 @@
-<mat-card class="registro-card" [ngClass]="{'admin-card': modo === 'admin', 'repartidor-card': modo === 'repartidor'}">
+<div class="background"></div>
+<mat-card class="registro-card" [ngClass]="{'admin-card': modo === 'admin', 'repartidor-card': modo === 'repartidor', 'cliente-card': modo === 'cliente'}">
   <mat-card-header>
     <mat-card-title class="titulo-card">
       <mat-icon class="icono-titulo">assignment</mat-icon>
-      {{ modo === 'admin' ? 'Registrar Pedido (Admin)' : 'Registrar Pedido (Repartidor)' }}
+        {{
+    modo === 'admin'
+      ? 'Registrar Pedido (Admin)'
+      : modo === 'repartidor'
+        ? 'Registrar Pedido (Repartidor)'
+        : 'Hacer Pedido'
+  }}
     </mat-card-title>
   </mat-card-header>
 
   <mat-card-content>
     <div *ngIf="modo === 'admin'" class="badge-admin">Modo administrador</div>
     <div *ngIf="modo === 'repartidor'" class="badge-repartidor">Modo repartidor</div>
+    <div *ngIf="modo === 'cliente'" class="badge-cliente" >Modo Cliente</div>
 
     <form (ngSubmit)="guardar()" class="formulario-pedido">
       <div class="form-row">

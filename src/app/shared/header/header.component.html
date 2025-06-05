@@ -10,6 +10,8 @@
       </a>
     </li>
 
+
+
     <li *ngIf="estaLogueado && (rolUsuario === 'admin' || rolUsuario === 'repartidor')">
       <a routerLink="/lista-pedidos" (click)="onNavClick()">
         <mat-icon fontIcon="list"></mat-icon> Lista de Pedidos
@@ -32,7 +34,7 @@
 
 
 
-    <li *ngIf="estaLogueado && (rolUsuario === 'repartidor' || rolUsuario === 'admin')">
+    <li *ngIf="estaLogueado && (rolUsuario === 'repartidor' || rolUsuario === 'admin' || rolUsuario === 'cliente')">
       <a routerLink="/repartidor/registrar-pedido" (click)="onNavClick()">
         <mat-icon fontIcon="add_shopping_cart"></mat-icon> Registrar Pedido
       </a>

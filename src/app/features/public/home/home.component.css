@@ -9,20 +9,45 @@
 
 /* Hero */
 .hero {
-  background: url('https://images.unsplash.com/photo-1579621970795-87facc2f976d?auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
+  position: relative;
+  background: url('https://res.cloudinary.com/drsyb53ae/image/upload/v1748989302/panaderia-admin/qf21gjk01gpspptvftjl.jpg') no-repeat center center/cover;
   color: white;
   padding: 120px 20px 80px;
   text-align: center;
   border-radius: 10px;
   box-shadow: 0 6px 12px rgb(0 0 0 / 0.25);
   margin-top: 5rem;
+  overflow: hidden;
 }
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.2); /* negro con 50% de opacidad */
+  border-radius: 10px;
+  z-index: 1;
+}
+
+.hero > * {
+  position: relative;
+  z-index: 2; /* eleva el texto sobre la capa oscura */
+}
+
+
 
 .hero h1 {
   font-size: 3.5rem;
   font-weight: 800;
   margin-bottom: 15px;
   text-shadow: 0 0 10px rgba(0,0,0,0.6);
+}
+
+#nombre-panaderia1 {
+  font-size: 3.5rem;
+  color: #ff460e;
+  text-shadow: 0 0 10px rgba(0,0,0,0.6);
+
 }
 
 .hero p {
@@ -41,6 +66,12 @@
   cursor: pointer;
   font-weight: 700;
   transition: background-color 0.3s ease;
+}
+
+.nombre-panaderia {
+  font-weight: 900;
+  font-size: 20px;
+  color: #e7195a;
 }
 
 .hero button:hover {
@@ -111,7 +142,7 @@
 
 /* Beneficios */
 .beneficios {
-  background-color: #fbe9e7;
+  background-color: #cab9b9;
   padding: 40px 20px;
   margin-top: 60px;
   border-radius: 10px;
@@ -248,10 +279,19 @@ footer {
     font-size: 1rem;
   }
 
+#nombre-panaderia1 {
+  font-size: 2rem;
+  color: #ff460e;
+  text-shadow: 0 0 10px rgba(0,0,0,0.6);
+}
+
+
   .quienes-somos {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    margin-bottom: 0;
+    padding-bottom: 0;
   }
 
   .quienes-somos img {
@@ -260,9 +300,16 @@ footer {
     margin-bottom: 15px;
   }
 
+  .galeria {
+    margin-top: 0;
+    padding-top: 0;
+  }
+
   .galeria-grid {
+    margin-top: 0;
+    padding-top: 0;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    gap: 10px;
   }
 
   .galeria-grid img {

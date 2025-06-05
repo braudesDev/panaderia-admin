@@ -1,6 +1,17 @@
+/* .background {
+    position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('https://res.cloudinary.com/drsyb53ae/image/upload/v1749074234/panaderia-admin/iojb0vatjeyxcwmuncwg.svg') no-repeat center center;
+  background-size: cover;
+  z-index: -1;
+} */
+
 .titulo-usuarios {
   text-align: center;
-  color: #3730a3;
+  color: #4361e7;
   font-size: 2.5rem;
   margin-top: 7rem;
   letter-spacing: 1px;

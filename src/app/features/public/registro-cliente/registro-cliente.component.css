@@ -3,6 +3,7 @@ body, html {
   margin: 0;
   padding: 0;
   background-size: cover;
+  overflow: hidden;
 }
 
 :host {
@@ -18,7 +19,7 @@ body, html {
   left: 0;
   width: 100vw;
   min-height: 100vh;
-  background: url('https://res.cloudinary.com/drsyb53ae/image/upload/v1749022130/panaderia-admin/vyfy8xrvf5r03ngt9ez8.png') no-repeat center center fixed;
+  background: url('https://res.cloudinary.com/drsyb53ae/image/upload/v1749061812/panaderia-admin/ynxspeancey4sl37ud0g.svg') no-repeat center center fixed;
   background-size: cover;
   overflow: hidden;
   z-index: -1;
@@ -26,20 +27,26 @@ body, html {
 
 /* Contenedor principal */
 .form-container {
-  max-width: 520px;      /* Más ancho */
-  min-width: 320px;      /* Opcional: evita que sea muy pequeño */
+  max-width: 520px;
+  min-width: 320px;
   margin: 2rem auto;
-  padding: 2.5rem 3rem;  /* Más espacio interno */
-  background: #fff;
+  padding: 2.5rem 3rem;
+  background: rgba(255, 255, 255, 0.445); /* fondo semitransparente */
   border-radius: 18px;
   margin-top: 8rem;
   box-shadow: 0 6px 24px rgba(0,0,0,0.10), 0 1.5px 6px rgba(0,0,0,0.06);
+  position: relative;
+  z-index: 1;
+  backdrop-filter: blur(18px);        /* BLUR principal */
+  -webkit-backdrop-filter: blur(12px);/* Safari soporte */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* bordecito sutil */
 }
+
 
 /* Títulos */
 .form-container h2, .qr-lista h3 {
   text-align: center;
-  color: #2d3748;
+  color: #1a202c;
   margin-bottom: 1.5rem;
   letter-spacing: 1px;
 }
@@ -83,12 +90,6 @@ button[type="submit"]:not(.btn-grad),
   box-shadow: 0 2px 8px rgba(49,130,206,0.10);
   transition: background 0.2s, transform 0.1s;
   text-decoration: none;
-}
-
-
-button[type="submit"]:hover, .qr-container button:hover, .qr-lista a:hover {
-  background: linear-gradient(90deg, #2563eb 60%, #4299e1 100%);
-  transform: translateY(-2px) scale(1.03);
 }
 
 

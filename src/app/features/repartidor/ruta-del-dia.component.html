@@ -3,7 +3,7 @@
 <app-scanner-qr (qrEscaneado)="procesarQr($event)"></app-scanner-qr>
 
 <!-- Versión combinada optimizada -->
-<div *ngFor="let tienda of tiendas; trackBy: trackByClienteId" class="card">
+<div *ngFor="let tienda of tiendas; trackBy: trackByClienteId" class="card" [id]="'tienda-'+tienda.clienteId">
   <!-- Busca el registro por clienteId en lugar de usar el índice -->
   <mat-card [class.activo]="getRegistro(tienda.clienteId)?.clienteId === clienteActual?.clienteId">
     <mat-card-header>

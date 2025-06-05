@@ -46,7 +46,7 @@ export const routes: Routes = [
     path: 'repartidor/registrar-pedido',
     component: RegistrarPedidoComponent,
     canActivate:[authGuard],
-    data: { roles: ['admin', 'repartidor'] }
+    data: { roles: ['admin', 'repartidor', 'cliente'] }
   },
   {
     path: 'admin/dashboard',

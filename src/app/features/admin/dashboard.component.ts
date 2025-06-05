@@ -210,32 +210,6 @@ actualizarGraficas() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   aplicarFiltroPorFecha() {
     if (this.vistaSeleccionada === 'día') {
       this.sobrantes = this.sobrantesOriginal.filter(s => s.fecha === this.fechaSeleccionada);

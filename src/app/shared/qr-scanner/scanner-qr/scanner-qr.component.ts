@@ -39,9 +39,36 @@ onDeviceSelect(event: Event) {
 
 
   // Este método debe llamarse cuando se detecte un código QR real
-  onCodeResult(result: string): void {
-    this.qrContent = result;
+onCodeResult(result: string): void {
+  this.qrContent = result;
+  console.log('QR detectado:', result);
+
+  // Reproducir pitido y esperar antes de emitir
+  this.playBeep(() => {
     this.qrEscaneado.emit(result);
-    console.log('QR detectado:', result);
+  });
+}
+
+
+playBeep(onFinished?: () => void) {
+  try {
+    const audioCtx = new AudioContext();
+    const oscillator = audioCtx.createOscillator();
+    oscillator.type = 'square';
+    oscillator.frequency.setValueAtTime(1000, audioCtx.currentTime);
+    oscillator.connect(audioCtx.destination);
+    oscillator.start();
+
+    setTimeout(() => {
+      oscillator.stop();
+      audioCtx.close();
+      if (onFinished) onFinished(); // Ejecutar callback al terminar el pitido
+    }, 100); // duración del beep
+  } catch (error) {
+    console.warn('No se pudo reproducir el pitido:', error);
+    if (onFinished) onFinished(); // Emitir igual si hay error
   }
+}
+
+
 }

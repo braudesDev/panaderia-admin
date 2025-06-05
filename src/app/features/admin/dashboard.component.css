@@ -1,3 +1,13 @@
+/* .background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: url('https://res.cloudinary.com/drsyb53ae/image/upload/v1749065764/panaderia-admin/fxhr4a8obb2qoaosd4nr.svg') no-repeat center center fixed;
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+} */
 /* ESTADOS: ALERTA Y NORMAL */
 .alerta {
   background-color: #ffeaea;
@@ -24,6 +34,7 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #2c3e50;
   transition: box-shadow 0.3s;
+  margin-top: 6rem;
 }
 
 .dashboard-container:hover {

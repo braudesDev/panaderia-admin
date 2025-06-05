@@ -8,16 +8,22 @@ import {
   signInWithPopup,
   createUserWithEmailAndPassword,
   updateProfile,
-  signInWithEmailAndPassword
+  signInWithEmailAndPassword,
+  signInWithRedirect,
+  User as FirebaseUser,
+  onAuthStateChanged
 } from '@angular/fire/auth';
+import { switchMap } from 'rxjs/operators';
+
 import {
   Firestore,
   doc,
   getDoc,
   setDoc
 } from '@angular/fire/firestore';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import Swal from 'sweetalert2';
+
 
 
 interface UsuarioData {
@@ -144,6 +150,11 @@ async loginConGoogle(): Promise<void> {
   }
 }
 
+async loginConGoogleRedirect(): Promise<void> {
+  const provider = new GoogleAuthProvider();
+  await signInWithRedirect(this.auth, provider);
+}
+
 
 
 async loginConEmail(correo: string, contrasena: string): Promise<void> {
@@ -230,4 +241,24 @@ async loginConEmail(correo: string, contrasena: string): Promise<void> {
 
     this.router.navigate([rutasPorRol[this.rol]]);
   }
+
+  obtenerUsuarioActual(): Observable<UsuarioData | null> {
+  return new Observable((observer) => {
+    onAuthStateChanged(this.auth, async (user) => {
+      if (user) {
+        const docRef = doc(this.firestore, 'usuarios', user.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data() as UsuarioData;
+          observer.next(data);
+        } else {
+          observer.next(null);
+        }
+      } else {
+        observer.next(null);
+      }
+    });
+  });
+}
+
 }

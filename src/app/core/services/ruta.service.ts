@@ -28,12 +28,17 @@ export class RutaService {
     }
   }
 
-  async verificarRegistroExistente(clienteId: string, fecha: string): Promise<boolean> {
-    const q = query(this.coleccionRuta,
+async verificarRegistroExistente(clienteId: string, fecha: string, usuarioId: string): Promise<boolean> {
+  const registrosSnapshot = await getDocs(
+    query(
+      collection(this.firestore, 'ruta'),
       where('clienteId', '==', clienteId),
-      where('fecha', '==', fecha)
-    );
-    const snapshot = await getDocs(q);
-    return !snapshot.empty;
-  }
+      where('fecha', '==', fecha),
+      where('usuarioId', '==', usuarioId) // NUEVO: verifica que sea del mismo repartidor
+    )
+  );
+
+  return !registrosSnapshot.empty;
+}
+
 }

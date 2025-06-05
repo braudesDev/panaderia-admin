@@ -2,7 +2,7 @@
 
   <!-- Hero -->
   <section class="hero">
-    <h1>Panadería Candy 🥐</h1>
+    <h1>Panadería <span id="nombre-panaderia1"> Candy </span> </h1>
     <p>Calidad, sabor y buen servicio directo a tu mesa.</p>
 
     <button *ngIf="!autenticado"  routerLink="/login" class="boton-principal">
@@ -19,11 +19,11 @@
 
   <!-- Sección Quienes Somos -->
   <section class="quienes-somos">
-    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=600&q=80" alt="Panadería Don Luis" />
+    <img src="https://res.cloudinary.com/drsyb53ae/image/upload/v1749074896/panaderia-admin/tcps3axtij1xe3rktqd9.webp" alt="Panadería Don Luis" />
     <div>
       <h2>¿Quiénes somos?</h2>
       <p>
-        En Panadería Don Luis, somos apasionados por el pan artesanal fresco y de calidad.
+        En Panadería <span class="nombre-panaderia">Candy</span>, somos apasionados por el pan artesanal fresco y de calidad.
         Con ingredientes naturales y recetas tradicionales, entregamos el mejor sabor a tu mesa cada día.
       </p>
     </div>
@@ -31,12 +31,12 @@
 
   <!-- Galería de panes -->
   <section class="galeria">
-    <h2>Galería de Pan Artesanal</h2>
+    <h2>Galería de Pan Artesanal y Bolillo</h2>
     <div class="galeria-grid">
-      <img src="https://images.unsplash.com/photo-1542834369-f10ebf06d3cb?auto=format&fit=crop&w=400&q=80" alt="Pan bolillo fresco" />
-      <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80" alt="Pan dulce" />
-      <img src="https://images.unsplash.com/photo-1562440499-22f3b7a6ef58?auto=format&fit=crop&w=400&q=80" alt="Pan integral" />
-      <img src="https://images.unsplash.com/photo-1559628233-d4e3b9bfc4b1?auto=format&fit=crop&w=400&q=80" alt="Pan con semillas" />
+      <img src="https://res.cloudinary.com/drsyb53ae/image/upload/v1748989303/panaderia-admin/g81w8bqwzslh76ubjgmo.jpg" alt="Pan bolillo fresco" />
+      <img src="https://res.cloudinary.com/drsyb53ae/image/upload/v1748989128/panaderia-admin/r8irzuwzusxabefvdrca.jpg" alt="Pan dulce" />
+      <img src="https://res.cloudinary.com/drsyb53ae/image/upload/v1748989303/panaderia-admin/isfnqloeteu48kqeplee.jpg" alt="Pan integral" />
+      <img src="https://res.cloudinary.com/drsyb53ae/image/upload/v1749075076/panaderia-admin/nmpch5xjyafm0aj7etbj.webp" alt="Pan con semillas" />
     </div>
   </section>
 
@@ -44,17 +44,17 @@
   <section class="beneficios">
     <h2>Beneficios de comprar con nosotros</h2>
     <ul>
-      <li>✔️ Pan fresco todos los días</li>
-      <li>✔️ Ingredientes naturales y sin conservadores</li>
-      <li>✔️ Entregas puntuales y confiables</li>
-      <li>✔️ Pedidos anticipados y personalizados</li>
+      <li> Pan fresco todos los días</li>
+      <li> Ingredientes naturales y sin conservadores</li>
+      <li> Entregas puntuales y confiables</li>
+      <li> Pedidos anticipados y personalizados</li>
     </ul>
   </section>
 
   <!-- Botones de navegación según rol -->
   <div class="botones-rol" *ngIf="autenticado">
 
-    <button *ngIf="rol === 'cliente'" routerLink="/pedidos" class="boton-principal">
+    <button *ngIf="rol === 'cliente'" routerLink="/repartidor/registrar-pedido" class="boton-principal">
       📦 Hacer pedido
     </button>
 

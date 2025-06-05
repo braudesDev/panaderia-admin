@@ -1,3 +1,15 @@
+.background {
+  position: fixed; /* Cambiado de absolute a fixed para fondo estable */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('https://res.cloudinary.com/drsyb53ae/image/upload/v1749072945/panaderia-admin/ouhdq1g8datfpxfrvr0v.svg') no-repeat center center;
+  background-size: cover;
+  z-index: -1;
+  pointer-events: none; /* 🔒 Impide que bloquee clics */
+}
+
 /* Contenedor del mat-card */
 .registro-card {
   max-width: 700px;
@@ -6,8 +18,9 @@
   padding: 24px;
   border-radius: 16px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-  background: linear-gradient(135deg, #fafafa, #f5f5f5);
+  background: rgba(255, 255, 255, 0.397); /* fondo semitransparente */
   margin-top: 8rem;
+  backdrop-filter: blur(18px);
 }
 
 /* Título con icono */
@@ -17,13 +30,13 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #3f51b5;
+  color: #ffffff;
   margin-bottom: 2rem;
 
 }
 
 .icono-titulo {
-  color: #723fb5;
+  color: #00e1ff;
 }
 
 /* Fila de formularios */
@@ -49,7 +62,7 @@ mat-form-field {
 /* Texto del sufijo */
 .suffix-text {
   font-size: 14px;
-  color: #3e55a3;
+  color: #ffffff;
   padding-right: 6px;
 }
 
@@ -61,7 +74,7 @@ mat-form-field {
 
 /* Botón de guardar */
 .boton-guardar {
-  background-color: #3f51b5;
+  background-color: #b53fa5;
   color: white;
   font-weight: 500;
   padding: 10px 24px;
@@ -70,7 +83,7 @@ mat-form-field {
 }
 
 .boton-guardar:hover {
-  background-color: #303f9f;
+  background-color: #305c9f;
 }
 
 /* Ajuste interno para inputs y textarea */
@@ -92,7 +105,7 @@ mat-form-field {
 
 .badge-admin {
   color: #fff;
-  background: #6366f1;
+  background: #396eff;
   display: inline-block;
   padding: 0.2em 0.8em;
   border-radius: 12px;
@@ -101,7 +114,7 @@ mat-form-field {
 }
 .badge-repartidor {
   color: #fff;
-  background: #10b981;
+  background: #1067b9;
   display: inline-block;
   padding: 0.2em 0.8em;
   border-radius: 12px;
@@ -109,14 +122,29 @@ mat-form-field {
   font-size: 0.95em;
 }
 
+
+.badge-cliente {
+  color: #fff;
+  background: #10b910;
+  display: inline-block;
+  padding: 0.2em 0.8em;
+  border-radius: 12px;
+  margin-bottom: 1em;
+  font-size: 0.95em;
+}
+
 /* Estilos específicos para el modo admin */
 .admin-card {
-  border: 2px solid #f1b363;
+  border: 2px solid #63b1f1;
 }
 
 /* Estilos específicos para el modo repartidor */
 .repartidor-card {
   border: 2px solid #1097b9;
+}
+
+.cliente-card {
+  border: 2px solid #10b910;
 }
 
 @media (max-width: 480px) {

@@ -118,9 +118,26 @@ html, body {
   align-items: center;
 }
 
+.btn-register {background-image: linear-gradient(to right, #FC354C 0%, #0ABFBC  51%, #FC354C  100%)}
+.btn-register {
+  margin: 3px;
+  padding: 10px 35px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  border-radius: 25px;
+  display: block;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
 
-
-
+.btn-register:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}
 
 .login-form button {
   padding: 0.9rem 1rem;
@@ -152,12 +169,19 @@ html, body {
   font-weight: 400;
   font-size: 1.1rem;
   margin-bottom: 2.4rem;
-  color: #000000cc;
+  color: #ffffffcc;
 }
 
+
 .card span {
-  color: #ffa77e;
-  font-weight: 900;
+  color: #fd5320;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-shadow:
+  -1px -1px 0 #000,
+  1px -1px 0 #000,
+  -1px  1px 0 #000,
+  1px  1px 0 #000;
 
 }
 
@@ -228,6 +252,7 @@ html, body {
   font-size: 1.6rem;
   transition: transform 0.4s ease;
   user-select: none;
+  color: #ffffff;
 }
 
 .btn-google:hover .arrow {
@@ -237,25 +262,25 @@ html, body {
 form {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 15px;
   align-items: center;
 }
 
 input {
-  padding: 14px;
+  padding: 12px;
   width: 100%;
   border: none;
   border-radius: 14px;
   font-size: 1rem;
   outline: none;
-  background: rgba(255, 255, 255, 0.95);
-  color: #333;
+  background: rgba(255, 255, 255, 0.877);
+  color: #333333;
   font-family: 'Poppins', sans-serif;
   box-shadow: 0 2px 8px rgba(0,0,0,0.25);
 }
 
 input::placeholder {
-  color: #888;
+  color: #888888cb;
 }
 
 .switch-link {
@@ -273,12 +298,12 @@ input::placeholder {
 
 .toggle-text {
   font-size: 0.95rem;
-  color: #eeeeee;
+  color: #ffffff;
   margin-top: qrem;
 }
 
 .toggle-text a {
-  color: #ff9c7e;
+  color: #ff7950;
   text-decoration: none;
   font-weight: 700;
   margin-left: 4px;
@@ -286,7 +311,7 @@ input::placeholder {
 }
 
 .toggle-text a:hover {
-  color: #ff6905;
+  color: #ff6600;
 }
 
 @media (max-width: 480px) {
