@@ -19,10 +19,14 @@ import {
   Firestore,
   doc,
   getDoc,
-  setDoc
+  setDoc,
+  collection,
+  collectionData
 } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import Swal from 'sweetalert2';
+import { Usuario } from '../models/usuario.model';
+
 
 
 
@@ -46,9 +50,14 @@ export class AuthService {
   constructor(
     private router: Router,
     private auth: Auth,
-    private firestore: Firestore
+    private firestore: Firestore,
   ) {
     this.cargarEstadoPersistido();
+  }
+
+  obtenerUsuarios(): Observable<Usuario[]> {
+    const usuariosRef = collection(this.firestore, 'usuarios');
+    return collectionData(usuariosRef, { idField: 'uid' }) as Observable<Usuario[]>;
   }
 
   private cargarEstadoPersistido(): void {

@@ -7,5 +7,7 @@ export interface RegistroSobrante {
   fecha: string;
   sincronizado?: boolean;
   repartidorId?: string;
+  repartidorNombre?: string;
   id?: string;
+  usuarioId?: string;
 }

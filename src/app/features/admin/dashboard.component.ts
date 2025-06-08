@@ -11,7 +11,9 @@ import { ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { Subscription, interval } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
-import { getISOWeek, getYear } from 'date-fns';
+import { AuthService } from '../../core/auth/auth.service';
+import { RouterModule } from '@angular/router';
+import { Usuario } from '../../core/models/usuario.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,7 +24,12 @@ import { getISOWeek, getYear } from 'date-fns';
 })
 export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('barChartRef', { static: false, read: BaseChartDirective }) barChart!: BaseChartDirective;
-  @ViewChild('pieChartRef', { static: false, read: BaseChartDirective }) pieChart!: BaseChartDirective;
+  @ViewChild('pieChartRef', { static: false, read: BaseChartDirective }) pieChart!:
+  BaseChartDirective;
+
+
+  listaDeUsuarios: Usuario[] = []; // Aquí deberías cargar los usuarios desde tu servicio de usuarios
+
 
   registros: RegistroDeRuta[] = [];
   sobrantesOriginal: RegistroSobrante[] = [];
@@ -85,11 +92,15 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private rutaService: RutaService,
     private sobranteService: SobrantesService,
+    private authService: AuthService,
   ) {}
 
   ngOnInit() {
     this.cargarRegistros();
     this.cargarSobrantes();
+    this.authService.obtenerUsuarios().subscribe(usuarios => {
+      this.listaDeUsuarios = usuarios;
+    });
 
     // Configurar intervalo de actualización (5 minutos)
     this.refreshSubscription = interval(5 * 60 * 1000).subscribe(() => {
@@ -112,11 +123,18 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  cargarRegistros() {
+cargarRegistros() {
+  this.authService.obtenerUsuarios().subscribe(usuarios => {
+    this.listaDeUsuarios = usuarios;
+
     this.rutaService.obtenerRegistros().subscribe(data => {
       this.registros = data.sort((a, b) => b.fecha.localeCompare(a.fecha));
     });
-  }
+  });
+}
+
+
+
 
   cargarSobrantes() {
     this.sobranteService.obtenerTodos().subscribe(data => {
@@ -342,6 +360,17 @@ private obtenerAnioISO(fecha: Date): number {
     return cliente?.clienteNombre ?? 'Desconocido';
   }
 
+obtenerNombreRepartidor(id?: string): string {
+  if (!id) return 'Desconocido';
+  const user = this.listaDeUsuarios.find(u => u.uid === id);
+  if (!user) return 'Desconocido';
+  console.log('Buscando repartidor con id:', id, '->', user);
+
+  // Si nombre es null o vacío, mostrar correo, si no existe correo, mostrar 'Desconocido'
+  return user.nombre?.trim() || user.correo || 'Desconocido';
+}
+
+
   get resumenActual(): ResumenAgrupado[] {
     switch (this.vistaSeleccionada) {
       case 'semana': return this.resumenPorSemana;
@@ -353,45 +382,36 @@ private obtenerAnioISO(fecha: Date): number {
 
   // Agrupa los registros individuales por periodo (fecha, semana, mes, etc.)
   get registrosPorPeriodo() {
-  const grupos: { periodo: string, registros: any[] }[] = [];
-  const agrupados: Record<string, any[]> = {};
+    const agrupados: Record<string, RegistroSobrante[]> = {};
 
-  if (this.vistaSeleccionada === 'semana') {
     for (const reg of this.sobrantes) {
       const fecha = new Date(reg.fecha);
-      const semana = this.obtenerSemanaISO(fecha);
-      const anio = this.obtenerAnioISO(fecha);
-      const key = `Semana ${String(semana).padStart(2, '0')} - ${anio}`;
-      agrupados[key] = agrupados[key] || [];
-      agrupados[key].push(reg);
+      let clave = '';
+
+      switch (this.vistaSeleccionada) {
+        case 'semana':
+          clave = `Semana ${this.obtenerSemanaISO(fecha)} - ${this.obtenerAnioISO(fecha)}`;
+          break;
+        case 'mes':
+          clave = `${fecha.toLocaleString('es-MX', { month: 'long' })} ${fecha.getFullYear()}`;
+          break;
+        case 'año':
+          clave = `${fecha.getFullYear()}`;
+          break;
+        default:
+          clave = reg.fecha;
+      }
+
+      if (!agrupados[clave]) agrupados[clave] = [];
+      agrupados[clave].push(reg);
     }
-  } else if (this.vistaSeleccionada === 'mes') {
-    for (const reg of this.sobrantes) {
-      const fecha = new Date(reg.fecha);
-      const nombreMes = fecha.toLocaleString('es-MX', { month: 'long' });
-      const key = `${this.capitalizar(nombreMes)} ${fecha.getFullYear()}`;
-      agrupados[key] = agrupados[key] || [];
-      agrupados[key].push(reg);
-    }
-  } else if (this.vistaSeleccionada === 'año') {
-    for (const reg of this.sobrantes) {
-      const fecha = new Date(reg.fecha);
-      const key = `${fecha.getFullYear()}`;
-      agrupados[key] = agrupados[key] || [];
-      agrupados[key].push(reg);
-    }
-  } else { // 'dia' o cualquier otro caso
-    for (const reg of this.sobrantes) {
-      agrupados[reg.fecha] = agrupados[reg.fecha] || [];
-      agrupados[reg.fecha].push(reg);
-    }
+
+    return Object.entries(agrupados).map(([periodo, registros]) => ({
+      periodo,
+      registros
+    })).sort((a, b) => a.periodo.localeCompare(b.periodo));
   }
 
-  for (const periodo of Object.keys(agrupados).sort().reverse()) {
-    grupos.push({ periodo, registros: agrupados[periodo] });
-  }
-  return grupos;
-}
 
   // Control de colapsado
   colapsados: Record<string, boolean> = {};
@@ -431,6 +451,16 @@ private calcularAlertas(registros: RegistroSobrante[], umbralAlerta = 20): void 
     r.alerta = r.porcentaje > umbralAlerta;
   });
 }
+
+// dashboard.component.ts
+get usuario() {
+  return this.authService.getUsuario();
+}
+
+get autenticado(): boolean {
+  return this.authService.estaAutenticado();
+}
+
 
 
 }

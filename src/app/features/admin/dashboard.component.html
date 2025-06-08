@@ -64,6 +64,7 @@
           <th>Sobrantes</th>
           <th>%</th>
           <th>Fecha</th>
+          <th>Repartidor</th>
           <th>Alerta</th>
         </tr>
       </thead>
@@ -74,6 +75,11 @@
           <td>{{ s.sobrantes }}</td>
           <td>{{ calcularPorcentaje(s.sobrantes, s.entregadas) }}%</td>
           <td>{{ s.fecha }}</td>
+          <td>
+            {{ s.repartidorNombre || obtenerNombreRepartidor(s.repartidorId) }}<br>
+            <small *ngIf="!obtenerNombreRepartidor(s.repartidorId)">ID: {{ s.repartidorId }}</small>
+          </td>
+
           <td [ngClass]="{'alerta': s.alerta, 'normal': !s.alerta}">
             {{ s.alerta ? '⚠️' : '✅' }}
           </td>

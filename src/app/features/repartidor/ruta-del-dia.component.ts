@@ -23,16 +23,19 @@ export interface RegistroDeRuta {
   clienteDireccion: string;
   fecha: string;
   entregaInicial: number | null;
-  entregasExtras: (number | null) [];
+  entregasExtras: (number | null)[];
   tirasVendidas: number;
   tirasSobrantes: number | null;
   sobrantes?: number;
   cobroTotal: number;
-  repartidorId?: string; // Propiedad opcional
-  porcentajeSobrantes?: number; // También faltaba esta
-  sincronizado?: boolean; // Agregado para evitar el error
-  usuarioId?: string; // Agregado para evitar el error
+  repartidorId?: string;          // id del repartidor
+  repartidorNombre?: string;      // nombre del repartidor (opcional, para mostrar fácilmente)
+  repartidorCorreo?: string;      // correo del repartidor (opcional)
+  porcentajeSobrantes?: number;
+  sincronizado?: boolean;
+  usuarioId?: string;
 }
+
 
 @Component({
   selector: 'app-ruta-del-dia',
@@ -166,17 +169,17 @@ export class RutaDelDiaComponent implements OnInit {
 
 
   //Boton registrar entregas
-  async registrarEntregas() {
+async registrarEntregas() {
   const resultado = await Swal.fire({
-    title: 'Estas Seguro?',
+    title: '¿Estás seguro?',
     text: '¿Deseas registrar las entregas del día de hoy?',
     icon: 'question',
     showCancelButton: true,
     confirmButtonText: 'Sí, registrar',
     cancelButtonText: 'Cancelar'
   });
-  if (!resultado.isConfirmed)
-    return;
+
+  if (!resultado.isConfirmed) return;
 
   this.isLoading = true;
 
@@ -185,25 +188,35 @@ export class RutaDelDiaComponent implements OnInit {
     const registrosValidos = this.registrosRuta.filter(r => this.registroTieneDatos(r));
 
     if (registrosValidos.length === 0) {
-      Swal.fire({
+      await Swal.fire({
         icon: 'info',
         title: 'No hay entregas para registrar',
         text: 'No hay entregas registradas para el día de hoy.',
         confirmButtonText: 'Cerrar'
-        })
+      });
       return;
     }
 
-    const repartidorId = this.clienteContext.obtenerUsuarioActual()?.uid;
+    const usuario = this.authService.getUsuario();
+
+    if (!usuario) {
+      await Swal.fire({
+        icon: 'error',
+        title: 'Usuario no autenticado',
+        text: 'No se pudo obtener la información del usuario actual.',
+        confirmButtonText: 'Cerrar'
+      });
+      return;
+    }
+
+    const usuarioActualId = this.clienteContext.obtenerUsuarioActual()?.uid || usuario.uid;
+    const usuarioNombre = usuario.displayName ?? 'Sin nombre';
     let guardados = 0;
 
-    const usuarioActualId = repartidorId || this.authService.getUsuario()?.uid;
-
     for (const registro of registrosValidos) {
-
-      if (!registro.usuarioId) {
-        registro.usuarioId = usuarioActualId;
-      }
+      registro.usuarioId ??= usuarioActualId;
+      registro.repartidorId ??= usuarioActualId;
+      registro.repartidorNombre ??= usuarioNombre;
 
       this.actualizarCobroTotal(registro);
       registro.porcentajeSobrantes = this.calcularPorcentajeSobrantes(registro);
@@ -211,18 +224,15 @@ export class RutaDelDiaComponent implements OnInit {
       const cliente = clientes.find(c => c.id === registro.clienteId);
       if (!cliente) continue;
 
-      if (registro.sincronizado === true) {
-        continue;
-      }
-
+      if (registro.sincronizado === true) continue;
       if (!registro.usuarioId) {
-        console.warn('⚠️ Registro sin usuarioId, se omitirá:');
+        console.warn('⚠️ Registro sin usuarioId, se omitirá:', registro);
         continue;
       }
 
       const yaExiste = await this.rutaService.verificarRegistroExistente(registro.clienteId, registro.fecha, registro.usuarioId);
       if (yaExiste) {
-        registro.sincronizado = true; // Marcar como sincronizado si ya existe
+        registro.sincronizado = true;
         continue;
       }
 
@@ -231,8 +241,8 @@ export class RutaDelDiaComponent implements OnInit {
         ...registro,
         clienteNombre: cliente.nombre,
         clienteDireccion: cliente.direccion,
-        usuarioId: this.authService.getUsuario()?.uid,
-        ...(repartidorId ? { repartidorId } : {})
+        usuarioId: registro.usuarioId,
+        repartidorId: usuarioActualId
       });
 
       // Guardar sobrantes
@@ -244,47 +254,47 @@ export class RutaDelDiaComponent implements OnInit {
         alerta: false,
         fecha: registro.fecha,
         sincronizado: true,
-        ...(repartidorId ? { repartidorId } : {})
+        repartidorId: usuarioActualId,
+        repartidorNombre: usuarioNombre // <- esto falta
+
       };
 
       await this.sobrantesService.guardarRegistro(sobrante);
 
-      // Al subir exitosamente:
       registro.sincronizado = true;
-
       guardados++;
     }
 
-  if (guardados === 0) {
-    await Swal.fire({
-      icon: 'info',
-      title: 'No hay nuevas entregas para registrar',
-      text: 'Todos los registros ya fueron sincronizados previamente.',
-      confirmButtonText: 'Cerrar',
-  });
-} else {
-
-      // Mantén solo los registros sincronizados en localStorage
+    if (guardados === 0) {
+      await Swal.fire({
+        icon: 'info',
+        title: 'No hay nuevas entregas para registrar',
+        text: 'Todos los registros ya fueron sincronizados previamente.',
+        confirmButtonText: 'Cerrar'
+      });
+    } else {
+      // Limpiar localStorage y notificar
       this.registrosRuta = this.registrosRuta.filter(r => !this.registroTieneDatos(r) || r.sincronizado);
       localStorage.setItem(this.obtenerClaveDelAlmacenamiento(), JSON.stringify(this.registrosRuta));
       this.entregasGuardadas = true;
-     await Swal.fire({
+
+      await Swal.fire({
         icon: 'success',
         title: 'Entregas Guardadas Correctamente',
         text: `${guardados} entregas guardadas correctamente.`,
-        confirmButtonText:'Cerrar',
+        confirmButtonText: 'Cerrar'
       });
     }
 
   } catch (error: any) {
     console.error('Error detallado:', error);
-    const mensajeError = error?.message || JSON.stringify(error) || 'Error desconocido';
-    Swal.fire({
+    const mensajeError = error instanceof Error ? error.message : 'Ocurrió un error inesperado.';
+    await Swal.fire({
       icon: 'error',
-      title: 'Error alguardar entregas',
-      text: `Ocurrio un error al guardar las entregas: ${mensajeError}`,
+      title: 'Error al guardar entregas',
+      text: `Ocurrió un error al guardar las entregas: ${mensajeError}`,
       confirmButtonText: 'Cerrar'
-    })
+    });
   } finally {
     this.isLoading = false;
   }

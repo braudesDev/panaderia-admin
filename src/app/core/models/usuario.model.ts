@@ -1,8 +1,8 @@
-// models/usuario.model.ts
 export interface Usuario {
   uid: string;
-  nombre: string;
+  correo?: string | null;
+  nombre: string | null;         // Lo puedes mapear desde displayName de Firebase
   rol: 'admin' | 'repartidor';
   puedeSalirDeRuta?: boolean;
-  tiendasAsignadas: string[];  // Ids o nombres de tiendas
+  tiendasAsignadas: string[];
 }
