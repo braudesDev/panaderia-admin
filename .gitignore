@@ -43,4 +43,5 @@ Thumbs.db
 
 
 # Ignorar configuraciones sensibles de Angular
-/src/environments/environment.ts
+/src/app/environments/environment.ts
+
