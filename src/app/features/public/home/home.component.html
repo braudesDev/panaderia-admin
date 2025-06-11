@@ -1,74 +1,99 @@
 <div class="home-container">
-
-  <!-- Hero -->
+  <!-- Hero seccion principal con bienvenida -->
   <section class="hero">
-    <h1>Panadería <span id="nombre-panaderia1"> Candy </span> </h1>
+    <h1>Panadería <span id="nombre-panaderia1"> Candy </span></h1>
     <p>Calidad, sabor y buen servicio directo a tu mesa.</p>
 
-    <button *ngIf="!autenticado"  routerLink="/login" class="boton-principal">
+    <!--Boton para iniciar sesion si el usuario no esta autenticado-->
+    <button *ngIf="!autenticado" routerLink="/login" class="boton-principal">
       Inicia sesión ➔
     </button>
 
-    <div *ngIf="autenticado" style="margin-top: 20px;">
+    <!--Saludo personalizado si el usuario esta autenticado-->
+    <div *ngIf="autenticado" style="margin-top: 20px">
       <p>Hola, {{ usuario?.displayName || usuario?.email }} 👋</p>
-      <button (click)="logout()" class="boton-secundario">
-        Cerrar sesión
-      </button>
+      <button (click)="logout()" class="boton-secundario">Cerrar sesión</button>
     </div>
   </section>
 
-  <!-- Sección Quienes Somos -->
+  <!-- Sección "Quienes Somos?" -->
   <section class="quienes-somos">
-    <img src="https://res.cloudinary.com/drsyb53ae/image/upload/v1749417431/panaderia-admin/qsrolxuuy3clckgygyde.jpg" alt="Panadería Don Luis" />
+    <img
+      src="https://res.cloudinary.com/drsyb53ae/image/upload/v1749417431/panaderia-admin/qsrolxuuy3clckgygyde.jpg"
+      alt="Panadería Don Luis"
+    />
     <div>
       <h2>¿Quiénes somos?</h2>
       <p>
-        En Panadería <span class="nombre-panaderia">Candy</span>, somos apasionados por el pan artesanal fresco y de calidad.
-        Con ingredientes naturales y recetas tradicionales, entregamos el mejor sabor a tu mesa cada día.
+        En Panadería <span class="nombre-panaderia">Candy</span>, somos
+        apasionados por el pan artesanal fresco y de calidad. Con ingredientes
+        naturales y recetas tradicionales, entregamos el mejor sabor a tu mesa
+        cada día.
       </p>
     </div>
   </section>
 
-  <!-- Galería de panes -->
+  <!-- Galería de imagenes de productos (panes) -->
   <section class="galeria">
     <h2>Galería de Pan Artesanal y Bolillo</h2>
     <div class="galeria-grid">
-      <img src="https://res.cloudinary.com/drsyb53ae/image/upload/v1749417414/panaderia-admin/cm6jflnnxl8uqgihmab9.jpg" alt="Pan bolillo fresco" />
-      <img src="https://res.cloudinary.com/drsyb53ae/image/upload/v1748989302/panaderia-admin/qf21gjk01gpspptvftjl.jpg" alt="Pan dulce" />
-      <img src="https://res.cloudinary.com/drsyb53ae/image/upload/v1748989303/panaderia-admin/isfnqloeteu48kqeplee.jpg" alt="Pan integral" />
-      <img src="https://res.cloudinary.com/drsyb53ae/image/upload/v1749075076/panaderia-admin/nmpch5xjyafm0aj7etbj.webp" alt="Pan con semillas" />
+      <img
+        src="https://res.cloudinary.com/drsyb53ae/image/upload/v1749417414/panaderia-admin/cm6jflnnxl8uqgihmab9.jpg"
+        alt="Pan bolillo fresco"
+      />
+      <img
+        src="https://res.cloudinary.com/drsyb53ae/image/upload/v1748989302/panaderia-admin/qf21gjk01gpspptvftjl.jpg"
+        alt="Pan dulce"
+      />
+      <img
+        src="https://res.cloudinary.com/drsyb53ae/image/upload/v1748989303/panaderia-admin/isfnqloeteu48kqeplee.jpg"
+        alt="Pan integral"
+      />
+      <img
+        src="https://res.cloudinary.com/drsyb53ae/image/upload/v1749075076/panaderia-admin/nmpch5xjyafm0aj7etbj.webp"
+        alt="Pan con semillas"
+      />
     </div>
   </section>
 
-  <!-- Beneficios -->
+  <!-- Lista de beneficios -->
   <section class="beneficios">
     <h2>Beneficios de comprar con nosotros</h2>
     <ul>
-      <li> Pan fresco todos los días</li>
-      <li> Ingredientes naturales y sin conservadores</li>
-      <li> Entregas puntuales y confiables</li>
-      <li> Pedidos anticipados y personalizados</li>
+      <li>Pan fresco todos los días</li>
+      <li>Ingredientes naturales y sin conservadores</li>
+      <li>Entregas puntuales y confiables</li>
+      <li>Pedidos anticipados y personalizados</li>
     </ul>
   </section>
 
-  <!-- Botones de navegación según rol -->
+  <!-- Botones que cambian segun el rol del usuario -->
   <div class="botones-rol" *ngIf="autenticado">
-
-    <button *ngIf="rol === 'cliente'" routerLink="/repartidor/registrar-pedido" class="boton-principal">
+    <button
+      *ngIf="rol === 'cliente'"
+      routerLink="/repartidor/registrar-pedido"
+      class="boton-principal"
+    >
       📦 Hacer pedido
     </button>
 
-    <button *ngIf="rol === 'admin'" routerLink="/admin/dashboard" class="boton-principal">
+    <button
+      *ngIf="rol === 'admin'"
+      routerLink="/admin/dashboard"
+      class="boton-principal"
+    >
       🛠️ Panel de administración
     </button>
 
-    <button *ngIf="rol === 'repartidor'" routerLink="/repartidor/ruta-del-dia" class="boton-principal">
+    <button
+      *ngIf="rol === 'repartidor'"
+      routerLink="/repartidor/ruta-del-dia"
+      class="boton-principal"
+    >
       🚚 Área de repartidor
     </button>
-
   </div>
 
-  <footer>
-    &copy; 2025 Panadería Candy
-  </footer>
+  <!--Pie de pagina-->
+  <footer>&copy; 2025 Panadería Candy</footer>
 </div>

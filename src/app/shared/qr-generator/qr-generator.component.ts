@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-qr-generator',
   imports: [CommonModule, QRCodeComponent, FormsModule],
   templateUrl: './qr-generator.component.html',
-  styleUrls: ['./qr-generator.component.css']
+  styleUrls: ['./qr-generator.component.css'],
 })
 export class QrGeneratorComponent implements OnInit {
   @Input() qrData = '';
@@ -20,7 +20,9 @@ export class QrGeneratorComponent implements OnInit {
   }
 
   descargarQr() {
-    const qrCanvas = document.querySelector('qrcode canvas') as HTMLCanvasElement;
+    const qrCanvas = document.querySelector(
+      'qrcode canvas',
+    ) as HTMLCanvasElement;
     if (qrCanvas) {
       const url = qrCanvas.toDataURL('image/png');
       const a = document.createElement('a');
@@ -30,4 +32,3 @@ export class QrGeneratorComponent implements OnInit {
     }
   }
 }
-

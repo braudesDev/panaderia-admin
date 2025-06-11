@@ -1,16 +1,17 @@
-/* Estilos generales */
+/* Estilos generales del contenedor principal*/
 .home-container {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #4e342e; /* Marrón oscuro */
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
 }
 
-/* Hero */
+/* Seccion Hero (Encabezado principal con fondo e intro */
 .hero {
   position: relative;
-  background: url('https://res.cloudinary.com/drsyb53ae/image/upload/v1749417397/panaderia-admin/vy3gz9dcrmd2aumsccul.jpg') no-repeat center center/cover;
+  background: url("https://res.cloudinary.com/drsyb53ae/image/upload/v1749417397/panaderia-admin/vy3gz9dcrmd2aumsccul.jpg")
+    no-repeat center center/cover;
   color: white;
   padding: 120px 20px 80px;
   text-align: center;
@@ -20,42 +21,48 @@
   overflow: hidden;
 }
 
+/*Capa oscura semitransparente sobre la imagen para legibilidad*/
 .hero::before {
-  content: '';
+  content: "";
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: rgba(0, 0, 0, 0.2); /* negro con 50% de opacidad */
   border-radius: 10px;
   z-index: 1;
 }
 
+/*Eleva el contenido textual por encima de la capa oscura*/
 .hero > * {
   position: relative;
   z-index: 2; /* eleva el texto sobre la capa oscura */
 }
 
-
-
+/*Titulo principal en Hero*/
 .hero h1 {
   font-size: 3.5rem;
   font-weight: 800;
   margin-bottom: 15px;
-  text-shadow: 0 0 10px rgba(0,0,0,0.6);
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
 }
 
+/*texto con efecto Typewritter*/
 #nombre-panaderia1 {
   font-size: 3.5rem;
   color: #ff460e;
-  text-shadow: 0 0 10px rgba(0,0,0,0.6);
-
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
 }
 
+/*Subtitulo o descripcion*/
 .hero p {
   font-size: 1.3rem;
   margin-bottom: 30px;
-  text-shadow: 0 0 8px rgba(0,0,0,0.5);
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
 }
 
+/*Boton principal del hero*/
 .hero button {
   background-color: #f44336;
   border: none;
@@ -68,17 +75,19 @@
   transition: background-color 0.3s ease;
 }
 
+/*Estilo de nombre destacado*/
 .nombre-panaderia {
   font-weight: 900;
   font-size: 20px;
   color: #e7195a;
 }
 
+/*Hover del boton del hero*/
 .hero button:hover {
   background-color: #d32f2f;
 }
 
-/* Sección Quienes somos */
+/* Sección "Quienes somos?" */
 .quienes-somos {
   margin-top: 60px;
   display: flex;
@@ -87,6 +96,7 @@
   flex-wrap: wrap;
 }
 
+/*Imagen de la seccion*/
 .quienes-somos img {
   flex: 1 1 320px;
   max-width: 400px;
@@ -94,22 +104,25 @@
   box-shadow: 0 4px 10px rgb(0 0 0 / 0.15);
 }
 
+/*Contenedor del texto*/
 .quienes-somos div {
   flex: 2 1 400px;
 }
 
+/*Titulo de la seccion*/
 .quienes-somos h2 {
   font-size: 2rem;
   margin-bottom: 10px;
   color: #6d4c41;
 }
 
+/*Parrafo descriptivo*/
 .quienes-somos p {
   font-size: 1.1rem;
   line-height: 1.6;
 }
 
-/* Galería */
+/* Seccion de la galería de imagenes*/
 .galeria {
   margin-top: 50px;
   text-align: center;
@@ -121,11 +134,13 @@
   color: #6d4c41;
 }
 
+/*Diseno de la cuadricula de la galeria*/
 .galeria-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
 }
+
 
 .galeria-grid img {
   width: 100%;
@@ -136,11 +151,12 @@
   transition: transform 0.3s ease;
 }
 
+/*Animacion al pasar el cursor sobre una imagen*/
 .galeria-grid img:hover {
   transform: scale(1.05);
 }
 
-/* Beneficios */
+/* Seccion de beneficios */
 .beneficios {
   background-color: #cab9b9;
   padding: 40px 20px;
@@ -156,6 +172,7 @@
   color: #6d4c41;
 }
 
+/*Lista de beneficios*/
 .beneficios ul {
   list-style-type: none;
   padding: 0;
@@ -174,6 +191,7 @@
   box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
 }
 
+/*Botones reutilizables*/
 .boton-principal {
   background-color: #d84315; /* naranja oscuro */
   color: white;
@@ -205,6 +223,7 @@
   background-color: #424242;
 }
 
+/*Contenedor de botones segun rol*/
 .botones-rol {
   margin-top: 30px;
   display: flex;
@@ -213,7 +232,7 @@
   max-width: 250px;
 }
 
-/* Botón de registro */
+/* Botón grande para registro */
 .boton-registro {
   display: block;
   margin: 45px auto 20px;
@@ -232,7 +251,7 @@
   background-color: #b53c13;
 }
 
-/* Footer */
+/* Pie de pagina */
 footer {
   margin-top: 70px;
   padding: 20px 10px;
@@ -242,13 +261,14 @@ footer {
   border-top: 1px solid #d7ccc8;
 }
 
-/* Responsive */
+/* Responsividad para moviles y tablets */
 @media (max-width: 768px) {
   .quienes-somos {
     flex-direction: column;
   }
 
-  .quienes-somos img, .quienes-somos div {
+  .quienes-somos img,
+  .quienes-somos div {
     max-width: 100%;
   }
 
@@ -279,12 +299,11 @@ footer {
     font-size: 1rem;
   }
 
-#nombre-panaderia1 {
-  font-size: 2rem;
-  color: #ff460e;
-  text-shadow: 0 0 10px rgba(0,0,0,0.6);
-}
-
+  #nombre-panaderia1 {
+    font-size: 2rem;
+    color: #ff460e;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+  }
 
   .quienes-somos {
     flex-direction: column;
@@ -333,4 +352,3 @@ footer {
     font-size: 0.8rem;
   }
 }
-

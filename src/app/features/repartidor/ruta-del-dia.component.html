@@ -3,71 +3,106 @@
 <app-scanner-qr (qrEscaneado)="procesarQr($event)"></app-scanner-qr>
 
 <!-- Versión combinada optimizada -->
-<div *ngFor="let tienda of tiendas; trackBy: trackByClienteId" class="card" [id]="'tienda-'+tienda.clienteId">
+<div
+  *ngFor="let tienda of tiendas; trackBy: trackByClienteId"
+  class="card"
+  [id]="'tienda-' + tienda.clienteId"
+>
   <!-- Busca el registro por clienteId en lugar de usar el índice -->
-  <mat-card [class.activo]="getRegistro(tienda.clienteId)?.clienteId === clienteActual?.clienteId">
+  <mat-card
+    [class.activo]="
+      getRegistro(tienda.clienteId)?.clienteId === clienteActual?.clienteId
+    "
+  >
     <mat-card-header>
       <mat-card-title>{{ tienda.tienda }}</mat-card-title>
-      <mat-card-subtitle>{{ tienda.direccion }} - {{ tienda.hora }}</mat-card-subtitle>
+      <mat-card-subtitle
+        >{{ tienda.direccion }} - {{ tienda.hora }}</mat-card-subtitle
+      >
     </mat-card-header>
 
     <!-- Muestra contenido solo si es el cliente actual -->
-    <mat-card-content *ngIf="getRegistro(tienda.clienteId)?.clienteId === clienteActual?.clienteId">
+    <mat-card-content
+      *ngIf="
+        getRegistro(tienda.clienteId)?.clienteId === clienteActual?.clienteId
+      "
+    >
       <ng-container *ngIf="getRegistro(tienda.clienteId) as registro">
-
         <!-- Tus formularios originales (seguros con getRegistro) -->
         <mat-form-field appearance="outline">
           <mat-label>Entrega Inicial</mat-label>
-          <input matInput
-                  type="number"
-                  [(ngModel)]="registro.entregaInicial"
-                  min="0"
-                (change)="actualizarCobroTotal(registro)"
-                [value]="registro.entregaInicial ?? 0"/>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="registro.entregaInicial"
+            min="0"
+            (change)="actualizarCobroTotal(registro)"
+            [value]="registro.entregaInicial ?? 0"
+          />
         </mat-form-field>
-
 
         <div>
           <label><strong>Entregas Extras</strong></label>
-          <div *ngFor="let extra of registro.entregasExtras; let i = index; trackBy: trackByIndex">
+          <div
+            *ngFor="
+              let extra of registro.entregasExtras;
+              let i = index;
+              trackBy: trackByIndex
+            "
+          >
             <mat-form-field appearance="outline">
               <mat-label>Entrega extra {{ i + 1 }}</mat-label>
-              <input matInput type="number"
-                    [(ngModel)]="registro.entregasExtras[i]"
-                    min="0"
-                    placeholder="0"
-                    autocomplete="off"
-                    (ngModelChange)="actualizarCobroTotal(registro)" />
+              <input
+                matInput
+                type="number"
+                [(ngModel)]="registro.entregasExtras[i]"
+                min="0"
+                placeholder="0"
+                autocomplete="off"
+                (ngModelChange)="actualizarCobroTotal(registro)"
+              />
             </mat-form-field>
-        </div>
-
+          </div>
 
           <div class="add-extra-container">
-            <button mat-mini-fab color="primary" (click)="agregarEntregasExtras(registro)" class="add-extra-button">
+            <button
+              mat-mini-fab
+              color="primary"
+              (click)="agregarEntregasExtras(registro)"
+              class="add-extra-button"
+            >
               <mat-icon>add</mat-icon>
             </button>
             <span>Agregar entrega extra</span>
           </div>
-
         </div>
-
 
         <mat-form-field appearance="outline">
           <mat-label>Tiras Sobrantes</mat-label>
-          <input matInput type="number" [(ngModel)]="registro.tirasSobrantes" min="0"
-                (ngModelChange)="actualizarCobroTotal(registro)" [value]="registro.tirasSobrantes" />
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="registro.tirasSobrantes"
+            min="0"
+            (ngModelChange)="actualizarCobroTotal(registro)"
+            [value]="registro.tirasSobrantes"
+          />
         </mat-form-field>
 
         <p><strong>Tiras Vendidas:</strong> {{ registro.tirasVendidas }}</p>
         <p><strong>Cobro Total:</strong> ${{ registro.cobroTotal }}</p>
-
       </ng-container>
     </mat-card-content>
   </mat-card>
 </div>
 
 <!-- Botón con spinner de carga -->
-<button mat-raised-button color="primary" (click)="registrarEntregas()" [disabled]="isLoading">
+<button
+  mat-raised-button
+  color="primary"
+  (click)="registrarEntregas()"
+  [disabled]="isLoading"
+>
   <span *ngIf="!isLoading">Guardar entregas</span>
   <mat-spinner *ngIf="isLoading" diameter="20" strokeWidth="3"></mat-spinner>
 </button>
@@ -81,11 +116,19 @@
   <tr *ngFor="let tienda of tiendas; trackBy: trackByClienteId">
     <td>
       {{ tienda.tienda }}
-      <mat-icon *ngIf="getRegistro(tienda.clienteId)?.sincronizado" color="primary" title="Sincronizado">cloud_done</mat-icon>
-      <mat-icon *ngIf="!getRegistro(tienda.clienteId)?.sincronizado" color="warn" title="Pendiente">cloud_upload</mat-icon>
+      <mat-icon
+        *ngIf="getRegistro(tienda.clienteId)?.sincronizado"
+        color="primary"
+        title="Sincronizado"
+        >cloud_done</mat-icon
+      >
+      <mat-icon
+        *ngIf="!getRegistro(tienda.clienteId)?.sincronizado"
+        color="warn"
+        title="Pendiente"
+        >cloud_upload</mat-icon
+      >
     </td>
     <!-- ...resto de columnas... -->
-
   </tr>
 </table>
-

@@ -8,9 +8,8 @@ describe('QrGeneratorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [QrGeneratorComponent]
-    })
-    .compileComponents();
+      imports: [QrGeneratorComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(QrGeneratorComponent);
     component = fixture.componentInstance;

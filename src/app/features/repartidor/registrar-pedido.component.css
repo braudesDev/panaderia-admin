@@ -4,7 +4,8 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: url('https://res.cloudinary.com/drsyb53ae/image/upload/v1749072945/panaderia-admin/ouhdq1g8datfpxfrvr0v.svg') no-repeat center center;
+  background: url("https://res.cloudinary.com/drsyb53ae/image/upload/v1749072945/panaderia-admin/ouhdq1g8datfpxfrvr0v.svg")
+    no-repeat center center;
   background-size: cover;
   z-index: -1;
   pointer-events: none; /* 🔒 Impide que bloquee clics */
@@ -32,7 +33,6 @@
   gap: 10px;
   color: #ffffff;
   margin-bottom: 2rem;
-
 }
 
 .icono-titulo {
@@ -87,7 +87,8 @@ mat-form-field {
 }
 
 /* Ajuste interno para inputs y textarea */
-input[matInput], textarea[matInput] {
+input[matInput],
+textarea[matInput] {
   padding: 12px 14px !important;
   box-sizing: border-box;
 }
@@ -121,7 +122,6 @@ mat-form-field {
   margin-bottom: 0.5em;
   font-size: 0.95em;
 }
-
 
 .badge-cliente {
   color: #fff;
@@ -196,4 +196,3 @@ mat-form-field {
     margin-bottom: 0.9em;
   }
 }
-

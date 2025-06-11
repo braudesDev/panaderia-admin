@@ -12,7 +12,7 @@ h1 {
 }
 
 h1::after {
-  content: '';
+  content: "";
   display: block;
   width: 60px;
   height: 3px;
@@ -25,7 +25,9 @@ h1::after {
 .card {
   margin: 18px auto;
   max-width: 800px;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
   cursor: pointer;
 }
 
@@ -146,10 +148,18 @@ button[mat-raised-button]:active {
 }
 
 @keyframes fadeInOut {
-  0% { opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { opacity: 0; }
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 /* ENTREGA EXTRA */
@@ -234,7 +244,6 @@ button[mat-raised-button]:active {
   border-radius: 50%;
   padding: 4px;
 }
-
 
 /* RESPONSIVE PARA MÓVILES */
 @media (max-width: 600px) {

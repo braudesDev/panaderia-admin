@@ -1,41 +1,52 @@
+<!--Fondo decorativo apra dar un estilo visual-->
 <div class="background"></div>
+
+<!--Contenedor principal de la lista de pedidos-->
 <div class="pedidos-container">
-  <!-- Encabezado con efecto neón -->
+  <!-- Seccion del encabezado con el titulo y el filtro de busqueda -->
   <div class="header-section">
     <h2 class="titulo-lista">
       <mat-icon class="icono-titulo">list_alt</mat-icon>
       Historial de Pedidos
     </h2>
     <div class="filtros">
+      <!--Campo para filtrar pedidos por nombre de cliente-->
       <mat-form-field appearance="outline" floatLabel="always">
         <mat-label>Filtrar</mat-label>
-        <input matInput placeholder="Por cliente..." [(ngModel)]="filtro">
+        <input matInput placeholder="Por cliente..." [(ngModel)]="filtro" />
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
     </div>
   </div>
 
+  <!--Componente de Angular Material con pestanas-->
   <mat-tab-group>
+    <!--Primera pestana muestra los pedidos realizados en la fecha actual-->
     <mat-tab label="Pedidos de hoy">
       <div class="grid-pedidos">
-        <mat-card *ngFor="let pedido of pedidosDeHoy | clienteFiltro: filtro"
-                  class="pedido-card"
-                  [class.admin]="rolUsuario === 'admin'"
-                  (click)="toggleDetalles(pedido)">
+        <!--Recorre los pedidos de hoy, aplicando el filtro del cliente-->
+        <mat-card
+          *ngFor="let pedido of pedidosDeHoy | clienteFiltro: filtro"
+          class="pedido-card"
+          [class.admin]="rolUsuario === 'admin'"
+          (click)="toggleDetalles(pedido)"
+        >
+
+        <!--Encabezado del pedido-->
           <div class="card-header">
             <div class="cliente-info">
               <mat-icon class="avatar-icon">person</mat-icon>
               <h3>{{ pedido.cliente }}</h3>
             </div>
-            <span class="fecha">{{ pedido.fecha | date:'mediumDate' }}</span>
+            <span class="fecha">{{ pedido.fecha | date: "mediumDate" }}</span>
             <span class="badge-tiras">{{ pedido.tiras }} tiras</span>
           </div>
 
-          <!-- Detalles expandibles -->
+          <!-- Detalles expandibles del pedido -->
           <div class="detalles" [class.expanded]="pedido.mostrarDetalles">
             <div class="detalle-item">
               <mat-icon>event</mat-icon>
-              <span>{{ pedido.fecha | date:'fullDate' }}</span>
+              <span>{{ pedido.fecha | date: "fullDate" }}</span>
             </div>
 
             <div class="detalle-item" *ngIf="pedido.hora">
@@ -48,12 +59,20 @@
               <p>{{ pedido.notas }}</p>
             </div>
 
-            <!-- Acciones admin -->
+            <!-- Botones para editar o eliminar(visibles solo para los admins) -->
             <div class="acciones" *ngIf="rolUsuario === 'admin'">
-              <button mat-icon-button color="warn" (click)="eliminar(pedido.id!); $event.stopPropagation()">
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="eliminar(pedido.id!); $event.stopPropagation()"
+              >
                 <mat-icon>delete</mat-icon>
               </button>
-              <button mat-icon-button color="primary" (click)="editarPedido(pedido)">
+              <button
+                mat-icon-button
+                color="primary"
+                (click)="editarPedido(pedido)"
+              >
                 <mat-icon>edit</mat-icon>
               </button>
             </div>
@@ -61,18 +80,25 @@
         </mat-card>
       </div>
     </mat-tab>
+
+    <!--Segunda pestana: historial de pedidos anteriores-->
     <mat-tab label="Historial">
       <div class="grid-pedidos">
-        <mat-card *ngFor="let pedido of pedidosHistoricosPaginados | clienteFiltro: filtro"
-                  class="pedido-card"
-                  [class.admin]="rolUsuario === 'admin'"
-                  (click)="toggleDetalles(pedido)">
+        <mat-card
+          *ngFor="
+            let pedido of pedidosHistoricosPaginados | clienteFiltro: filtro
+          "
+          class="pedido-card"
+          [class.admin]="rolUsuario === 'admin'"
+          (click)="toggleDetalles(pedido)"
+        >
+        <!--Informacion principal del pedido-->
           <div class="card-header">
             <div class="cliente-info">
               <mat-icon class="avatar-icon">person</mat-icon>
               <h3>{{ pedido.cliente }}</h3>
             </div>
-            <span class="fecha">{{ pedido.fecha | date:'mediumDate' }}</span>
+            <span class="fecha">{{ pedido.fecha | date: "mediumDate" }}</span>
             <span class="badge-tiras">{{ pedido.tiras }} tiras</span>
           </div>
 
@@ -80,7 +106,7 @@
           <div class="detalles" [class.expanded]="pedido.mostrarDetalles">
             <div class="detalle-item">
               <mat-icon>event</mat-icon>
-              <span>{{ pedido.fecha | date:'fullDate' }}</span>
+              <span>{{ pedido.fecha | date: "fullDate" }}</span>
             </div>
 
             <div class="detalle-item" *ngIf="pedido.hora">
@@ -93,12 +119,20 @@
               <p>{{ pedido.notas }}</p>
             </div>
 
-            <!-- Acciones admin -->
+            <!-- Acciones administrativas -->
             <div class="acciones" *ngIf="rolUsuario === 'admin'">
-              <button mat-icon-button color="warn" (click)="eliminar(pedido.id!); $event.stopPropagation()">
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="eliminar(pedido.id!); $event.stopPropagation()"
+              >
                 <mat-icon>delete</mat-icon>
               </button>
-              <button mat-icon-button color="primary" (click)="editarPedido(pedido)">
+              <button
+                mat-icon-button
+                color="primary"
+                (click)="editarPedido(pedido)"
+              >
                 <mat-icon>edit</mat-icon>
               </button>
             </div>
@@ -107,15 +141,25 @@
       </div>
     </mat-tab>
 
+    <!--Controles de paginacion para el historial-->
     <div class="paginacion" *ngIf="totalPaginas > 1">
-      <button mat-stroked-button color="primary" (click)="paginaActual = paginaActual - 1" [disabled]="paginaActual === 1">
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="paginaActual = paginaActual - 1"
+        [disabled]="paginaActual === 1"
+      >
         Anterior
       </button>
-      <span>Página {{paginaActual}} de {{totalPaginas}}</span>
-      <button mat-stroked-button color="primary" (click)="paginaActual = paginaActual + 1" [disabled]="paginaActual === totalPaginas">
+      <span>Página {{ paginaActual }} de {{ totalPaginas }}</span>
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="paginaActual = paginaActual + 1"
+        [disabled]="paginaActual === totalPaginas"
+      >
         Siguiente
       </button>
     </div>
-
   </mat-tab-group>
 </div>

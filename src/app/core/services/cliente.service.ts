@@ -8,12 +8,12 @@ import {
   getDoc,
   setDoc,
   deleteDoc,
-  CollectionReference
+  CollectionReference,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
 export interface Cliente {
-  id?: string;  // Opcional porque no existe al crear
+  id?: string; // Opcional porque no existe al crear
   nombre: string;
   telefono: string;
   direccion: string;
@@ -23,8 +23,11 @@ export interface Cliente {
 export class ClienteService {
   private clientesRef: CollectionReference<Cliente>;
 
-    constructor(private firestore: Firestore) {
-    this.clientesRef = collection(this.firestore, 'clientes') as CollectionReference<Cliente>;
+  constructor(private firestore: Firestore) {
+    this.clientesRef = collection(
+      this.firestore,
+      'clientes',
+    ) as CollectionReference<Cliente>;
   }
 
   eliminarCliente(id: string): Promise<void> {
@@ -35,7 +38,7 @@ export class ClienteService {
   // Versión más limpia para obtener clientes
   obtenerClientes(): Observable<(Cliente & { id: string })[]> {
     return collectionData(this.clientesRef, {
-      idField: 'id' // Inyecta el ID del documento en este campo
+      idField: 'id', // Inyecta el ID del documento en este campo
     }) as Observable<(Cliente & { id: string })[]>;
   }
 
@@ -62,10 +65,8 @@ export class ClienteService {
     const docRef = doc(this.firestore, `clientes/${id}`);
     const docSnap = await getDoc(docRef);
 
-    return docSnap.exists() ?
-      { id: docSnap.id, ...docSnap.data() } as Cliente :
-      undefined;
+    return docSnap.exists()
+      ? ({ id: docSnap.id, ...docSnap.data() } as Cliente)
+      : undefined;
   }
-
-
 }

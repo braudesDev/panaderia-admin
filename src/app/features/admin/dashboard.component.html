@@ -11,13 +11,22 @@
 
   <div>
     <label for="fecha">Seleccionar Fecha:</label>
-    <input type="date" id="fecha" [(ngModel)]="fechaSeleccionada" (change)="onFechaChange(fechaSeleccionada)" />
+    <input
+      type="date"
+      id="fecha"
+      [(ngModel)]="fechaSeleccionada"
+      (change)="onFechaChange(fechaSeleccionada)"
+    />
     <button (click)="cargarSobrantes()">Actualizar</button>
   </div>
 
   <div class="selector-vista">
     <label for="vista">Ver resumen por:</label>
-    <select id="vista" [(ngModel)]="vistaSeleccionada" (change)="onVistaChange()">
+    <select
+      id="vista"
+      [(ngModel)]="vistaSeleccionada"
+      (change)="onVistaChange()"
+    >
       <option value="día">Día</option>
       <option value="semana">Semana</option>
       <option value="mes">Mes</option>
@@ -49,12 +58,14 @@
 
   <h3>
     Detalle de registros por
-    {{ vistaSeleccionada === 'día' ? 'día' : vistaSeleccionada }}
+    {{ vistaSeleccionada === "día" ? "día" : vistaSeleccionada }}
   </h3>
   <div *ngFor="let grupo of registrosPorPeriodo">
     <button class="colapsar-btn" (click)="toggleColapsado(grupo.periodo)">
       {{ grupo.periodo }}
-      <mat-icon>{{ colapsados[grupo.periodo] ? 'expand_less' : 'expand_more' }}</mat-icon>
+      <mat-icon>{{
+        colapsados[grupo.periodo] ? "expand_less" : "expand_more"
+      }}</mat-icon>
     </button>
     <table *ngIf="colapsados[grupo.periodo]">
       <thead>
@@ -69,57 +80,91 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let s of getRegistrosPaginados(grupo.periodo, grupo.registros)">
+        <tr
+          *ngFor="
+            let s of getRegistrosPaginados(grupo.periodo, grupo.registros)
+          "
+        >
           <td>{{ obtenerNombreCliente(s.clienteId) }}</td>
           <td>{{ s.entregadas }}</td>
           <td>{{ s.sobrantes }}</td>
           <td>{{ calcularPorcentaje(s.sobrantes, s.entregadas) }}%</td>
           <td>{{ s.fecha }}</td>
           <td>
-            {{ s.repartidorNombre || obtenerNombreRepartidor(s.repartidorId) }}<br>
-            <small *ngIf="!obtenerNombreRepartidor(s.repartidorId)">ID: {{ s.repartidorId }}</small>
+            {{ s.repartidorNombre || obtenerNombreRepartidor(s.repartidorId)
+            }}<br />
+            <small *ngIf="!obtenerNombreRepartidor(s.repartidorId)"
+              >ID: {{ s.repartidorId }}</small
+            >
           </td>
 
-          <td [ngClass]="{'alerta': s.alerta, 'normal': !s.alerta}">
-            {{ s.alerta ? '⚠️' : '✅' }}
+          <td [ngClass]="{ alerta: s.alerta, normal: !s.alerta }">
+            {{ s.alerta ? "⚠️" : "✅" }}
           </td>
         </tr>
       </tbody>
     </table>
 
-    <div class="paginacion" *ngIf="getTotalPaginasPeriodo(grupo.registros) > 1 && colapsados[grupo.periodo]">
-      <button mat-stroked-button color="primary"
-        (click)="cambiarPaginaPeriodo(grupo.periodo, (paginacionPorPeriodo[grupo.periodo].pagina || 1) - 1)"
-        [disabled]="(paginacionPorPeriodo[grupo.periodo].pagina || 1) === 1">
+    <div
+      class="paginacion"
+      *ngIf="
+        getTotalPaginasPeriodo(grupo.registros) > 1 && colapsados[grupo.periodo]
+      "
+    >
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="
+          cambiarPaginaPeriodo(
+            grupo.periodo,
+            (paginacionPorPeriodo[grupo.periodo].pagina || 1) - 1
+          )
+        "
+        [disabled]="(paginacionPorPeriodo[grupo.periodo].pagina || 1) === 1"
+      >
         Anterior
       </button>
       <span>
-        Página {{ paginacionPorPeriodo[grupo.periodo].pagina || 1 }} de {{ getTotalPaginasPeriodo(grupo.registros) }}
+        Página {{ paginacionPorPeriodo[grupo.periodo].pagina || 1 }} de
+        {{ getTotalPaginasPeriodo(grupo.registros) }}
       </span>
-      <button mat-stroked-button color="primary"
-        (click)="cambiarPaginaPeriodo(grupo.periodo, (paginacionPorPeriodo[grupo.periodo].pagina || 1) + 1)"
-        [disabled]="(paginacionPorPeriodo[grupo.periodo].pagina || 1) === getTotalPaginasPeriodo(grupo.registros)">
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="
+          cambiarPaginaPeriodo(
+            grupo.periodo,
+            (paginacionPorPeriodo[grupo.periodo].pagina || 1) + 1
+          )
+        "
+        [disabled]="
+          (paginacionPorPeriodo[grupo.periodo].pagina || 1) ===
+          getTotalPaginasPeriodo(grupo.registros)
+        "
+      >
         Siguiente
       </button>
     </div>
   </div>
 </div>
-  <div class="graficas">
-    <h3>Entregadas vs Sobrantes por día</h3>
-    <canvas
-      baseChart
-      #barChartRef
-      [data]="barChartData"
-      [options]="barChartOptions"
-      [type]="'bar'">
-    </canvas>
+<div class="graficas">
+  <h3>Entregadas vs Sobrantes por día</h3>
+  <canvas
+    baseChart
+    #barChartRef
+    [data]="barChartData"
+    [options]="barChartOptions"
+    [type]="'bar'"
+  >
+  </canvas>
 
-    <h3>Clientes en alerta vs normales</h3>
-    <canvas
-      baseChart
-      #pieChartRef
-      [data]="pieChartData"
-      [options]="pieChartOptions"
-      [type]="'doughnut'">
-    </canvas>
-  </div>
+  <h3>Clientes en alerta vs normales</h3>
+  <canvas
+    baseChart
+    #pieChartRef
+    [data]="pieChartData"
+    [options]="pieChartOptions"
+    [type]="'doughnut'"
+  >
+  </canvas>
+</div>

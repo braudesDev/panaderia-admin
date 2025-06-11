@@ -28,14 +28,13 @@ export interface RegistroDeRuta {
   tirasSobrantes: number | null;
   sobrantes?: number;
   cobroTotal: number;
-  repartidorId?: string;          // id del repartidor
-  repartidorNombre?: string;      // nombre del repartidor (opcional, para mostrar fácilmente)
-  repartidorCorreo?: string;      // correo del repartidor (opcional)
+  repartidorId?: string; // id del repartidor
+  repartidorNombre?: string; // nombre del repartidor (opcional, para mostrar fácilmente)
+  repartidorCorreo?: string; // correo del repartidor (opcional)
   porcentajeSobrantes?: number;
   sincronizado?: boolean;
   usuarioId?: string;
 }
-
 
 @Component({
   selector: 'app-ruta-del-dia',
@@ -51,11 +50,10 @@ export interface RegistroDeRuta {
     MatInputModule,
     ScannerQrComponent,
     MatSnackBarModule,
-    MatProgressSpinnerModule
-  ]
+    MatProgressSpinnerModule,
+  ],
 })
 export class RutaDelDiaComponent implements OnInit {
-
   entregasGuardadas = false;
 
   precioPorTira = 10;
@@ -71,7 +69,7 @@ export class RutaDelDiaComponent implements OnInit {
     private snackBar: MatSnackBar,
     private clienteContext: ClienteContextService,
     private sobrantesService: SobrantesService,
-    private authService: AuthService
+    private authService: AuthService,
   ) {}
 
   ngOnInit() {
@@ -81,13 +79,13 @@ export class RutaDelDiaComponent implements OnInit {
     if (datosGuardados) {
       this.registrosRuta = JSON.parse(datosGuardados).map((registro: any) => ({
         ...registro,
-        sincronizado: registro.sincronizado === true // Asegura que exista la propiedad
+        sincronizado: registro.sincronizado === true, // Asegura que exista la propiedad
       }));
-      this.tiendas = this.registrosRuta.map(registro => ({
+      this.tiendas = this.registrosRuta.map((registro) => ({
         clienteId: registro.clienteId,
         tienda: registro.clienteNombre,
         direccion: registro.clienteDireccion,
-        hora: '08:00 AM'
+        hora: '08:00 AM',
       }));
     } else {
       this.cargarDatosIniciales();
@@ -95,71 +93,73 @@ export class RutaDelDiaComponent implements OnInit {
   }
 
   private obtenerFechaLocal(): string {
-  const ahora = new Date();
-  const offset = ahora.getTimezoneOffset() * 60000;
-  const local = new Date(ahora.getTime() - offset);
-  return local.toISOString().split('T')[0];
-}
-
+    const ahora = new Date();
+    const offset = ahora.getTimezoneOffset() * 60000;
+    const local = new Date(ahora.getTime() - offset);
+    return local.toISOString().split('T')[0];
+  }
 
   async cargarDatosIniciales() {
-  this.isLoading = true;
-  try {
-    const clientes = await firstValueFrom(this.clienteService.obtenerClientes());
+    this.isLoading = true;
+    try {
+      const clientes = await firstValueFrom(
+        this.clienteService.obtenerClientes(),
+      );
 
-    this.tiendas = clientes.map(cliente => ({
-      clienteId: cliente.id!, // Usamos ! porque sabemos que collectionData lo añade
-      tienda: cliente.nombre,
-      direccion: cliente.direccion,
-      hora: '08:00 AM'
-    }));
+      this.tiendas = clientes.map((cliente) => ({
+        clienteId: cliente.id!, // Usamos ! porque sabemos que collectionData lo añade
+        tienda: cliente.nombre,
+        direccion: cliente.direccion,
+        hora: '08:00 AM',
+      }));
 
-    this.registrosRuta = clientes.map(cliente => ({
-      clienteId: cliente.id!,
-      clienteNombre: cliente.nombre,
-      clienteDireccion: cliente.direccion,
-      fecha: this.obtenerFechaLocal(),
-      entregaInicial: 0,
-      entregasExtras: [],
-      tirasVendidas: 0,
-      tirasSobrantes: 0,
-      cobroTotal: 0
-    }));
-
-  } catch (error) {
-    this.manejarError(error, 'Error al cargar clientes');
-  } finally {
-    this.isLoading = false;
+      this.registrosRuta = clientes.map((cliente) => ({
+        clienteId: cliente.id!,
+        clienteNombre: cliente.nombre,
+        clienteDireccion: cliente.direccion,
+        fecha: this.obtenerFechaLocal(),
+        entregaInicial: 0,
+        entregasExtras: [],
+        tirasVendidas: 0,
+        tirasSobrantes: 0,
+        cobroTotal: 0,
+      }));
+    } catch (error) {
+      this.manejarError(error, 'Error al cargar clientes');
+    } finally {
+      this.isLoading = false;
+    }
   }
-}
-
 
   private obtenerClaveDelAlmacenamiento(): string {
     const fecha = this.obtenerFechaLocal();
     return `registroRuta-${fecha}`;
   }
 
-
-
   async cargarRegistros(): Promise<void> {
     this.isLoading = true;
     try {
       const [registros, clientes] = await Promise.all([
         firstValueFrom(this.rutaService.obtenerRegistros()),
-        firstValueFrom(this.clienteService.obtenerClientes())
+        firstValueFrom(this.clienteService.obtenerClientes()),
       ]);
 
-      const clientesMap = new Map(clientes.map(c => [c.id, c]));
+      const clientesMap = new Map(clientes.map((c) => [c.id, c]));
 
-      this.registrosRuta = registros.map(registro => ({
-        ...registro,
-        clienteNombre: clientesMap.get(registro.clienteId)?.nombre || 'Desconocido',
-        clienteDireccion: clientesMap.get(registro.clienteId)?.direccion || 'Sin dirección',
-        entregaInicial: registro.entregaInicial || 0,
-        entregasExtras: registro.entregasExtras || 0,
-        tirasSobrantes: registro.tirasSobrantes || 0
-      })).sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime());
-
+      this.registrosRuta = registros
+        .map((registro) => ({
+          ...registro,
+          clienteNombre:
+            clientesMap.get(registro.clienteId)?.nombre || 'Desconocido',
+          clienteDireccion:
+            clientesMap.get(registro.clienteId)?.direccion || 'Sin dirección',
+          entregaInicial: registro.entregaInicial || 0,
+          entregasExtras: registro.entregasExtras || 0,
+          tirasSobrantes: registro.tirasSobrantes || 0,
+        }))
+        .sort(
+          (a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime(),
+        );
     } catch (error) {
       this.manejarError(error, 'Error al cargar registros');
     } finally {
@@ -167,143 +167,158 @@ export class RutaDelDiaComponent implements OnInit {
     }
   }
 
-
   //Boton registrar entregas
-async registrarEntregas() {
-  const resultado = await Swal.fire({
-    title: '¿Estás seguro?',
-    text: '¿Deseas registrar las entregas del día de hoy?',
-    icon: 'question',
-    showCancelButton: true,
-    confirmButtonText: 'Sí, registrar',
-    cancelButtonText: 'Cancelar'
-  });
+  async registrarEntregas() {
+    const resultado = await Swal.fire({
+      title: '¿Estás seguro?',
+      text: '¿Deseas registrar las entregas del día de hoy?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, registrar',
+      cancelButtonText: 'Cancelar',
+    });
 
-  if (!resultado.isConfirmed) return;
+    if (!resultado.isConfirmed) return;
 
-  this.isLoading = true;
+    this.isLoading = true;
 
-  try {
-    const clientes = await firstValueFrom(this.clienteService.obtenerClientes());
-    const registrosValidos = this.registrosRuta.filter(r => this.registroTieneDatos(r));
+    try {
+      const clientes = await firstValueFrom(
+        this.clienteService.obtenerClientes(),
+      );
+      const registrosValidos = this.registrosRuta.filter((r) =>
+        this.registroTieneDatos(r),
+      );
 
-    if (registrosValidos.length === 0) {
-      await Swal.fire({
-        icon: 'info',
-        title: 'No hay entregas para registrar',
-        text: 'No hay entregas registradas para el día de hoy.',
-        confirmButtonText: 'Cerrar'
-      });
-      return;
-    }
+      if (registrosValidos.length === 0) {
+        await Swal.fire({
+          icon: 'info',
+          title: 'No hay entregas para registrar',
+          text: 'No hay entregas registradas para el día de hoy.',
+          confirmButtonText: 'Cerrar',
+        });
+        return;
+      }
 
-    const usuario = this.authService.getUsuario();
+      const usuario = this.authService.getUsuario();
 
-    if (!usuario) {
+      if (!usuario) {
+        await Swal.fire({
+          icon: 'error',
+          title: 'Usuario no autenticado',
+          text: 'No se pudo obtener la información del usuario actual.',
+          confirmButtonText: 'Cerrar',
+        });
+        return;
+      }
+
+      const usuarioActualId =
+        this.clienteContext.obtenerUsuarioActual()?.uid || usuario.uid;
+      const usuarioNombre = usuario.displayName ?? 'Sin nombre';
+      let guardados = 0;
+
+      for (const registro of registrosValidos) {
+        registro.usuarioId ??= usuarioActualId;
+        registro.repartidorId ??= usuarioActualId;
+        registro.repartidorNombre ??= usuarioNombre;
+
+        this.actualizarCobroTotal(registro);
+        registro.porcentajeSobrantes =
+          this.calcularPorcentajeSobrantes(registro);
+
+        const cliente = clientes.find((c) => c.id === registro.clienteId);
+        if (!cliente) continue;
+
+        if (registro.sincronizado === true) continue;
+        if (!registro.usuarioId) {
+          console.warn('⚠️ Registro sin usuarioId, se omitirá:', registro);
+          continue;
+        }
+
+        const yaExiste = await this.rutaService.verificarRegistroExistente(
+          registro.clienteId,
+          registro.fecha,
+          registro.usuarioId,
+        );
+        if (yaExiste) {
+          registro.sincronizado = true;
+          continue;
+        }
+
+        // Guardar ruta del día
+        await this.rutaService.guardarRegistro({
+          ...registro,
+          clienteNombre: cliente.nombre,
+          clienteDireccion: cliente.direccion,
+          usuarioId: registro.usuarioId,
+          repartidorId: usuarioActualId,
+        });
+
+        // Guardar sobrantes
+        const sobrante: RegistroSobrante = {
+          clienteId: registro.clienteId,
+          entregadas: registro.tirasVendidas,
+          sobrantes: registro.tirasSobrantes ?? 0,
+          porcentaje: registro.porcentajeSobrantes ?? 0,
+          alerta: false,
+          fecha: registro.fecha,
+          sincronizado: true,
+          repartidorId: usuarioActualId,
+          repartidorNombre: usuarioNombre, // <- esto falta
+        };
+
+        await this.sobrantesService.guardarRegistro(sobrante);
+
+        registro.sincronizado = true;
+        guardados++;
+      }
+
+      if (guardados === 0) {
+        await Swal.fire({
+          icon: 'info',
+          title: 'No hay nuevas entregas para registrar',
+          text: 'Todos los registros ya fueron sincronizados previamente.',
+          confirmButtonText: 'Cerrar',
+        });
+      } else {
+        // Limpiar localStorage y notificar
+        this.registrosRuta = this.registrosRuta.filter(
+          (r) => !this.registroTieneDatos(r) || r.sincronizado,
+        );
+        localStorage.setItem(
+          this.obtenerClaveDelAlmacenamiento(),
+          JSON.stringify(this.registrosRuta),
+        );
+        this.entregasGuardadas = true;
+
+        await Swal.fire({
+          icon: 'success',
+          title: 'Entregas Guardadas Correctamente',
+          text: `${guardados} entregas guardadas correctamente.`,
+          confirmButtonText: 'Cerrar',
+        });
+      }
+    } catch (error: any) {
+      console.error('Error detallado:', error);
+      const mensajeError =
+        error instanceof Error ? error.message : 'Ocurrió un error inesperado.';
       await Swal.fire({
         icon: 'error',
-        title: 'Usuario no autenticado',
-        text: 'No se pudo obtener la información del usuario actual.',
-        confirmButtonText: 'Cerrar'
+        title: 'Error al guardar entregas',
+        text: `Ocurrió un error al guardar las entregas: ${mensajeError}`,
+        confirmButtonText: 'Cerrar',
       });
-      return;
+    } finally {
+      this.isLoading = false;
     }
-
-    const usuarioActualId = this.clienteContext.obtenerUsuarioActual()?.uid || usuario.uid;
-    const usuarioNombre = usuario.displayName ?? 'Sin nombre';
-    let guardados = 0;
-
-    for (const registro of registrosValidos) {
-      registro.usuarioId ??= usuarioActualId;
-      registro.repartidorId ??= usuarioActualId;
-      registro.repartidorNombre ??= usuarioNombre;
-
-      this.actualizarCobroTotal(registro);
-      registro.porcentajeSobrantes = this.calcularPorcentajeSobrantes(registro);
-
-      const cliente = clientes.find(c => c.id === registro.clienteId);
-      if (!cliente) continue;
-
-      if (registro.sincronizado === true) continue;
-      if (!registro.usuarioId) {
-        console.warn('⚠️ Registro sin usuarioId, se omitirá:', registro);
-        continue;
-      }
-
-      const yaExiste = await this.rutaService.verificarRegistroExistente(registro.clienteId, registro.fecha, registro.usuarioId);
-      if (yaExiste) {
-        registro.sincronizado = true;
-        continue;
-      }
-
-      // Guardar ruta del día
-      await this.rutaService.guardarRegistro({
-        ...registro,
-        clienteNombre: cliente.nombre,
-        clienteDireccion: cliente.direccion,
-        usuarioId: registro.usuarioId,
-        repartidorId: usuarioActualId
-      });
-
-      // Guardar sobrantes
-      const sobrante: RegistroSobrante = {
-        clienteId: registro.clienteId,
-        entregadas: registro.tirasVendidas,
-        sobrantes: registro.tirasSobrantes ?? 0,
-        porcentaje: registro.porcentajeSobrantes ?? 0,
-        alerta: false,
-        fecha: registro.fecha,
-        sincronizado: true,
-        repartidorId: usuarioActualId,
-        repartidorNombre: usuarioNombre // <- esto falta
-
-      };
-
-      await this.sobrantesService.guardarRegistro(sobrante);
-
-      registro.sincronizado = true;
-      guardados++;
-    }
-
-    if (guardados === 0) {
-      await Swal.fire({
-        icon: 'info',
-        title: 'No hay nuevas entregas para registrar',
-        text: 'Todos los registros ya fueron sincronizados previamente.',
-        confirmButtonText: 'Cerrar'
-      });
-    } else {
-      // Limpiar localStorage y notificar
-      this.registrosRuta = this.registrosRuta.filter(r => !this.registroTieneDatos(r) || r.sincronizado);
-      localStorage.setItem(this.obtenerClaveDelAlmacenamiento(), JSON.stringify(this.registrosRuta));
-      this.entregasGuardadas = true;
-
-      await Swal.fire({
-        icon: 'success',
-        title: 'Entregas Guardadas Correctamente',
-        text: `${guardados} entregas guardadas correctamente.`,
-        confirmButtonText: 'Cerrar'
-      });
-    }
-
-  } catch (error: any) {
-    console.error('Error detallado:', error);
-    const mensajeError = error instanceof Error ? error.message : 'Ocurrió un error inesperado.';
-    await Swal.fire({
-      icon: 'error',
-      title: 'Error al guardar entregas',
-      text: `Ocurrió un error al guardar las entregas: ${mensajeError}`,
-      confirmButtonText: 'Cerrar'
-    });
-  } finally {
-    this.isLoading = false;
   }
-}
 
-
-    // Agrega este método en tu componente
+  // Agrega este método en tu componente
   private registroTieneDatos(registro: RegistroDeRuta): boolean {
-    const sumaExtras = (registro.entregasExtras ?? []).reduce<number>((sum, val) => sum + (val ?? 0), 0);
+    const sumaExtras = (registro.entregasExtras ?? []).reduce<number>(
+      (sum, val) => sum + (val ?? 0),
+      0,
+    );
     return (
       (registro.entregaInicial ?? 0) > 0 ||
       sumaExtras > 0 ||
@@ -311,11 +326,9 @@ async registrarEntregas() {
     );
   }
 
-
   trackByIndex(index: number, item: any): number {
     return index;
   }
-
 
   private manejarError(error: any, mensajePersonalizado?: string): void {
     const mensaje = mensajePersonalizado || error.message || 'Ocurrió un error';
@@ -325,35 +338,41 @@ async registrarEntregas() {
       icon: 'error',
       title: 'Error',
       text: mensaje,
-      confirmButtonText: 'Cerrar'
-    })
+      confirmButtonText: 'Cerrar',
+    });
   }
 
-    agregarEntregasExtras(registro: RegistroDeRuta) {
+  agregarEntregasExtras(registro: RegistroDeRuta) {
     registro.entregasExtras.push(null);
     this.guardarEnLocalStorage();
   }
 
-    calcularTirasVendidas(registro: RegistroDeRuta): number {
-    const sumaExtras = (registro.entregasExtras ?? []).reduce<number>((sum, val) => sum + (val ?? 0), 0);
-    return (registro.entregaInicial ?? 0) + sumaExtras - (registro.tirasSobrantes ?? 0);
+  calcularTirasVendidas(registro: RegistroDeRuta): number {
+    const sumaExtras = (registro.entregasExtras ?? []).reduce<number>(
+      (sum, val) => sum + (val ?? 0),
+      0,
+    );
+    return (
+      (registro.entregaInicial ?? 0) +
+      sumaExtras -
+      (registro.tirasSobrantes ?? 0)
+    );
   }
-
 
   // Método para encontrar registro por clienteId
   getRegistro(clienteId: string): RegistroDeRuta | undefined {
-    return this.registrosRuta.find(r => r.clienteId === clienteId);
+    return this.registrosRuta.find((r) => r.clienteId === clienteId);
   }
 
-
-// TrackBy para optimizar rendimiento
+  // TrackBy para optimizar rendimiento
   trackByClienteId(index: number, tienda: any): string {
     return tienda.clienteId;
   }
 
   actualizarCobroTotal(registro: RegistroDeRuta) {
     registro.entregaInicial = Math.max(0, registro.entregaInicial ?? 0);
-    registro.entregasExtras = registro.entregasExtras?.map(e => Math.max(0, e ?? 0)) ?? [];
+    registro.entregasExtras =
+      registro.entregasExtras?.map((e) => Math.max(0, e ?? 0)) ?? [];
     registro.tirasSobrantes = Math.max(0, registro.tirasSobrantes ?? 0);
 
     registro.tirasVendidas = this.calcularTirasVendidas(registro);
@@ -362,42 +381,45 @@ async registrarEntregas() {
   }
 
   private calcularPorcentajeSobrantes(registro: RegistroDeRuta): number {
-  const entregadas = registro.tirasVendidas;
-  const sobrantes = registro.tirasSobrantes ?? 0;
-  if (entregadas === 0) return 0;
-  return (sobrantes / entregadas) * 100;
-}
-
-
+    const entregadas = registro.tirasVendidas;
+    const sobrantes = registro.tirasSobrantes ?? 0;
+    if (entregadas === 0) return 0;
+    return (sobrantes / entregadas) * 100;
+  }
 
   async procesarQr(clienteId: string) {
     console.log('🔍 Cliente ID recibido desde el QR:', clienteId);
-    this.clienteActual = this.registrosRuta.find(r => r.clienteId === clienteId) || null;
+    this.clienteActual =
+      this.registrosRuta.find((r) => r.clienteId === clienteId) || null;
 
     // Solo recarga si no existe el cliente en los registros actuales
     if (!this.clienteActual) {
       await this.cargarDatosIniciales();
-      this.clienteActual = this.registrosRuta.find(r => r.clienteId === clienteId) || null;
+      this.clienteActual =
+        this.registrosRuta.find((r) => r.clienteId === clienteId) || null;
 
       if (!this.clienteActual) {
-        console.warn('⚠️ Cliente no encontrado incluso después de recargar:', clienteId);
+        console.warn(
+          '⚠️ Cliente no encontrado incluso después de recargar:',
+          clienteId,
+        );
         Swal.fire({
           icon: 'warning',
           title: 'Cliente no encontrado',
           text: 'No se encontró el cliente en los registros actuales. Por favor, verifica el ID del cliente.',
-          confirmButtonText: 'Cerrar'
-        })
+          confirmButtonText: 'Cerrar',
+        });
         return;
       }
     }
 
-      // Scroll suave a la tarjeta de la tienda encontrada
-  setTimeout(() => {
-    const el = document.getElementById('tienda-' + clienteId);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }, 300);
+    // Scroll suave a la tarjeta de la tienda encontrada
+    setTimeout(() => {
+      const el = document.getElementById('tienda-' + clienteId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 300);
 
     try {
       const cliente = await this.clienteService.obtenerClientePorId(clienteId);
@@ -408,15 +430,19 @@ async registrarEntregas() {
         // Guardado automático solo si hubo cambios
         this.guardarEnLocalStorage();
       } else {
-        this.snackBar.open('⚠️ No se encontró información del cliente', 'Cerrar', { duration: 3000 });
+        this.snackBar.open(
+          '⚠️ No se encontró información del cliente',
+          'Cerrar',
+          { duration: 3000 },
+        );
       }
     } catch (error) {
       console.error('Error al obtener cliente:', error);
       Swal.fire({
         icon: 'error',
         title: 'Error al obtener cliente',
-        text: 'Ocurrio un error al obtener los datos del cliente. Por favor, intentalo de nuevo mas tarde.'
-      })
+        text: 'Ocurrio un error al obtener los datos del cliente. Por favor, intentalo de nuevo mas tarde.',
+      });
     }
   }
 
@@ -427,17 +453,15 @@ async registrarEntregas() {
     try {
       localStorage.setItem(clave, datos);
       this.autoSaved = true;
-      setTimeout(() => this.autoSaved = false, 1200); // Oculta el icono después de 1.2s
+      setTimeout(() => (this.autoSaved = false), 1200); // Oculta el icono después de 1.2s
     } catch (error) {
       console.error('Error al guardar en localStorage:', error);
       Swal.fire({
         icon: 'error',
         title: 'Error al guardar localmente',
         text: 'Ocurrió un error al guardar los datos localmente. Por favor, inténtalo de nuevo más tarde.',
-        confirmButtonText: 'Cerrar'
+        confirmButtonText: 'Cerrar',
       });
     }
   }
-
-
 }

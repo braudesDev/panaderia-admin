@@ -1,20 +1,29 @@
-html, body {
+/*Estilos globales*/
+* {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+/*Estructura global*/
+html,
+body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  overflow-y: hidden;
   width: 100%;
-  height: 100%;
-  font-family: 'Poppins', sans-serif;
+  min-height: 100%;
+  font-family: "Poppins", sans-serif;
 }
 
+/*Fondo de login con imagen y filtro*/
 .login-background {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   min-height: 100vh;
-  background: url('https://res.cloudinary.com/drsyb53ae/image/upload/f_auto,q_auto/v1/panaderia-admin/isfnqloeteu48kqeplee') no-repeat center center fixed;
+  background: url("https://res.cloudinary.com/drsyb53ae/image/upload/f_auto,q_auto/v1/panaderia-admin/isfnqloeteu48kqeplee")
+    no-repeat center center fixed;
   background-size: cover;
   overflow: hidden;
   z-index: -1;
@@ -23,18 +32,16 @@ html, body {
 .login-background::before {
   content: "";
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.4);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.30);
   pointer-events: none;
   z-index: 0;
 }
 
-* {
-  box-sizing: border-box;
-  max-width: 100%;
-
-}
-
+/*Contenedor principal centrado*/
 .container {
   position: absolute;
   top: 50%;
@@ -48,9 +55,9 @@ html, body {
   justify-content: center;
   align-items: center;
   z-index: 1;
-
 }
 
+/*Contenedor de las tarjetas giratorias*/
 .card-container {
   position: relative;
   width: 100%;
@@ -63,13 +70,15 @@ html, body {
   transform: rotateY(180deg);
 }
 
+/*Tarjeta base*/
 .card {
   position: absolute;
   width: 100%;
   height: 100%;
   padding: 48px 36px;
   border-radius: 32px;
-  background: rgba(255, 255, 255, 0.95);  box-shadow:
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow:
     0 20px 60px rgba(0, 0, 0, 0.35),
     0 0 0 1px rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(24px);
@@ -83,22 +92,33 @@ html, body {
   z-index: 2;
 }
 
+/*Tarjeta de login*/
 .login-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0.1)
+  );
   backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
   z-index: 2;
 }
 
+/*Tarjeta de registro (detras)*/
 .register-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.192));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0.192)
+  );
   backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 220, 226, 0.5);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
   transform: rotateY(180deg);
 }
 
+/*Campo de contrasena con icono de mostrar/ocultar*/
 .password-wrapper {
   position: relative;
 }
@@ -118,7 +138,7 @@ html, body {
   align-items: center;
 }
 
-.btn-register {background-image: linear-gradient(to right, #FC354C 0%, #0ABFBC  51%, #FC354C  100%)}
+/*Boton de registro*/
 .btn-register {
   margin: 3px;
   padding: 10px 35px;
@@ -126,6 +146,12 @@ html, body {
   text-transform: uppercase;
   transition: 0.5s;
   background-size: 200% auto;
+  background-image: linear-gradient(
+    to right,
+    #fc354c 0%,
+    #0abfbc 51%,
+    #fc354c 100%
+  );
   color: white;
   border-radius: 25px;
   display: block;
@@ -133,12 +159,14 @@ html, body {
   font-size: 0.8rem;
 }
 
+
 .btn-register:hover {
-  background-position: right center; /* change the direction of the change here */
+  background-position: right center;
   color: #fff;
   text-decoration: none;
 }
 
+/*Boton principal de login*/
 .login-form button {
   padding: 0.9rem 1rem;
   background: linear-gradient(45deg, #4285f4, #35eac3);
@@ -148,7 +176,10 @@ html, body {
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-position 3s ease infinite, box-shadow 0.3s ease, transform 0.2s ease;
+  transition:
+    background-position 3s ease infinite,
+    box-shadow 0.3s ease,
+    transform 0.2s ease;
   margin-bottom: 1rem;
 }
 
@@ -157,12 +188,13 @@ html, body {
   transform: scale(1.07);
 }
 
+/*Textos y elementos complementarios*/
 .card h1 {
   font-size: 2.6rem;
   font-weight: 700;
   margin-top: 1rem;
   margin-bottom: 1rem;
-  text-shadow: 2px 2px 10px rgba(0,0,0,0.4);
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
 }
 
 .card p {
@@ -172,19 +204,18 @@ html, body {
   color: #ffffffcc;
 }
 
-
 .card span {
   color: #fd5320;
   font-size: 1.2rem;
   font-weight: bold;
   text-shadow:
-  -1px -1px 0 #000,
-  1px -1px 0 #000,
-  -1px  1px 0 #000,
-  1px  1px 0 #000;
-
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
 }
 
+/*Separador visual con lineas*/
 .divider-container {
   display: flex;
   align-items: center;
@@ -208,7 +239,7 @@ html, body {
   white-space: nowrap;
 }
 
-
+/*Boton de google*/
 .btn-google {
   margin-top: 0;
   margin-bottom: 5px;
@@ -226,10 +257,12 @@ html, body {
   gap: 10px;
 
   user-select: none;
-  transition: background-position 3s ease infinite, box-shadow 0.3s ease, transform 0.2s ease;
+  transition:
+    background-position 3s ease infinite,
+    box-shadow 0.3s ease,
+    transform 0.2s ease;
   position: relative;
   overflow: hidden;
-
 }
 
 .btn-google:hover {
@@ -245,7 +278,7 @@ html, body {
 .icon-google {
   width: 26px;
   height: 26px;
-  filter: drop-shadow(0 0 3px rgba(255,255,255,0.6));
+  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.6));
 }
 
 .arrow {
@@ -259,6 +292,7 @@ html, body {
   transform: translateX(10px);
 }
 
+/*Formularios y campos*/
 form {
   display: flex;
   flex-direction: column;
@@ -275,14 +309,15 @@ input {
   outline: none;
   background: rgba(255, 255, 255, 0.877);
   color: #333333;
-  font-family: 'Poppins', sans-serif;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  font-family: "Poppins", sans-serif;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
 input::placeholder {
   color: #888888cb;
 }
 
+/*Enlaces y texto interactivo*/
 .switch-link {
   margin-top: 24px;
   font-size: 1rem;
@@ -299,7 +334,7 @@ input::placeholder {
 .toggle-text {
   font-size: 0.95rem;
   color: #ffffff;
-  margin-top: qrem;
+  margin-top: 1rem;
 }
 
 .toggle-text a {
@@ -314,8 +349,13 @@ input::placeholder {
   color: #ff6600;
 }
 
+
+/*==============================
+Diseno responsive para moviles
+================================*/
 @media (max-width: 480px) {
-  html, body {
+  html,
+  body {
     background-attachment: scroll;
     overflow-y: auto;
   }

@@ -6,10 +6,9 @@ import { Component, Input } from '@angular/core';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './toast.component.html',
-  styleUrls: ['./toast.component.css']
+  styleUrls: ['./toast.component.css'],
 })
 export class ToastComponent {
-
   @Input() message = '';
   @Input() type: 'success' | 'error' = 'success';
   visible = false;
@@ -18,7 +17,6 @@ export class ToastComponent {
     this.message = msg;
     this.type = type;
     this.visible = true;
-    setTimeout(() => this.visible = false, duration);
+    setTimeout(() => (this.visible = false), duration);
   }
-
 }

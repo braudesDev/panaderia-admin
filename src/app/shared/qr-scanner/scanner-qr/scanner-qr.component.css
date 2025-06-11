@@ -19,7 +19,9 @@ button {
   font-size: 1rem;
   box-shadow: 0 2px 8px #e3f0ff;
   cursor: pointer;
-  transition: background 0.2s, box-shadow 0.2s;
+  transition:
+    background 0.2s,
+    box-shadow 0.2s;
 }
 
 button:hover {
@@ -50,14 +52,16 @@ select:focus {
 zxing-scanner {
   display: block;
   margin: 0 auto 1.5em auto;
-  max-width: 260px;      /* antes 340px */
-  min-height: 160px;     /* antes 260px */
+  max-width: 260px; /* antes 340px */
+  min-height: 160px; /* antes 260px */
   border-radius: 14px;
   box-shadow: 0 4px 18px #b3c6ff;
   background: #e3f0ff;
   border: 3px solid #2563eb;
   overflow: hidden;
-  transition: max-width 0.2s, min-height 0.2s;
+  transition:
+    max-width 0.2s,
+    min-height 0.2s;
 }
 
 /* RESULTADO */
@@ -87,7 +91,8 @@ strong {
   h2 {
     font-size: 1.1rem;
   }
-  button, select {
+  button,
+  select {
     font-size: 0.95rem;
     padding: 0.5em 1em;
   }
@@ -103,7 +108,8 @@ strong {
     margin-bottom: 0.7rem;
   }
 
-  button, select {
+  button,
+  select {
     font-size: 0.9rem;
     padding: 0.4em 0.7em;
     margin: 0.3em 0.2em 0.7em 0;

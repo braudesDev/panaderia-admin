@@ -5,7 +5,7 @@ import { User } from '@angular/fire/auth'; // Importa el tipo User de Firebase
 import { Firestore } from '@angular/fire/firestore';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ClienteContextService {
   private clienteActualSubject = new BehaviorSubject<Cliente | null>(null);

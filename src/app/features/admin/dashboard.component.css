@@ -30,8 +30,8 @@
   padding: 2.5rem 2.5rem 2rem 2.5rem;
   background: linear-gradient(135deg, #f9fafb 80%, #e3f0ff 100%);
   border-radius: 18px;
-  box-shadow: 0 8px 32px rgb(44 62 80 / 0.10);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 8px 32px rgb(44 62 80 / 0.1);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #2c3e50;
   transition: box-shadow 0.3s;
   margin-top: 6rem;
@@ -86,7 +86,9 @@
   padding: 0.5rem 1.2rem;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s, box-shadow 0.3s;
+  transition:
+    background 0.3s,
+    box-shadow 0.3s;
   box-shadow: 0 2px 8px #e3f0ff;
   letter-spacing: 0.5px;
 }
@@ -236,7 +238,9 @@ tbody tr:hover {
   gap: 0.7em;
   box-shadow: 0 2px 8px #e3f0ff;
   font-size: 1.05rem;
-  transition: background 0.2s, box-shadow 0.2s;
+  transition:
+    background 0.2s,
+    box-shadow 0.2s;
 }
 
 .colapsar-btn:hover {
@@ -303,7 +307,8 @@ tbody tr:hover {
     box-shadow: none;
   }
 
-  h2, h3 {
+  h2,
+  h3 {
     font-size: 1.1rem;
     padding-bottom: 0.2rem;
     margin-top: 1.2rem;
@@ -329,7 +334,8 @@ tbody tr:hover {
     box-shadow: none;
   }
 
-  thead th, tbody td {
+  thead th,
+  tbody td {
     padding: 0.4rem 0.3rem;
     font-size: 0.85rem;
     word-break: break-word;

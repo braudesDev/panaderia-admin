@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collectionData, addDoc, deleteDoc, doc, updateDoc } from '@angular/fire/firestore';
+import {
+  Firestore,
+  collectionData,
+  addDoc,
+  deleteDoc,
+  doc,
+  updateDoc,
+} from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { collection } from 'firebase/firestore';
-
-
 
 export interface Pedido {
   id?: string;
@@ -13,7 +18,7 @@ export interface Pedido {
   hora?: string;
   notas?: string;
   mostrarDetalles?: boolean;
-  prioridad?: string
+  prioridad?: string;
 }
 
 @Injectable({
@@ -29,16 +34,15 @@ export class PedidoService {
 
   obtenerPedidos(): Observable<Pedido[]> {
     const pedidosRef = collection(this.firestore, 'pedidos');
-    return collectionData(pedidosRef, { idField: 'id' }) as Observable<Pedido[]>;
+    return collectionData(pedidosRef, { idField: 'id' }) as Observable<
+      Pedido[]
+    >;
   }
-
 
   eliminarPedido(id: string): Promise<void> {
     const pedidoDocRef = doc(this.firestore, `pedidos/${id}`);
     return deleteDoc(pedidoDocRef);
   }
-
-
 
   private pedidoEditando: Pedido | null = null;
 
@@ -54,9 +58,10 @@ export class PedidoService {
     this.pedidoEditando = null;
   }
 
-
-
-  actualizarPedido(id: string, datosActualizados: Partial<Pedido>): Promise<void> {
+  actualizarPedido(
+    id: string,
+    datosActualizados: Partial<Pedido>,
+  ): Promise<void> {
     const pedidoDocRef = doc(this.firestore, `pedidos/${id}`);
     return updateDoc(pedidoDocRef, datosActualizados);
   }

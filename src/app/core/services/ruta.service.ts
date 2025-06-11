@@ -1,11 +1,22 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, collectionData } from '@angular/fire/firestore';
+import {
+  Firestore,
+  collection,
+  addDoc,
+  collectionData,
+} from '@angular/fire/firestore';
 import { RegistroDeRuta } from '../../features/repartidor/ruta-del-dia.component';
-import { CollectionReference, DocumentData, query, getDocs, where } from 'firebase/firestore';
+import {
+  CollectionReference,
+  DocumentData,
+  query,
+  getDocs,
+  where,
+} from 'firebase/firestore';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RutaService {
   private coleccionRuta: CollectionReference<DocumentData>;
@@ -15,7 +26,9 @@ export class RutaService {
   }
 
   obtenerRegistros(): Observable<RegistroDeRuta[]> {
-    return collectionData(this.coleccionRuta, { idField: 'id' }) as Observable<RegistroDeRuta[]>;
+    return collectionData(this.coleccionRuta, { idField: 'id' }) as Observable<
+      RegistroDeRuta[]
+    >;
   }
 
   async guardarRegistro(registro: RegistroDeRuta): Promise<void> {
@@ -28,17 +41,20 @@ export class RutaService {
     }
   }
 
-async verificarRegistroExistente(clienteId: string, fecha: string, usuarioId: string): Promise<boolean> {
-  const registrosSnapshot = await getDocs(
-    query(
-      collection(this.firestore, 'ruta'),
-      where('clienteId', '==', clienteId),
-      where('fecha', '==', fecha),
-      where('usuarioId', '==', usuarioId) // NUEVO: verifica que sea del mismo repartidor
-    )
-  );
+  async verificarRegistroExistente(
+    clienteId: string,
+    fecha: string,
+    usuarioId: string,
+  ): Promise<boolean> {
+    const registrosSnapshot = await getDocs(
+      query(
+        collection(this.firestore, 'ruta'),
+        where('clienteId', '==', clienteId),
+        where('fecha', '==', fecha),
+        where('usuarioId', '==', usuarioId), // NUEVO: verifica que sea del mismo repartidor
+      ),
+    );
 
-  return !registrosSnapshot.empty;
-}
-
+    return !registrosSnapshot.empty;
+  }
 }

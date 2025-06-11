@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-registro-usuario',
   standalone: true,
   templateUrl: './registro-usuario.component.html',
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule],
 })
 export class RegistroUsuarioComponent {
   uid: string = '';
@@ -18,14 +18,14 @@ export class RegistroUsuarioComponent {
 
   async registrarUsuario() {
     if (!this.uid || !this.correo) {
-    alert('Por favor, completa el UID y el correo');
-    return;
+      alert('Por favor, completa el UID y el correo');
+      return;
     }
 
     const userRef = doc(this.firestore, 'usuarios', this.uid);
     await setDoc(userRef, {
       correo: this.correo,
-      rol: this.rol
+      rol: this.rol,
     });
 
     alert('Usuario registrado con éxito.');

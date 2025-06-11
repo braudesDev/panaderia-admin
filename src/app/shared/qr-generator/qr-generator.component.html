@@ -1,12 +1,12 @@
 <div class="qr-display-container">
   <h2>Código QR del cliente</h2>
   <div *ngIf="qrData">
-    <qrcode [qrdata]="qrData" [width]="200" [errorCorrectionLevel]="'M'"></qrcode>
-    <button
-      type="button"
-      (click)="descargarQr()"
-      [disabled]="!qrData"
-    >
+    <qrcode
+      [qrdata]="qrData"
+      [width]="200"
+      [errorCorrectionLevel]="'M'"
+    ></qrcode>
+    <button type="button" (click)="descargarQr()" [disabled]="!qrData">
       Descargar QR
     </button>
   </div>

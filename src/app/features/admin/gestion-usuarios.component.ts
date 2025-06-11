@@ -1,6 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Firestore, collection, getDocs, doc, updateDoc, deleteDoc } from '@angular/fire/firestore';
+import {
+  Firestore,
+  collection,
+  getDocs,
+  doc,
+  updateDoc,
+  deleteDoc,
+} from '@angular/fire/firestore';
 import { FormsModule } from '@angular/forms';
 import { ToastComponent } from '../../shared/toast/toast.component';
 import Swal from 'sweetalert2';
@@ -12,7 +19,6 @@ import { MatTab } from '@angular/material/tabs';
   styleUrls: ['./gestion-usuarios.component.css'],
   standalone: true,
   imports: [CommonModule, FormsModule, ToastComponent],
-
 })
 export class GestionUsuariosComponent implements OnInit {
   usuarios: any[] = [];
@@ -25,9 +31,7 @@ export class GestionUsuariosComponent implements OnInit {
 
   tabActivo: 'internos' | 'clientes' = 'internos';
 
-
   @ViewChild(ToastComponent) toast!: ToastComponent;
-
 
   constructor(private firestore: Firestore) {}
 
@@ -38,52 +42,51 @@ export class GestionUsuariosComponent implements OnInit {
   async cargarUsuarios() {
     const colRef = collection(this.firestore, 'usuarios');
     const snapshot = await getDocs(colRef);
-    this.usuarios = snapshot.docs.map(doc => ({
+    this.usuarios = snapshot.docs.map((doc) => ({
       id: doc.id,
-      ...doc.data()
+      ...doc.data(),
     }));
 
-    this.clientes = this.usuarios.filter(u => u.rol === 'cliente');
-    this.usuariosInternos = this.usuarios.filter(u => u.rol === 'admin' || u.rol === 'repartidor');
+    this.clientes = this.usuarios.filter((u) => u.rol === 'cliente');
+    this.usuariosInternos = this.usuarios.filter(
+      (u) => u.rol === 'admin' || u.rol === 'repartidor',
+    );
   }
 
-
   // Métodos para paginación
-get clientesPaginados() {
-  const start = (this.paginaClientes - 1) * this.tamanoPagina;
-  return this.clientes.slice(start, start + this.tamanoPagina);
-}
+  get clientesPaginados() {
+    const start = (this.paginaClientes - 1) * this.tamanoPagina;
+    return this.clientes.slice(start, start + this.tamanoPagina);
+  }
 
-get internosPaginados() {
-  const start = (this.paginaInternos - 1) * this.tamanoPagina;
-  return this.usuariosInternos.slice(start, start + this.tamanoPagina);
-}
+  get internosPaginados() {
+    const start = (this.paginaInternos - 1) * this.tamanoPagina;
+    return this.usuariosInternos.slice(start, start + this.tamanoPagina);
+  }
 
-get totalPaginasClientes() {
-  return Math.ceil(this.clientes.length / this.tamanoPagina);
-}
+  get totalPaginasClientes() {
+    return Math.ceil(this.clientes.length / this.tamanoPagina);
+  }
 
-get totalPaginasInternos() {
-  return Math.ceil(this.usuariosInternos.length / this.tamanoPagina);
-}
+  get totalPaginasInternos() {
+    return Math.ceil(this.usuariosInternos.length / this.tamanoPagina);
+  }
 
-paginaAnteriorClientes() {
-  if (this.paginaClientes > 1) this.paginaClientes--;
-}
+  paginaAnteriorClientes() {
+    if (this.paginaClientes > 1) this.paginaClientes--;
+  }
 
-paginaSiguienteClientes() {
-  if (this.paginaClientes < this.totalPaginasClientes) this.paginaClientes++;
-}
+  paginaSiguienteClientes() {
+    if (this.paginaClientes < this.totalPaginasClientes) this.paginaClientes++;
+  }
 
-paginaAnteriorInternos() {
-  if (this.paginaInternos > 1) this.paginaInternos--;
-}
+  paginaAnteriorInternos() {
+    if (this.paginaInternos > 1) this.paginaInternos--;
+  }
 
-paginaSiguienteInternos() {
-  if (this.paginaInternos < this.totalPaginasInternos) this.paginaInternos++;
-}
-
-
+  paginaSiguienteInternos() {
+    if (this.paginaInternos < this.totalPaginasInternos) this.paginaInternos++;
+  }
 
   async cambiarRol(uid: string, nuevoRol: 'admin' | 'cliente' | 'repartidor') {
     const userRef = doc(this.firestore, 'usuarios', uid);
@@ -97,7 +100,10 @@ paginaSiguienteInternos() {
     await this.cargarUsuarios();
   }
 
-    async confirmarCambiarRol(uid: string, nuevoRol: 'admin' | 'cliente' | 'repartidor') {
+  async confirmarCambiarRol(
+    uid: string,
+    nuevoRol: 'admin' | 'cliente' | 'repartidor',
+  ) {
     const result = await Swal.fire({
       title: '¿Estás seguro?',
       text: `¿Quieres cambiar el rol del usuario a "${nuevoRol}"?`,
@@ -106,7 +112,7 @@ paginaSiguienteInternos() {
       confirmButtonColor: '#6366f1',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Sí, cambiar',
-      cancelButtonText: 'Cancelar'
+      cancelButtonText: 'Cancelar',
     });
 
     if (result.isConfirmed) {
@@ -124,7 +130,7 @@ paginaSiguienteInternos() {
       confirmButtonColor: '#d33',
       cancelButtonColor: '#6366f1',
       confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar'
+      cancelButtonText: 'Cancelar',
     });
 
     if (result.isConfirmed) {
@@ -132,7 +138,4 @@ paginaSiguienteInternos() {
       this.toast.show('Usuario eliminado correctamente.');
     }
   }
-
-
-
 }

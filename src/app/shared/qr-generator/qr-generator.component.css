@@ -1,23 +1,25 @@
 .qr-display-container {
-  background: rgba(255,255,255,0.68);
+  background: rgba(255, 255, 255, 0.68);
   border-radius: 18px;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.13), 0 1.5px 6px rgba(99,102,241,0.09);
+  box-shadow:
+    0 8px 32px 0 rgba(31, 38, 135, 0.13),
+    0 1.5px 6px rgba(99, 102, 241, 0.09);
   color: #3730a3;
   margin: 1.5rem auto 1rem auto;
   max-width: 340px;
   padding: 2.2rem 1.2rem 2.5rem 1.2rem;
   text-align: center;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   position: relative;
   overflow: hidden;
-  animation: fadeInQR 0.7s cubic-bezier(.23,1.02,.32,1) both;
+  animation: fadeInQR 0.7s cubic-bezier(0.23, 1.02, 0.32, 1) both;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1.5px solid rgba(255,255,255,0.18);
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
 }
 
 .qr-display-container::before {
-  content: '';
+  content: "";
   position: absolute;
   width: 120px;
   height: 120px;
@@ -46,8 +48,10 @@
   margin-top: 1.1rem;
   border: 2.5px solid #6366f1;
   border-radius: 14px;
-  box-shadow: 0 4px 16px rgba(99,102,241,0.13), 0 1.5px 6px rgba(99,102,241,0.09);
-  background: rgba(255,255,255,0.85);
+  box-shadow:
+    0 4px 16px rgba(99, 102, 241, 0.13),
+    0 1.5px 6px rgba(99, 102, 241, 0.09);
+  background: rgba(255, 255, 255, 0.85);
   padding: 0.7rem;
   z-index: 1;
   position: relative;
@@ -55,7 +59,9 @@
 }
 
 .qr-display-container qrcode:hover {
-  box-shadow: 0 8px 32px rgba(99,102,241,0.18), 0 2px 8px rgba(99,102,241,0.13);
+  box-shadow:
+    0 8px 32px rgba(99, 102, 241, 0.18),
+    0 2px 8px rgba(99, 102, 241, 0.13);
 }
 
 .qr-display-container button {
@@ -68,9 +74,12 @@
   font-weight: 700;
   margin-top: 1.7rem;
   padding: 0.8rem 1.7rem;
-  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  transition:
+    background 0.2s,
+    box-shadow 0.2s,
+    transform 0.1s;
   user-select: none;
-  box-shadow: 0 4px 16px rgba(99,102,241,0.13);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.13);
   z-index: 1;
   position: relative;
   letter-spacing: 0.5px;
@@ -81,7 +90,7 @@
 
 .qr-display-container button:hover {
   background: linear-gradient(90deg, #60a5fa 60%, #6366f1 100%);
-  box-shadow: 0 8px 32px rgba(99,102,241,0.18);
+  box-shadow: 0 8px 32px rgba(99, 102, 241, 0.18);
   transform: translateY(-2px) scale(1.04);
 }
 

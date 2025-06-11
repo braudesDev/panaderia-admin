@@ -8,9 +8,8 @@ describe('ScannerQrComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ScannerQrComponent]
-    })
-    .compileComponents();
+      imports: [ScannerQrComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ScannerQrComponent);
     component = fixture.componentInstance;

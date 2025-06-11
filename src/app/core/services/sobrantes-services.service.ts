@@ -1,8 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, CollectionReference, collectionData } from '@angular/fire/firestore';
+import {
+  Firestore,
+  collection,
+  addDoc,
+  CollectionReference,
+  collectionData,
+} from '@angular/fire/firestore';
 import { RegistroSobrante } from '../models/sobrante.model';
 import { Observable } from 'rxjs';
-
 
 @Injectable({ providedIn: 'root' })
 export class SobrantesService {
@@ -17,7 +22,8 @@ export class SobrantesService {
   }
 
   obtenerTodos(): Observable<RegistroSobrante[]> {
-  return collectionData(this.coleccion, { idField: 'id' }) as Observable<RegistroSobrante[]>;
-}
-
+    return collectionData(this.coleccion, { idField: 'id' }) as Observable<
+      RegistroSobrante[]
+    >;
+  }
 }

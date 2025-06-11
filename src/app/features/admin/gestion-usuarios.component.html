@@ -27,17 +27,37 @@
           </select>
         </td>
         <td>
-          <button class="btn-azul" (click)="confirmarCambiarRol(usuario.id, usuario.rol)">Guardar</button>
-          <button class="btn-rojo" (click)="confirmarEliminarUsuario(usuario.id)">Eliminar</button>
+          <button
+            class="btn-azul"
+            (click)="confirmarCambiarRol(usuario.id, usuario.rol)"
+          >
+            Guardar
+          </button>
+          <button
+            class="btn-rojo"
+            (click)="confirmarEliminarUsuario(usuario.id)"
+          >
+            Eliminar
+          </button>
         </td>
       </tr>
     </tbody>
   </table>
-    <div class="paginacion">
-      <button (click)="paginaAnteriorInternos()" [disabled]="paginaInternos === 1">Anterior</button>
-      <span>Página {{paginaInternos}} / {{totalPaginasInternos}}</span>
-      <button (click)="paginaSiguienteInternos()" [disabled]="paginaInternos === totalPaginasInternos">Siguiente</button>
-    </div>
+  <div class="paginacion">
+    <button
+      (click)="paginaAnteriorInternos()"
+      [disabled]="paginaInternos === 1"
+    >
+      Anterior
+    </button>
+    <span>Página {{ paginaInternos }} / {{ totalPaginasInternos }}</span>
+    <button
+      (click)="paginaSiguienteInternos()"
+      [disabled]="paginaInternos === totalPaginasInternos"
+    >
+      Siguiente
+    </button>
+  </div>
 </div>
 
 <!-- TAB CLIENTES -->
@@ -61,18 +81,37 @@
           </select>
         </td>
         <td>
-          <button class="btn-azul" (click)="confirmarCambiarRol(usuario.id, usuario.rol)">Guardar</button>
-          <button class="btn-rojo" (click)="confirmarEliminarUsuario(usuario.id)">Eliminar</button>
+          <button
+            class="btn-azul"
+            (click)="confirmarCambiarRol(usuario.id, usuario.rol)"
+          >
+            Guardar
+          </button>
+          <button
+            class="btn-rojo"
+            (click)="confirmarEliminarUsuario(usuario.id)"
+          >
+            Eliminar
+          </button>
         </td>
       </tr>
     </tbody>
   </table>
   <div class="paginacion">
-    <button (click)="paginaAnteriorClientes()" [disabled]="paginaClientes === 1">Anterior</button>
-    <span>Página {{paginaClientes}} / {{totalPaginasClientes}}</span>
-    <button (click)="paginaSiguienteClientes()" [disabled]="paginaClientes === totalPaginasClientes">Siguiente</button>
+    <button
+      (click)="paginaAnteriorClientes()"
+      [disabled]="paginaClientes === 1"
+    >
+      Anterior
+    </button>
+    <span>Página {{ paginaClientes }} / {{ totalPaginasClientes }}</span>
+    <button
+      (click)="paginaSiguienteClientes()"
+      [disabled]="paginaClientes === totalPaginasClientes"
+    >
+      Siguiente
+    </button>
   </div>
-
 </div>
 
 <app-toast></app-toast>

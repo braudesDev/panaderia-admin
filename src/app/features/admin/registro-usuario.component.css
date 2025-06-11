@@ -12,7 +12,7 @@
 form {
   background: #fff;
   border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(44, 62, 80, 0.10);
+  box-shadow: 0 8px 32px rgba(44, 62, 80, 0.1);
   padding: 2.5rem 2rem 2rem 2rem;
   max-width: 370px;
   width: 100%;
@@ -38,7 +38,8 @@ label {
   letter-spacing: 0.5px;
 }
 
-input, select {
+input,
+select {
   width: 100%;
   padding: 0.6em 1em;
   border: 2px solid #b3c6ff;
@@ -51,7 +52,8 @@ input, select {
   margin-bottom: 0.2rem;
 }
 
-input:focus, select:focus {
+input:focus,
+select:focus {
   border-color: #2563eb;
   outline: none;
 }
@@ -66,7 +68,10 @@ button {
   font-weight: 700;
   box-shadow: 0 6px 16px rgba(37, 99, 235, 0.18);
   cursor: pointer;
-  transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+  transition:
+    background 0.2s,
+    box-shadow 0.2s,
+    transform 0.2s;
   margin-top: 0.7rem;
   letter-spacing: 0.5px;
 }

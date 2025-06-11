@@ -1,52 +1,91 @@
 <!doctype html>
 <html lang="es">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- Preconexiones y preloads -->
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;700&display=swap" as="style">
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" as="style">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Preconexiones y preloads -->
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;700&display=swap"
+      as="style"
+    />
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+      as="style"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
+    <!-- Favicon tradicional (.ico) -->
+    <link
+      rel="icon"
+      href="https://res.cloudinary.com/drsyb53ae/image/upload/v1749420987/panaderia-admin/i4oelpjv4mkpex78gmky.png"
+      type="image/x-icon"
+    />
 
-<!-- Favicon tradicional (.ico) -->
-<link rel="icon" href="https://res.cloudinary.com/drsyb53ae/image/upload/v1749420987/panaderia-admin/i4oelpjv4mkpex78gmky.png" type="image/x-icon">
+    <!-- Versiones PNG -->
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="https://res.cloudinary.com/drsyb53ae/image/upload/v1749420987/panaderia-admin/i4oelpjv4mkpex78gmky.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="https://res.cloudinary.com/drsyb53ae/image/upload/v1749420987/panaderia-admin/i4oelpjv4mkpex78gmky.png"
+    />
 
-<!-- Versiones PNG -->
-<link rel="icon" type="image/png" sizes="32x32" href="https://res.cloudinary.com/drsyb53ae/image/upload/v1749420987/panaderia-admin/i4oelpjv4mkpex78gmky.png">
-<link rel="icon" type="image/png" sizes="16x16" href="https://res.cloudinary.com/drsyb53ae/image/upload/v1749420987/panaderia-admin/i4oelpjv4mkpex78gmky.png">
+    <!-- iOS -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="https://res.cloudinary.com/drsyb53ae/image/upload/v1749420987/panaderia-admin/i4oelpjv4mkpex78gmky.png"
+    />
 
-<!-- iOS -->
-<link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/drsyb53ae/image/upload/v1749420987/panaderia-admin/i4oelpjv4mkpex78gmky.png">
+    <!--Titulo-->
+    <title>Panaderia Candy</title>
+    <base href="/" />
 
+    <!-- Primary Meta Tags -->
+    <meta property="og:title" content="Panaderia Candy" />
+    <meta property="og:description" content="Venta de Bolillo y Panes" />
+    <meta
+      property="og:image"
+      content="https://res.cloudinary.com/drsyb53ae/image/upload/v1749420987/panaderia-admin/i4oelpjv4mkpex78gmky.png"
+    />
+    <meta property="og:url" content="https://panaderia-admin.web.app/" />
+    <meta property="og:type" content="website" />
 
-  <!--Titulo-->
-  <title>Panaderia Candy</title>
-  <base href="/">
+    <!-- WhatsApp/Social Media Optimization -->
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Logo de Panaderia Candy" />
+    <meta name="twitter:card" content="summary_large_image" />
 
-  <!-- Primary Meta Tags -->
-<meta property="og:title" content="Panaderia Candy">
-<meta property="og:description" content="Venta de Bolillo y Panes">
-<meta property="og:image" content="https://res.cloudinary.com/drsyb53ae/image/upload/v1749420987/panaderia-admin/i4oelpjv4mkpex78gmky.png">
-<meta property="og:url" content="https://panaderia-admin.web.app/">
-<meta property="og:type" content="website">
-
-<!-- WhatsApp/Social Media Optimization -->
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Logo de Panaderia Candy">
-<meta name="twitter:card" content="summary_large_image">
-
-  <!-- Twitter Meta Tags -->
-<meta name="twitter:title" content="Panaderia Candy">
-<meta name="twitter:description" content="Panaderia Candy | Bolillos y Panes">
-<meta name="twitter:image" content="https://res.cloudinary.com/drsyb53ae/image/upload/v1749420987/panaderia-admin/i4oelpjv4mkpex78gmky.png">
-</head>
-<body>
-  <app-root></app-root>
-</body>
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:title" content="Panaderia Candy" />
+    <meta
+      name="twitter:description"
+      content="Panaderia Candy | Bolillos y Panes"
+    />
+    <meta
+      name="twitter:image"
+      content="https://res.cloudinary.com/drsyb53ae/image/upload/v1749420987/panaderia-admin/i4oelpjv4mkpex78gmky.png"
+    />
+  </head>
+  <body>
+    <app-root></app-root>
+  </body>
 </html>

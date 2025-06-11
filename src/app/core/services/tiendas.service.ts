@@ -3,7 +3,7 @@ import { Firestore, collectionData, collection } from '@angular/fire/firestore';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TiendasService {
   constructor(private firestore: Firestore) {}

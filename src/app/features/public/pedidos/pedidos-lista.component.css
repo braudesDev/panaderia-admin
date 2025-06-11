@@ -1,23 +1,25 @@
+/* 🎨 Fondo general de la página, imagen SVG fijada en pantalla completa */
 .background {
-  position: fixed; /* Cambiado de absolute a fixed para fondo estable */
+  position: fixed; /* Fondo permanece fijo al hacer scroll */
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: url('https://res.cloudinary.com/drsyb53ae/image/upload/v1749073741/panaderia-admin/iveckneqlablq50gucfs.svg') no-repeat center center;
-  background-size: cover;
-  z-index: -1;
-  pointer-events: none; /* 🔒 Impide que bloquee clics */
+  width: 100vw; /* Ocupa el ancho total de la ventana */
+  height: 100vh; /* Ocupa el alto total de la ventana */
+  background: url("https://res.cloudinary.com/drsyb53ae/image/upload/v1749073741/panaderia-admin/iveckneqlablq50gucfs.svg")
+    no-repeat center center; /* Imagen centrada y sin repetirse */
+  background-size: cover; /* Escala para cubrir todo el fondo */
+  z-index: -1; /* Coloca detrás de todos los elementos */
+  pointer-events: none; /* No interfiere con clics del usuario */
 }
 
-/* Contenedor principal */
+/* 🧱 Contenedor principal de la sección de pedidos */
 .pedidos-container {
   max-width: 900px;
   margin: 40px auto;
   padding: 16px;
 }
 
-/* Encabezado */
+/* 📌 Encabezado de la sección */
 .header-section {
   display: flex;
   flex-direction: column;
@@ -25,6 +27,7 @@
   margin-bottom: 24px;
 }
 
+/* 🧁 Título principal */
 .titulo-lista {
   margin-left: 2rem;
   margin-top: 4rem;
@@ -37,6 +40,7 @@
   margin-bottom: 12px;
 }
 
+/* 🔵 Icono al lado del título */
 .icono-titulo {
   color: #1565c0;
   font-size: 2rem;
@@ -44,6 +48,7 @@
   margin-right: 6px;
 }
 
+/* 🔍 Contenedor del filtro */
 .filtros {
   width: 100%;
   margin-bottom: 24px;
@@ -51,14 +56,14 @@
   justify-content: flex-end;
 }
 
-/* Tabs */
+/* 📑 Estilo para las pestañas de Angular Material */
 ::ng-deep .mat-tab-label {
   font-size: 1.1rem;
   font-weight: 500;
-  color: #d21919 !important;
+  color: #d21919 !important; /* Color rojo personalizado */
 }
 
-/* Grid de pedidos */
+/* 🧱 Grid responsiva de tarjetas de pedidos */
 .grid-pedidos {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -66,26 +71,28 @@
   margin-top: 16px;
 }
 
-/* Card de pedido */
+/* 📦 Tarjeta base de pedido */
 .pedido-card {
   background: #fff;
   border-radius: 14px;
   box-shadow: 0 4px 16px rgba(25, 118, 210, 0.08);
   transition: box-shadow 0.2s;
   cursor: pointer;
-  border-top: 4px solid #1976d2;
+  border-top: 4px solid #1976d2; /* Azul principal */
   padding: 0;
 }
 
+/* 🛠 Tarjetas con rol de admin */
 .pedido-card.admin {
   border-top: 4px solid #2196f3;
 }
 
+/* 💡 Efecto al pasar el mouse */
 .pedido-card:hover {
   box-shadow: 0 8px 24px rgba(25, 118, 210, 0.16);
 }
 
-/* Header del card */
+/* 📎 Encabezado dentro de la tarjeta */
 .card-header {
   display: flex;
   align-items: center;
@@ -94,12 +101,14 @@
   border-bottom: 1px solid #e3f2fd;
 }
 
+/* 🙋 Datos del cliente */
 .cliente-info {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
+/* 🧍‍♂️ Icono avatar del cliente */
 .avatar-icon {
   background: #196fd2;
   color: #fff;
@@ -108,11 +117,13 @@
   font-size: 1.5rem;
 }
 
+/* 🕒 Fecha del pedido */
 .fecha {
   font-size: 0.95rem;
   color: #c0155c;
 }
 
+/* 🔖 Cantidad de tiras solicitadas */
 .badge-tiras {
   background: #5dffb3;
   color: #000000;
@@ -123,14 +134,17 @@
   margin-left: 10px;
 }
 
-/* Detalles expandibles */
+/* 📖 Sección de detalles expandibles (colapsable) */
 .detalles {
-  max-height: 0;
+  max-height: 0; /* Oculta inicialmente */
   overflow: hidden;
-  transition: max-height 0.3s, padding 0.3s;
+  transition:
+    max-height 0.3s,
+    padding 0.3s;
   padding: 0 20px;
 }
 
+/* 🔽 Cuando está expandido, se muestran los detalles */
 .detalles.expanded {
   max-height: 400px;
   padding: 12px 20px 18px 20px;
@@ -139,6 +153,7 @@
   background: #e3f2fd;
 }
 
+/* 📌 Cada elemento dentro de los detalles */
 .detalle-item {
   display: flex;
   align-items: center;
@@ -147,23 +162,28 @@
   color: #0015d4;
 }
 
+/* ✏️ Notas especiales */
 .detalle-item.notas {
   color: #0d47a1;
   font-style: italic;
 }
 
-/* Botones de acciones (eliminar y editar) */
+/* ✂️ Botones de acción (editar / eliminar) */
 .acciones button[mat-icon-button] {
   border-radius: 50%;
-  transition: background 0.2s, box-shadow 0.2s;
+  transition:
+    background 0.2s,
+    box-shadow 0.2s;
   margin: 0 2px;
 }
 
+/* Efecto al pasar el mouse sobre botones */
 .acciones button[mat-icon-button]:hover {
   background: #f9e3fd;
-  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.10);
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.1);
 }
 
+/* Botón de eliminar (warn) */
 .acciones button[color="warn"] mat-icon {
   color: #c01515;
   transition: color 0.2s;
@@ -173,6 +193,7 @@
   color: #ff0000;
 }
 
+/* Botón de editar (primary) */
 .acciones button[color="primary"] mat-icon {
   color: #1976d2;
   transition: color 0.2s;
@@ -182,7 +203,7 @@
   color: #0066ff;
 }
 
-/* Estilos de filtros */
+/* 🎛 Estilos del filtro de búsqueda */
 .filtros mat-form-field {
   width: 280px;
   min-width: 160px;
@@ -193,28 +214,32 @@
   transition: box-shadow 0.2s;
 }
 
+/* Sombra más notoria cuando el input está enfocado */
 .filtros mat-form-field.mat-focused {
   box-shadow: 0 4px 16px rgba(25, 118, 210, 0.13);
 }
 
+/* Input del filtro */
 .filtros input[matInput] {
   color: #1565c0;
   font-weight: 500;
   background: transparent;
 }
 
+/* Etiqueta del filtro */
 .filtros mat-label {
   color: #1976d2 !important;
   font-weight: 600;
   letter-spacing: 0.5px;
 }
 
+/* Icono del campo de filtro */
 .filtros mat-icon {
   color: #1976d2;
   font-size: 1.3rem;
 }
 
-/* Paginación */
+/* ⏭ Paginación al final */
 .paginacion {
   display: flex;
   justify-content: center;
@@ -223,30 +248,38 @@
   margin: 18px 0 0 0;
 }
 
-/* Responsive */
+/* 📱 Estilos responsivos para móviles */
 @media (max-width: 600px) {
   .pedidos-container {
     padding: 4px;
   }
+
   .grid-pedidos {
     grid-template-columns: 1fr;
     gap: 12px;
   }
-  .card-header, .detalles, .detalles.expanded {
+
+  .card-header,
+  .detalles,
+  .detalles.expanded {
     padding-left: 10px;
     padding-right: 10px;
   }
+
   .titulo-lista {
     font-size: 1.2rem;
   }
+
   .icono-titulo {
     font-size: 1.4rem;
     margin-right: 4px;
   }
+
   .filtros {
     justify-content: center;
     margin-bottom: 12px;
   }
+
   .filtros mat-form-field {
     width: 100%;
     min-width: 0;
@@ -254,6 +287,7 @@
   }
 }
 
+/* 📱 Estilos adicionales para pantallas pequeñas (< 480px) */
 @media (max-width: 480px) {
   .pedidos-container {
     max-width: 100vw;
@@ -292,7 +326,9 @@
     padding: 0;
   }
 
-  .card-header, .detalles, .detalles.expanded {
+  .card-header,
+  .detalles,
+  .detalles.expanded {
     padding-left: 6px;
     padding-right: 6px;
   }

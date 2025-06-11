@@ -8,9 +8,8 @@ describe('RutaDelDiaComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RutaDelDiaComponent]
-    })
-    .compileComponents();
+      imports: [RutaDelDiaComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(RutaDelDiaComponent);
     component = fixture.componentInstance;
