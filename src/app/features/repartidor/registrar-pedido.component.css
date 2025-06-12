@@ -1,5 +1,6 @@
+/*FONDO GENERAL*/
 .background {
-  position: fixed; /* Cambiado de absolute a fixed para fondo estable */
+  position: fixed; /* Mantiene el fondo estático al hacer scroll */
   top: 0;
   left: 0;
   width: 100vw;
@@ -7,24 +8,24 @@
   background: url("https://res.cloudinary.com/drsyb53ae/image/upload/v1749072945/panaderia-admin/ouhdq1g8datfpxfrvr0v.svg")
     no-repeat center center;
   background-size: cover;
-  z-index: -1;
-  pointer-events: none; /* 🔒 Impide que bloquee clics */
+  z-index: -1; /* Se coloca detrás del contenido */
+  pointer-events: none; /* No interfiere con clics ni interacción */
 }
 
-/* Contenedor del mat-card */
+/* ESTILOS GENERALES DEL MAT-CARD */
 .registro-card {
   max-width: 700px;
   margin: 40px auto;
   margin-top: 8rem;
   padding: 24px;
   border-radius: 16px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15); /* Sombra sutil */
   background: rgba(255, 255, 255, 0.397); /* fondo semitransparente */
   margin-top: 8rem;
-  backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px); /* Difumina el fondo detrás del card */
 }
 
-/* Título con icono */
+/* TITULO E ICONO */
 .titulo-card {
   font-size: 24px;
   font-weight: 600;
@@ -36,10 +37,10 @@
 }
 
 .icono-titulo {
-  color: #00e1ff;
+  color: #00e1ff; /* Azul llamativo para el icono principal */
 }
 
-/* Fila de formularios */
+/* CAMPOS DEL FORMULARIO */
 .form-row {
   display: flex;
   gap: 20px;
@@ -59,6 +60,7 @@ mat-form-field {
   margin-top: 12px;
 }
 
+/*AJUSTES A INPUTS Y SUFIJOS*/
 /* Texto del sufijo */
 .suffix-text {
   font-size: 14px;
@@ -66,6 +68,7 @@ mat-form-field {
   padding-right: 6px;
 }
 
+/*ACCIONES DEL FORMULARIO*/
 /* Sección de acciones */
 .acciones-formulario {
   margin-top: 24px;
@@ -104,6 +107,8 @@ mat-form-field {
   margin-right: 6px;
 }
 
+
+/*BADGES POR ROL*/
 .badge-admin {
   color: #fff;
   background: #396eff;
@@ -133,6 +138,8 @@ mat-form-field {
   font-size: 0.95em;
 }
 
+
+/*BORDES POR TIPO DE USUARIO*/
 /* Estilos específicos para el modo admin */
 .admin-card {
   border: 2px solid #63b1f1;
@@ -147,6 +154,7 @@ mat-form-field {
   border: 2px solid #10b910;
 }
 
+/*DISENO RESPONSIVE PARA PANTALLAS PEQUENAS*/
 @media (max-width: 480px) {
   .registro-card {
     max-width: 98vw;

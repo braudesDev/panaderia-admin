@@ -1,84 +1,74 @@
+<!-- Navbar principal. La clase `nav-hidden` se aplica dinámicamente para ocultar el navbar cuando el usuario hace scroll hacia abajo -->
 <nav [class.nav-hidden]="navHidden">
-  <!-- Ícono del menú hamburguesa -->
+
+  <!-- Ícono del menú hamburguesa para pantallas pequeñas -->
   <div class="menu-icon" (click)="toggleMenu()">☰</div>
 
-  <!-- Lista de enlaces -->
+  <!-- Lista de enlaces de navegación. Se muestra u oculta en móviles según el estado de `isMenuOpen` -->
   <ul class="nav-links" [class.active]="isMenuOpen">
+
+    <!-- Enlace a la página de inicio, siempre visible -->
     <li>
       <a routerLink="/" (click)="onNavClick()">
         <mat-icon fontIcon="home"></mat-icon> Inicio
       </a>
     </li>
 
-    <li
-      *ngIf="
-        estaLogueado && (rolUsuario === 'admin' || rolUsuario === 'repartidor')
-      "
-    >
+    <!-- Enlace visible solo si el usuario está logueado como admin o repartidor -->
+    <li *ngIf="estaLogueado && (rolUsuario === 'admin' || rolUsuario === 'repartidor')">
       <a routerLink="/lista-pedidos" (click)="onNavClick()">
         <mat-icon fontIcon="list"></mat-icon> Lista de Pedidos
       </a>
     </li>
 
-    <li>
-      <a
-        *ngIf="estaLogueado && rolUsuario === 'repartidor'"
-        routerLink="/repartidor/ruta-del-dia"
-        (click)="onNavClick()"
-      >
+    <!-- Ruta del Día: visible solo para repartidores -->
+    <li *ngIf="estaLogueado && rolUsuario === 'repartidor'">
+      <a routerLink="/repartidor/ruta-del-dia" (click)="onNavClick()">
         <mat-icon fontIcon="route"></mat-icon> Ruta del Día
       </a>
     </li>
 
-    <!-- SOLO mostrar "Login" si NO está logueado -->
+    <!-- Login: visible solo si el usuario NO está logueado -->
     <li *ngIf="!estaLogueado">
       <a routerLink="/auth/login" (click)="onNavClick()">
         <mat-icon fontIcon="login"></mat-icon> Login
       </a>
     </li>
 
-    <li
-      *ngIf="
-        estaLogueado &&
-        (rolUsuario === 'repartidor' ||
-          rolUsuario === 'admin' ||
-          rolUsuario === 'cliente')
-      "
-    >
+    <!-- Registrar Pedido: disponible para repartidor, admin o cliente -->
+    <li *ngIf="estaLogueado && (rolUsuario === 'repartidor' || rolUsuario === 'admin' || rolUsuario === 'cliente')">
       <a routerLink="/repartidor/registrar-pedido" (click)="onNavClick()">
         <mat-icon fontIcon="add_shopping_cart"></mat-icon> Registrar Pedido
       </a>
     </li>
 
+    <!-- Registrar Cliente: visible solo para el administrador -->
     <li *ngIf="estaLogueado && rolUsuario === 'admin'">
       <a routerLink="/registro-cliente" (click)="onNavClick()">
         <mat-icon fontIcon="qr_code"></mat-icon> Registrar Cliente
       </a>
     </li>
 
+    <!-- Dashboard de control: accesible solo para administradores -->
     <li *ngIf="estaLogueado && rolUsuario === 'admin'">
       <a routerLink="/admin/dashboard/" (click)="onNavClick()">
-        <mat-icon fontIcon="receipt_long"></mat-icon> Control
+        <mat-icon fontIcon="receipt_long"></mat-icon> Panel de Control
       </a>
     </li>
 
-    <!-- <li *ngIf="estaLogueado && rolUsuario === 'admin'">
-      <a routerLink="/registro-usuario" (click)="onNavClick()">
-        <mat-icon fontIcon="person_add"></mat-icon> Registrar Usuario
-      </a>
-    </li> -->
-
+    <!-- Gestión de Usuarios: también solo para el administrador -->
     <li *ngIf="estaLogueado && rolUsuario === 'admin'">
       <a routerLink="/gestion-usuario" (click)="onNavClick()">
         <mat-icon fontIcon="manage_accounts"></mat-icon> Gestión de Usuarios
       </a>
     </li>
 
-    <!-- Cerrar sesión visible solo si está logueado -->
+    <!-- Cerrar sesión: visible solo si el usuario está logueado -->
     <li *ngIf="estaLogueado">
       <a (click)="logout(); onNavClick()">
         <mat-icon fontIcon="logout"></mat-icon> Cerrar sesión
       </a>
     </li>
+
   </ul>
 </nav>

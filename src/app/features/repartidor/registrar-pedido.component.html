@@ -1,4 +1,7 @@
+<!--Fondo decorativo del componente-->
 <div class="background"></div>
+
+<!--Tarjeta principal que contiene el formulario, con clases dinamicas segun el modo de uso-->
 <mat-card
   class="registro-card"
   [ngClass]="{
@@ -7,6 +10,7 @@
     'cliente-card': modo === 'cliente',
   }"
 >
+<!--Encabezado del formulario con titulo dinamico segun el modo-->
   <mat-card-header>
     <mat-card-title class="titulo-card">
       <mat-icon class="icono-titulo">assignment</mat-icon>
@@ -21,14 +25,18 @@
   </mat-card-header>
 
   <mat-card-content>
+    <!--Indicadores visuales del modo actual del componente-->
     <div *ngIf="modo === 'admin'" class="badge-admin">Modo administrador</div>
     <div *ngIf="modo === 'repartidor'" class="badge-repartidor">
       Modo repartidor
     </div>
     <div *ngIf="modo === 'cliente'" class="badge-cliente">Modo Cliente</div>
 
+    <!--Formulario de pedido, ejecuta el metodo guardar() al enviar-->
     <form (ngSubmit)="guardar()" class="formulario-pedido">
+      <!--Primera fila del formulario: cliente y cantidad-->
       <div class="form-row">
+        <!--Campo d entrada para el nombre del cliente-->
         <mat-form-field appearance="outline" floatLabel="always">
           <mat-label>Cliente</mat-label>
           <input
@@ -40,6 +48,7 @@
           <mat-icon matSuffix>person</mat-icon>
         </mat-form-field>
 
+        <!--Campo de entrada para la cantidad de tiras-->
         <mat-form-field appearance="outline" floatLabel="always">
           <mat-label>Cantidad</mat-label>
           <input
@@ -54,7 +63,9 @@
         </mat-form-field>
       </div>
 
+      <!--Segunda fila de formulario: fecha y hora-->
       <div class="form-row">
+        <!--Selector de fecha-->
         <mat-form-field appearance="outline" floatLabel="always">
           <mat-label>Fecha</mat-label>
           <input
@@ -67,6 +78,7 @@
           <mat-icon matSuffix>calendar_today</mat-icon>
         </mat-form-field>
 
+        <!--Selector de hora-->
         <mat-form-field appearance="outline" floatLabel="always">
           <mat-label>Hora</mat-label>
           <input
@@ -80,6 +92,7 @@
         </mat-form-field>
       </div>
 
+      <!--Campo para notas adicionales-->
       <mat-form-field
         appearance="outline"
         floatLabel="always"
@@ -95,6 +108,7 @@
         <mat-icon matSuffix>notes</mat-icon>
       </mat-form-field>
 
+      <!--Boton de envio del formulario-->
       <div class="acciones-formulario">
         <button
           mat-raised-button

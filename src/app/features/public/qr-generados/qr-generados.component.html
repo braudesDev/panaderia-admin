@@ -1,18 +1,28 @@
+<!--Contenedor principal con diseno en grid para la lista de QR generados-->
 <div class="qr-lista-grid">
+  <!--Boton alineado a la derecha para regresar a la pagina de registro de clientes-->
   <div style="text-align: right">
     <button type="button" class="btn-regresar" (click)="irARegistro()">
       ← Volver al registro
     </button>
   </div>
 
+  <!--Titulo de la seccion-->
   <h3 style="margin-top: 1rem">Consultar QRs generados</h3>
 
+  <!--Contenedor en grid para mostrar las tarjetas de cada cliente-->
   <div class="qr-grid">
+    <!--Iteracion sobre el arreglo de clientes para mostrar cada uno-->
     <div *ngFor="let cliente of clientes" class="qr-card">
+      <!--Nombre del cliente con pipe personalizado para capitalizar-->
       <p class="nombre-cliente">
         <strong>{{ cliente.nombre | capitalize }}</strong>
       </p>
+
+      <!--Componente QR generator que recibe el ID del cliente para generar el QR-->
       <app-qr-generator [qrData]="cliente.id || ''"></app-qr-generator>
+
+      <!--Boton para eliminar el QR y cliente asociado-->
       <button
         type="button"
         class="btn-eliminar"
